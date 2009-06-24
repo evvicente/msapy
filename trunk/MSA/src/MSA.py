@@ -7,6 +7,7 @@ __license__ = "GPL"
 __version__ = "0.2.1"
 __date__ = "$20-jun-2009 11:42:12$"
 
+import os
 from pylab import *
 
 # Método matricial para el análisis de estructuras planas.
@@ -295,3 +296,5 @@ def msa():
 
 if __name__ == "__main__":
     msa()
+    # Abre la plantilla de excel para generar un nuevo estudio
+    os.system("start input.xlt")
