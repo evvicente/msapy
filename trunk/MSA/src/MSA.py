@@ -84,7 +84,7 @@ def msa():
         Y1 = float(N[i][1])
         Y2 = float(N[j][1])
 
-        L = sqrt( (X2-X1)**2 + (Y2-Y1)**2 )
+        L = sqrt((X2 - X1)**2 + (Y2 - Y1)**2)
 
         return L
 
@@ -288,6 +288,10 @@ def msa():
     print "Esfuerzos en los extremos de barra: f = "
     print f.T
     print
+
+    import msa_io
+    msa_io.save(N, B, D, R, f)
+    msa_io.draw(N, B, lN, dN, D, lB, f)
 
 if __name__ == "__main__":
     msa()
