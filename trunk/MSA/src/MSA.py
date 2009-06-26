@@ -4,24 +4,17 @@
 __author__ = "Jorge Rodríguez Araújo <grrodri@gmail.com>"
 __copyright__ = "Copyright (c) 2009 Jorge Rodríguez Araújo"
 __license__ = "GPL"
-__version__ = "0.2.1"
-__date__ = "$20-jun-2009 11:42:12$"
+__version__ = "0.2.2"
+__date__ = "26-jun-2009"
 
-import os
 from pylab import *
 
+import msa_io
+
 # Método matricial para el análisis de estructuras planas.
-def msa():
+def msa(joints, members):
     # Definición de la estructura
     #----------------------------------------------------------
-
-    # Nudos (N): [X, Y]
-    #   X = Coordenada horizontal en el eje de referencia absoluto
-    #   Y = Coordenada vertical en el eje de referencia absoluto
-    N = [[0, 0],
-         [2, 0],
-         [4, 0],
-         [6, 0]]
 
     # Definición de propiedades {'name':[E, A, Iz]}
     #   E = Módulo de elasticidad
@@ -29,75 +22,20 @@ def msa():
     #   Iz = Momento de inercia de la sección
     properties = {'IPN 200':[210000e6, 0, 21.4e-6], 'p2':[21000, 2, 100]}
 
-    # Barras (B): [i, j, E, A, Iz]
-    #   i = Nudo inicial de la barra
-    #   j = Nudo final de la barra
-    #   E = Módulo de elasticidad
-    #   A = Area de la sección de la barra
-    #   I = Momento de inercia de la sección
-    #   q = Carga uniformemente distribuida
-    B = [[0, 1, 210000e6, 0, 21.4e-6, -1200],
-         [1, 2, 210000e6, 0, 21.4e-6, 0],
-         [2, 3, 210000e6, 0, 21.4e-6, 0]]
-
+    # Tipos de nudos
     # Restricciones de los nudos (dN): [dX, dY, rZ]
     #   dX = Desplazaminto horizontal impedido (0)
     #   dY = Desplazamiento vertical impedido (0)
     #   rZ = Rotación impedida (0)
-    dN = [[1, 1, 1],
-          [1, 0, 1],
-          [1, 1, 1],
-          [0, 0, 1]]
+    types = {'fs':[0, 0, 0],
+             'hs':[0, 0, 1],
+             'rs':[1, 0, 1],
+             'rj':[1, 1, 1],
+             'hj':[1, 1, 0]}
 
-    # Definición de las cargas
-    #----------------------------------------------------------
-
-    # Cargas en los nudos (lN): [FX, FY, MZ]
-    #   FX = Carga según el eje horizontal
-    #   FY = Carga según el eje vertical
-    #   MZ = Momento según el eje Z
-    #
-    lN = [[0, 0, 0],
-          [0, 0, 0],
-          [0, -2000, 0],
-          [0, 0, 0]]
-
-    # Cargas en los extremos de las barras (lB): [Fxi, Fyi, Mzi, Fxj, Fyj, Mzj]
-    #   Fxi = Carga en el nudo i según el eje x de la barra
-    #   Fyi = Carga en el nudo i según el eje y de la barra
-    #   Mzi = Momento en el nudo i según el eje z de la barra
-    #   Fxj = Carga en el nudo j según el eje x de la barra
-    #   Fyj = Carga en el nudo j según el eje y de la barra
-    #   Mzj = Momento en el nudo j según el eje z de la barra
-    lB = [[0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0]]
-
-    # Calcula el número de nudos
-    n = len(N)
-
-    # Longitud de la barra
-    def Length(i, j):
-        """ Calcula la longitud de la barra que une los nudos i, j. """
-
-        X1 = float(N[i][0])
-        X2 = float(N[j][0])
-        Y1 = float(N[i][1])
-        Y2 = float(N[j][1])
-
-        L = sqrt((X2 - X1)**2 + (Y2 - Y1)**2)
-
-        return L
-
-    # Carga uniforme
-    def Uniform(q, L):
-        """ Calcula las reacciones de empotramiento perfecto para una carga
-        uniformente repartida en toda la barra. """
-
-        V = -q*L/2
-        M = q*L**2/12
-
-        return [0, V, -M, 0, V, M]
+    dN = []
+    for n in range(len(joints)):
+        dN.append(types[joints[n].type])
 
     # Matriz de rigidez local
     def StiffnessMatrix(E, A, I, L):
@@ -124,10 +62,10 @@ def msa():
     def RotationMatrix(i, j):
         """ Define la matriz de rotación de la barra que une los nudos i, j. """
 
-        X1 = float(N[i][0])
-        X2 = float(N[j][0])
-        Y1 = float(N[i][1])
-        Y2 = float(N[j][1])
+        X1 = joints[i].X
+        Y1 = joints[i].Y
+        X2 = joints[j].X
+        Y2 = joints[j].Y
 
         L = sqrt( (X2-X1)**2 + (Y2-Y1)**2 )
         sin = (Y2-Y1) / L
@@ -155,12 +93,15 @@ def msa():
 
     # Determina la matriz de rigidez de la estructura (S)
     def StructureStiffnessMatrix(S):
-        for n in range(len(B)):
-            i = B[n][0]
-            j = B[n][1]
-            L = Length(i, j)
+        for n in range(len(members)):
+            i = members[n].i
+            j = members[n].j
+            L = members[n].L
+            E = members[n].E
+            A = members[n].A
+            I = members[n].I
 
-            k = StiffnessMatrix(B[n][2], B[n][3], B[n][4], L)
+            k = StiffnessMatrix(E, A, I, L)
             r = RotationMatrix(i, j)
 
             K = r.T * k * r
@@ -191,30 +132,24 @@ def msa():
 
     # Determina el vector de cargas de la estructura (L)
     def StructureLoadVector(L):
-        array(lB)
-        for n in range(len(lB)):
-            i = B[n][0]
-            j = B[n][1]
+        for n in range(len(members)):
+            i = members[n].i
+            j = members[n].j
 
-            # Carga uniforme
-            q = B[n][5]
-            l = Length(i, j)
-            if q != 0:
-                lB[n] = Uniform(q, l)
-
-            p = matrix(lB[n]).T
+            p = matrix(members[n].getLoad()).T
             r = RotationMatrix(i, j)
 
             P = -r.T * p
 
-            AddLoadVector(L, P[0:3,0], B[n][0])
-            AddLoadVector(L, P[3:6,0], B[n][1])
+            AddLoadVector(L, P[0:3,0], i)
+            AddLoadVector(L, P[3:6,0], j)
 
         # Cargas aplicadas directamente en los nudos
-        for n in range(len(lN)):
-            AddLoadVector(L, matrix(lN[n]).T, n)
+        for n in range(len(joints)):
+            AddLoadVector(L, matrix(joints[n].getLoad()).T, n)
 
     # Genera la matriz de rigidez de la estructura (S)
+    n = len(joints)
     S = matrix(zeros((n*3,n*3)))
     StructureStiffnessMatrix( S )
     K = matrix(S)
@@ -225,7 +160,7 @@ def msa():
 
     # Se imponen las condiciones de contorno mediante la eliminación de
     # los grados de libertad impedidos
-    for n in range(len(dN)):
+    for n in range(len(joints)):
         k0 = n*3
         k1 = k0 + 1
         k2 = k1 + 1
@@ -268,33 +203,44 @@ def msa():
 
     # Esfuerzos en los extremos de barra
     d = matrix(zeros(6)).T
-    f = matrix(zeros([6, len(B)]))
-    for n in range(len(B)):
-        i = B[n][0]*3
-        j = B[n][1]*3
+    f = matrix(zeros([6, len(members)]))
+    for n in range(len(members)):
+        i = members[n].i*3
+        j = members[n].j*3
 
         d[0:3,0] = D[i:i+3,0]
         d[3:6,0] = D[j:j+3,0]
 
-        L = Length(B[n][0], B[n][1])
-        r = RotationMatrix(B[n][0], B[n][1])
+        E = members[n].E
+        A = members[n].A
+        I = members[n].I
+        L = members[n].L
+        r = RotationMatrix(members[n].i, members[n].j)
 
         d = r * d
 
-        k = StiffnessMatrix(B[n][2], B[n][3], B[n][4], L)
+        k = StiffnessMatrix(E, A, I, L)
 
         f[:,n] = k * d
-        f[:,n] += matrix(lB[n]).T
+        f[:,n] += matrix(members[n].getLoad()).T
 
     print "Esfuerzos en los extremos de barra: f = "
     print f.T
     print
 
-    import msa_io
-    msa_io.save(N, B, D, R, f)
-    msa_io.draw(N, B, lN, dN, D, lB, f)
+    msa_io.save(joints, members, D, R, f)
+    msa_io.draw(joints, members, D, f)
+
+from joint import *
+from member import *
 
 if __name__ == "__main__":
-    msa()
+    # Carga el archivo de definición de la estructura
+    (joints, members) = msa_io.load()
+    # Ejecuta el método de la rigidez
+    msa(joints, members)
+    # Guarda el archivo de resultados
+    
     # Abre la plantilla de excel para generar un nuevo estudio
-    os.system("start input.xlt")
+    #import os
+    #os.startfile("input.xlt")
