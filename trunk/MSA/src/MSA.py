@@ -4,8 +4,8 @@
 __author__ = "Jorge Rodríguez Araújo <grrodri@gmail.com>"
 __copyright__ = "Copyright (c) 2009 Jorge Rodríguez Araújo"
 __license__ = "GPL"
-__version__ = "0.2.2"
-__date__ = "26-jun-2009"
+__version__ = "0.2.5"
+__date__ = "2-jul-2009"
 
 from pylab import *
 
@@ -224,7 +224,7 @@ def msa(joints, members):
         f[:,n] = k * d
         f[:,n] += matrix(members[n].getLoad()).T
 
-    print "Esfuerzos en los extremos de barra: f = "
+    print "Esfuerzos en los extremos de barra (f)"
     print f.T
     print
 

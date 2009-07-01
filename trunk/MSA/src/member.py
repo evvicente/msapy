@@ -1,3 +1,4 @@
+import member
 # -*- coding: latin-1 -*-
 __author__="Jorge"
 __date__ ="$26-jun-2009 15:31:23$"
@@ -89,23 +90,90 @@ class Member():
         sin = (self.Y2 - self.Y1)/self.L
         return sin
 
-    def drawLoads(self):
+    def drawLoads(self, scale = 0.0001):
         """ Dibuja las cargas sobre la barra """
         if self.qy != 0:
             s = self.__getSin()
             c = self.__getCos()
-            fill([self.X1, self.X1-0.01*self.qy*s, self.X2-0.01*self.qy*s, self.X2], [self.Y1, self.Y1+0.01*self.qy*c, self.Y2+0.01*self.qy*c, self.Y2], facecolor='red')
+            fill([self.X1, self.X1 - scale * self.qy * s, self.X2 - scale * self.qy * s, self.X2], [self.Y1, self.Y1 + scale * self.qy * c, self.Y2 + scale * self.qy * c, self.Y2], hatch='|', facecolor='black')
 
+            txt = "$q_y = %d$\n" %self.qy
+            text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='top', horizontalalignment='center', color='red')
+            
         """ t = ":\n :\n L%d:\n" %n
             t += "%f   $N$   %f\n" %(lB[n][0], lB[n][3])
             t += "%f   $V$   %f\n" %(lB[n][1], lB[n][4])
-            t += "%f   $M$   %f\n" %(lB[n][2], lB[n][5])
-            text((X1+X2)/2, (Y1+Y2)/2, t, verticalalignment='top', horizontalalignment='center', fontsize=9, color='red')"""
+            t += "%f   $M$   %f\n" %(lB[n][2], lB[n][5]) """
+
+    def drawNormal(self, N1, N2):
+        """ Dibuja el diagrama de esfuerzos normales """
+        
+        s = self.__getSin()
+        c = self.__getCos()
+        XN1 = self.X1 - 0.0001 * N1 * s
+        YN1 = self.Y1 + 0.0001 * N1 * c
+        XN2 = self.X2 + 0.0001 * N2 * s
+        YN2 = self.Y2 - 0.0001 * N2 * c
+        # Escribe los valores de los momentos en extremo de barra
+        t = "%f     $\\rightarrow$     %f\n" %(N1, N2)
+        text((self.X1 + self.X2 + XN1 + XN2)/4, (self.Y1 + self.Y2 + YN1 + YN2)/4, t, verticalalignment='center', horizontalalignment='center', fontsize=9, color='black')
+        # Dibuja el diagrama
+        fill([self.X1, XN1, XN2, self.X2], [self.Y1, YN1, YN2, self.Y2], facecolor='red')
+
+    def drawShear(self, V1, V2):
+        """ Dibuja el diagrama de esfuerzos cortantes """
+        
+        s = self.__getSin()
+        c = self.__getCos()
+        XV1 = self.X1 - 0.0001 * V1 * s
+        YV1 = self.Y1 + 0.0001 * V1 * c
+        XV2 = 0
+        YV2 = 0
+        # Escribe los valores de los momentos en extremo de barra
+        t = "%f   $\uparrow$   %f\n" %(V1, V2)
+        text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, t, verticalalignment='center', horizontalalignment='center', fontsize=9, color='black')# Dibuja el diagrama
+        if self.qy == 0:
+            XV2 = self.X2 - 0.0001 * V1 * s
+            YV2 = self.Y2 + 0.0001 * V1 * c
+        else:
+            XV2 = self.X2 - 0.0001 * V2 * s
+            YV2 = self.Y2 + 0.0001 * V2 * c
+        fill([self.X1, XV1, XV2, self.X2], [self.Y1, YV1, YV2, self.Y2], facecolor='green')
+
+    def drawMoment(self, V1, V2, M1, M2, scale=0.0001):
+        """ Dibuja el diagrama de momentos flectores """
+
+        s = self.__getSin()
+        c = self.__getCos()
+        # Escribe los valores de los momentos en extremo de barra
+        txt = "%f   $\circlearrowleft$   %f\n" %(M1, M2)
+        text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='center', horizontalalignment='center', fontsize=9, color='black')
+        # Dibuja el diagrama
+        M = 0
+        if self.qy == 0:
+            x = arange(0, 1.1, 0.5)
+            x = x * self.L
+            M = M1 - (V1 * x)
+        else:
+            x = arange(0, 1.1, 0.1)
+            x = x * self.L
+            M = M1 - (V1 * x) - (self.qy * x * x/2)
+        X = x * c + self.X1
+        Y = x * s + self.Y1
+        X = X - (scale * s * M)
+        Y = Y + (scale * c * M)
+        X = [self.X1] + list(X) + [self.X2]
+        Y = [self.Y1] + list(Y) + [self.Y2]
+        fill(X, Y, facecolor='blue')
 
 if __name__ == "__main__":
-    member = Member(0, 1, 0, 0, 1, 0, 21000, 0.01, 100)
-    member.setUniform(15)
+    member = Member(0, 1, 0, 0, 1, 0.5, 21000, 0.01, 100)
+    member.setUniform(0)
+    axis('equal')
     member.draw()
     member.drawLoads()
+    member.drawNormal(100, -100)
+    member.drawShear(100, -100)
+    member.drawMoment(100, -100, 1000, 0)
     show()
     

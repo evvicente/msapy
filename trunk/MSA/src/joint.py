@@ -46,7 +46,7 @@ class Joint():
             t = "\n"
         text(self.X, self.Y, t, verticalalignment='top', horizontalalignment='center', fontsize=18, color='black')
 
-    def drawLoads(self, n):
+    def drawLoads(self):
         """ Dibuja las cargas sobre el nudo """
 
         t = ""
@@ -66,15 +66,14 @@ class Joint():
             t = "$\circlearrowright$"
         text(self.X, self.Y, t, verticalalignment='bottom', horizontalalignment='center', fontsize=18, color='black')
         if self.__load != [0,0,0]:
-            t = "L%d:\n" %n
+            t = ""
             if self.__load[0] != 0:
-                t += "$N$ %.2f\n" %self.__load[0]
+                t += "$N = %.2f$\n" %abs(self.__load[0])
             if self.__load[1] != 0:
-                t += "$V$ %.2f\n" %self.__load[1]
+                t += "$P_y = %d$\n" %abs(self.__load[1])
             if self.__load[2] != 0:
-                t += "$M$ %.2f\n" %self.__load[2]
-            t += ":\n"
-            text(self.X, self.Y, t, verticalalignment='bottom', horizontalalignment='center', fontsize=9, color='red')
+                t += "$M = %.2f$\n" %abs(self.__load[2])
+            text(self.X, self.Y, t, verticalalignment='bottom', horizontalalignment='center', color='red')
  
 if __name__ == "__main__":
     joint = Joint(0.1, 0.5, "rs")
