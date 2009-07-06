@@ -79,8 +79,7 @@ class Member():
 
     def draw(self):
         """ Dibuja la barra """
-
-        plot([self.X1, self.X2], [self.Y1, self.Y2], color='gray', linewidth=1.5)
+        plot([self.X1, self.X2], [self.Y1, self.Y2], color='gray', lw=2)
 
     def __getCos(self):
         cos = (self.X2 - self.X1)/self.L
@@ -95,80 +94,107 @@ class Member():
         if self.qy != 0:
             s = self.__getSin()
             c = self.__getCos()
-            fill([self.X1, self.X1 - scale * self.qy * s, self.X2 - scale * self.qy * s, self.X2], [self.Y1, self.Y1 + scale * self.qy * c, self.Y2 + scale * self.qy * c, self.Y2], hatch='|', facecolor='black')
+            XL1 = self.X1 - scale * abs(self.qy) * s
+            XL2 = self.X2 - scale * abs(self.qy) * s
+            YL1 = self.Y1 + scale * abs(self.qy) * c
+            YL2 = self.Y2 + scale * abs(self.qy) * c
+            fill([self.X1, XL1, XL2, self.X2], [self.Y1, YL1, YL2, self.Y2], hatch='|', facecolor='black')
 
-            txt = "$q_y = %d$\n" %self.qy
-            text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='top', horizontalalignment='center', color='red')
-            
-        """ t = ":\n :\n L%d:\n" %n
-            t += "%f   $N$   %f\n" %(lB[n][0], lB[n][3])
-            t += "%f   $V$   %f\n" %(lB[n][1], lB[n][4])
-            t += "%f   $M$   %f\n" %(lB[n][2], lB[n][5]) """
+            txt = "$q_y = %d$" %self.qy
+            text((self.X1 + self.X2 + XL1 + XL2)/4, (self.Y1 + self.Y2 + YL1 + YL2)/4, txt, verticalalignment='center', horizontalalignment='center', color='red')
 
-    def drawNormal(self, N1, N2):
+    def drawNormal(self, N1, N2, scale=0.001):
         """ Dibuja el diagrama de esfuerzos normales """
         
         s = self.__getSin()
         c = self.__getCos()
-        XN1 = self.X1 - 0.0001 * N1 * s
-        YN1 = self.Y1 + 0.0001 * N1 * c
-        XN2 = self.X2 + 0.0001 * N2 * s
-        YN2 = self.Y2 - 0.0001 * N2 * c
-        # Escribe los valores de los momentos en extremo de barra
-        t = "%f     $\\rightarrow$     %f\n" %(N1, N2)
-        text((self.X1 + self.X2 + XN1 + XN2)/4, (self.Y1 + self.Y2 + YN1 + YN2)/4, t, verticalalignment='center', horizontalalignment='center', fontsize=9, color='black')
+        XN1 = self.X1 + scale * N1 * s
+        YN1 = self.Y1 - scale * N1 * c
+        XN2 = self.X2 - scale * N2 * s
+        YN2 = self.Y2 + scale * N2 * c
+        # Escribe el valor del esfuerzo normal
+        txt = "%.4f\n" %N2
+        text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='center', horizontalalignment='center', fontsize=9, color='black')
         # Dibuja el diagrama
         fill([self.X1, XN1, XN2, self.X2], [self.Y1, YN1, YN2, self.Y2], facecolor='red')
 
-    def drawShear(self, V1, V2):
+    def drawShear(self, V1, V2, scale=0.0001):
         """ Dibuja el diagrama de esfuerzos cortantes """
         
         s = self.__getSin()
         c = self.__getCos()
-        XV1 = self.X1 - 0.0001 * V1 * s
-        YV1 = self.Y1 + 0.0001 * V1 * c
-        XV2 = 0
-        YV2 = 0
-        # Escribe los valores de los momentos en extremo de barra
-        t = "%f   $\uparrow$   %f\n" %(V1, V2)
-        text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, t, verticalalignment='center', horizontalalignment='center', fontsize=9, color='black')# Dibuja el diagrama
+        # Dibuja el diagrama
+        V = 0
         if self.qy == 0:
-            XV2 = self.X2 - 0.0001 * V1 * s
-            YV2 = self.Y2 + 0.0001 * V1 * c
+            x = arange(0, 1.1, 0.5)
+            x = x * self.L
+            V = - V1
         else:
-            XV2 = self.X2 - 0.0001 * V2 * s
-            YV2 = self.Y2 + 0.0001 * V2 * c
-        fill([self.X1, XV1, XV2, self.X2], [self.Y1, YV1, YV2, self.Y2], facecolor='green')
+            x = arange(0, 1.1, 0.5)
+            x = x * self.L
+            V = - V1 - self.qy * x
+        X = x * c + self.X1
+        Y = x * s + self.Y1
+        X = X - (scale * s * V)
+        Y = Y + (scale * c * V)
+        X = [self.X1] + list(X) + [self.X2]
+        Y = [self.Y1] + list(Y) + [self.Y2]
+        fill(X, Y, facecolor='green')
+        # Escribe los valores de los esfuerzos cortantes
+        txt = "\n\n%.4f\n" %abs(V1)
+        if V1 > 0:
+            text(X[1], Y[1], txt, verticalalignment='top', horizontalalignment='center', fontsize=9, color='black')
+        else:
+            text(X[1], Y[1], txt, verticalalignment='bottom', horizontalalignment='center', fontsize=9, color='black')
+        txt = "\n\n%.4f\n" %abs(V2)
+        if V2 > 0:
+            text(X[-2], Y[-2], txt, verticalalignment='bottom', horizontalalignment='center', fontsize=9, color='black')
+        else:
+            text(X[-2], Y[-2], txt, verticalalignment='top', horizontalalignment='center', fontsize=9, color='black')
 
     def drawMoment(self, V1, V2, M1, M2, scale=0.0001):
         """ Dibuja el diagrama de momentos flectores """
 
         s = self.__getSin()
         c = self.__getCos()
-        # Escribe los valores de los momentos en extremo de barra
-        txt = "%f   $\circlearrowleft$   %f\n" %(M1, M2)
-        text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='center', horizontalalignment='center', fontsize=9, color='black')
         # Dibuja el diagrama
         M = 0
         if self.qy == 0:
             x = arange(0, 1.1, 0.5)
             x = x * self.L
-            M = M1 - (V1 * x)
+            M = - M1 + (V1 * x)
         else:
             x = arange(0, 1.1, 0.1)
             x = x * self.L
-            M = M1 - (V1 * x) - (self.qy * x * x/2)
+            M = - M1 + (V1 * x) + (self.qy * x * x/2)
+            # Momento máximo (x = - V1/qy)
+            xmax = - V1 / self.qy
+            Mmax = - M1 - ((V1 * V1) / (2 * self.qy))
+            txt = "\n x = %.4f\n Mmax = %.4f\n\n\n" %(xmax, Mmax)
+            text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='center', horizontalalignment='center', fontsize=9, color='red')
+
         X = x * c + self.X1
         Y = x * s + self.Y1
-        X = X - (scale * s * M)
-        Y = Y + (scale * c * M)
+        X = X + (scale * s * M)
+        Y = Y - (scale * c * M)
         X = [self.X1] + list(X) + [self.X2]
         Y = [self.Y1] + list(Y) + [self.Y2]
         fill(X, Y, facecolor='blue')
+        # Escribe los valores de los momentos en extremo de barra
+        txt = "\n\n%.4f\n" %abs(M1)
+        if M1 > 0:
+            text(X[1], Y[1], txt, verticalalignment='bottom', horizontalalignment='center', fontsize=9, color='black')
+        else:
+            text(X[1], Y[1], txt, verticalalignment='top', horizontalalignment='center', fontsize=9, color='black')
+        txt = "\n\n%.4f\n" %abs(M2)
+        if M2 > 0:
+            text(X[-2], Y[-2], txt, verticalalignment='top', horizontalalignment='center', fontsize=9, color='black')
+        else:
+            text(X[-2], Y[-2], txt, verticalalignment='bottom', horizontalalignment='center', fontsize=9, color='black')
 
 if __name__ == "__main__":
     member = Member(0, 1, 0, 0, 1, 0.5, 21000, 0.01, 100)
-    member.setUniform(0)
+    member.setUniform(150)
     axis('equal')
     member.draw()
     member.drawLoads()

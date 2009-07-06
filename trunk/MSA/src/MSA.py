@@ -4,12 +4,15 @@
 __author__ = "Jorge Rodríguez Araújo <grrodri@gmail.com>"
 __copyright__ = "Copyright (c) 2009 Jorge Rodríguez Araújo"
 __license__ = "GPL"
-__version__ = "0.2.5"
-__date__ = "2-jul-2009"
+__version__ = "0.3"
+__date__ = "4-jul-2009"
 
+import sys
 from pylab import *
 
-import msa_io
+import io
+from joint import *
+from member import *
 
 # Método matricial para el análisis de estructuras planas.
 def msa(joints, members):
@@ -228,18 +231,19 @@ def msa(joints, members):
     print f.T
     print
 
-    msa_io.save(joints, members, D, R, f)
-    msa_io.draw(joints, members, D, f)
-
-from joint import *
-from member import *
+    # Guarda el archivo de resultados
+    io.save(joints, members, D, R, f)
+    io.draw(joints, members, D, f)
 
 if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        filename = "input.csv"
+    else:
+        filename = sys.argv[1]
     # Carga el archivo de definición de la estructura
-    (joints, members) = msa_io.load()
+    (joints, members) = io.load(filename)
     # Ejecuta el método de la rigidez
     msa(joints, members)
-    # Guarda el archivo de resultados
     
     # Abre la plantilla de excel para generar un nuevo estudio
     #import os
