@@ -4,8 +4,8 @@
 __author__ = "Jorge Rodríguez Araújo <grrodri@gmail.com>"
 __copyright__ = "Copyright (c) 2009 Jorge Rodríguez Araújo"
 __license__ = "GPL"
-__version__ = "0.3"
-__date__ = "4-jul-2009"
+__version__ = "0.3.1"
+__date__ = "11-jul-2009"
 
 import sys
 from pylab import *
@@ -229,7 +229,6 @@ def msa(joints, members):
 
     print "Esfuerzos en los extremos de barra (f)"
     print f.T
-    print
 
     # Guarda el archivo de resultados
     io.save(joints, members, D, R, f)
@@ -240,11 +239,8 @@ if __name__ == "__main__":
         filename = "input.csv"
     else:
         filename = sys.argv[1]
-    # Carga el archivo de definición de la estructura
-    (joints, members) = io.load(filename)
-    # Ejecuta el método de la rigidez
-    msa(joints, members)
     
-    # Abre la plantilla de excel para generar un nuevo estudio
-    #import os
-    #os.startfile("input.xlt")
+    print "Leyendo los datos de definición de la estructura..."
+    (joints, members) = io.load(filename)
+    print "Resolviendo la estructura por el método de la rigidez..."
+    msa(joints, members)

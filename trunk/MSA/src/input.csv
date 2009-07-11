@@ -1,6 +1,10 @@
-Joints;X;Y;Restraints;Fx;Fy;M;;
-N0;0;0;fs;0;0;0;;
-N1;1;0;rj;0;-1;0;;
+Joints;X [m];Y [m];Restraints;Fx [N];Fy [N];M [N·m];;
+N0;0;0;hs;0;0;0;;
+N1;1;0;rs;0;0;0;;
+N2;2;0;rs;0;0;0;;
 
-Members;Ni;Nf;qy;A;E;I;;
-B0;0;1;0;30;29000;1;;
+
+
+Members;Ni;Nf;qy [N/m];A [m2];E [N/mm2];Iz [cm4];Wz [cm3];
+B0;0;1;-100;0,00201;210000;869;109;IPE 160
+B1;1;2;-100;0,00201;210000;869;109;IPE 160

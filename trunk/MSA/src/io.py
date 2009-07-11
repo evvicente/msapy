@@ -129,7 +129,7 @@ def draw(joints, members, D, f):
 # Carga los datos de la estructura
 import re # Expresiones regulares
 def load(filename):
-    print "Leyendo los datos de la estructura..."
+    """ Lee los datos de la estructura """
 
     file = open(filename, "r")
     str = file.readlines()
@@ -193,6 +193,3 @@ def save(joints, members, D, R, f):
 
     file.write(s)
     file.close()
-
-if __name__ == "__main__":
-    load()
