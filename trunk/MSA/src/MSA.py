@@ -10,6 +10,7 @@ __date__ = "11-jul-2009"
 import sys
 from pylab import *
 
+import gui
 import io
 from joint import *
 from member import *
@@ -230,17 +231,34 @@ def msa(joints, members):
     print "Esfuerzos en los extremos de barra (f)"
     print f.T
 
+    # Asigna los desplazamientos y reacciones a los nudos correspondientes
+    for n in range(len(joints)):
+        k = n*3
+        joints[n].setDisplacements(float(D[k]), float(D[k+1]), float(D[k+2]))
+        joints[n].setReactions(float(R[k]), float(R[k+1]), float(R[k+2]))
+
+    # Asigna los esfuerzos en extremos de barra a su correspondiente
+    for n in range(len(members)):
+        N1 = f[0,n]
+        V1 = f[1,n]
+        M1 = f[2,n]
+        N2 = f[3,n]
+        V2 = f[4,n]
+        M2 = f[5,n]
+        members[n].setEfforts(N1, V1, M1, N2, V2, M2)
+
     # Guarda el archivo de resultados
     io.save(joints, members, D, R, f)
-    io.draw(joints, members, D, f)
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
-        filename = "input.csv"
+        gui.run()
     else:
         filename = sys.argv[1]
-    
-    print "Leyendo los datos de definición de la estructura..."
-    (joints, members) = io.load(filename)
-    print "Resolviendo la estructura por el método de la rigidez..."
-    msa(joints, members)
+        
+        print "Leyendo los datos de definición de la estructura..."
+        (joints, members) = io.load(filename)
+        print "Resolviendo la estructura por el método de la rigidez..."
+        msa(joints, members)
+        print "Mostrando los resultados..."
+        io.draw(joints, members)

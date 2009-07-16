@@ -1,58 +1,11 @@
 # -*- coding: latin-1 -*-
-__author__="Jorge"
+__author__="Jorge Rodríguez Araújo"
 __date__ ="$11-jul-2009 21:41:52$"
 
-import matplotlib
-matplotlib.use('TkAgg')
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
+from pylab import *
 
 import Tkinter as tk
-
-class Notebook():
-	def __init__(self, master, side=tk.LEFT):
-		self.active_fr = None
-		self.count = 0
-		self.choice = tk.IntVar(0)
-
-		if side in (tk.TOP, tk.BOTTOM):
-			self.side = tk.LEFT
-		else:
-			self.side = tk.TOP
-
-		# creates notebook's frames structure
-		self.rb_fr = tk.Frame(master, borderwidth=2, relief=tk.RIDGE)
-		self.rb_fr.pack(side=side, fill=tk.BOTH)
-		self.screen_fr = tk.Frame(master, borderwidth=2, relief=tk.RIDGE)
-		self.screen_fr.pack(fill=tk.BOTH)
-
-	# return a master frame reference for the external frames (screens)
-	def __call__(self):
-		return self.screen_fr
-
-	# add a new frame (screen) to the (bottom/left of the) notebook
-	def add_screen(self, fr, title):
-		b = tk.Radiobutton(self.rb_fr, text=title, indicatoron=0, variable=self.choice, value=self.count, command=lambda: self.display(fr))
-		b.pack(fill=tk.BOTH, side=self.side)
-
-		# ensures the first frame will be
-		# the first selected/enabled
-		if not self.active_fr:
-			fr.pack(fill=tk.BOTH, expand=1)
-			self.active_fr = fr
-
-		self.count += 1
-
-		# returns a reference to the newly created
-        # radiobutton (allowing its configuration/destruction)
-                return b
-
-	# hides the former active frame and shows
-	# another one, keeping its reference
-	def display(self, fr):
-		self.active_fr.forget()
-		fr.pack(fill=tk.BOTH, expand=1)
-		self.active_fr = fr
+import tkFileDialog
 
 import io
 from joint import *
@@ -61,56 +14,134 @@ from MSA import *
 
 import os
 
-def solveMSA():
-    filename = "input.csv"
-    print "Leyendo los datos de definición de la estructura..."
-    (joints, members) = io.load(filename)
-    print "Resolviendo la estructura por el método de la rigidez..."
-    msa(joints, members)
+class App():
+    def __init__(self, window):
+        menubar = tk.Menu(window)
+        fileMenu = tk.Menu(menubar, tearoff=0)
+        helpMenu = tk.Menu(menubar, tearoff=0)
+        fileMenu.add_command(label="Open File...", command=self.loadFile)
+        fileMenu.add_command(label="Save As...", command=self.save)
+        fileMenu.add_separator()
+        fileMenu.add_command(label="Exit", command=window.quit)
+        menubar.add_cascade(label="File", menu=fileMenu)
+        menubar.add_cascade(label="Help", menu=helpMenu)
+        window.config(menu=menubar)
+
+        self.text = tk.Text(window, fg="orange", font="Courier 10", height=15)
+        self.text.pack(fill=tk.BOTH, padx=1, pady=1)
+        self.filename = "input.csv"
+        file = open(self.filename, "r")
+        contents = file.read()
+        file.close()
+        window.title("MSA - " + self.filename)
+        self.text.insert(tk.CURRENT, contents)
+
+        frame = tk.Frame(window)
+        frame.pack(fill=tk.BOTH, padx=5, pady=5)
+
+        buttonTemplate = tk.Button(frame, text="EXCEL", command=lambda:os.startfile("template.xls"))
+        buttonTemplate.pack(side=tk.RIGHT)
+        
+        buttonSchematic = tk.Button(frame, text="Schematic", command=self.drawSchematic)
+        buttonSchematic.pack(side=tk.LEFT)
+
+        buttonSolve = tk.Button(frame, text="SOLVE", command=self.solveMSA)
+        buttonSolve.pack(side=tk.LEFT)
+
+        buttonDisplacements = tk.Button(window, text="D", command=self.drawDisplacements)
+        buttonDisplacements.pack(side=tk.RIGHT)
+        buttonMoments = tk.Button(window, text="M", command=self.drawMoments)
+        buttonMoments.pack(side=tk.RIGHT)
+        buttonShears = tk.Button(window, text="V", command=self.drawShears)
+        buttonShears.pack(side=tk.RIGHT)
+        buttonNormals = tk.Button(window, text="N", command=self.drawNormals)
+        buttonNormals.pack(side=tk.RIGHT)
+        buttonReactions = tk.Button(window, text="R", command=self.drawReactions)
+        buttonReactions.pack(side=tk.RIGHT)
+
+        self.statusbar = tk.Label(window, text="", bd=1, relief=tk.SUNKEN, anchor=tk.W)
+        self.statusbar.pack(side=tk.BOTTOM, fill=tk.X)
+
+        self.joints = []
+        self.members = []
+        
+    def loadFile(self):
+        file = tkFileDialog.askopenfile(mode='r')
+        try:
+            contents = file.read()
+            self.text.delete(tk.CURRENT, tk.END)
+            self.text.insert(tk.CURRENT, contents)
+        except:
+            pass
+    
+    def save(self):
+        file = tkFileDialog.asksaveasfile(mode='w', defaultextension=".csv")
+        saveFile(file)
+    
+    def saveFile(self, file):
+        try:
+            contents = str(self.text.get(0.0, tk.END))
+            file.write(contents)
+            file.close()
+        except:
+            pass
+
+    def drawSchematic(self):
+        file = open(self.filename, "w")
+        contents = str(self.text.get(0.0, tk.END))
+        file.write(contents)
+        file.close()
+        
+        (self.joints, self.members) = io.load(self.filename)
+        fig = figure(1)
+        fig.clear()
+        io.drawSchematic(self.joints, self.members)
+        fig.show()
+
+    def drawReactions(self):
+        fig = figure(1)
+        fig.clear()
+        io.drawReactions(self.joints, self.members)
+        fig.show()
+
+    def drawNormals(self):
+        fig = figure(1)
+        fig.clear()
+        io.drawNormals(self.members)
+        fig.show()
+
+    def drawShears(self):
+        fig = figure(1)
+        fig.clear()
+        io.drawShears(self.members)
+        fig.show()
+
+    def drawMoments(self):
+        fig = figure(1)
+        fig.clear()
+        io.drawMoments(self.members)
+        fig.show()
+
+    def drawDisplacements(self):
+        fig = figure(1)
+        fig.clear()
+        io.drawDisplacements(self.joints, self.members)
+        fig.show()
+
+    def solveMSA(self):
+        self.statusbar['text'] = "Guardando los datos de definición de la estructura..."
+        self.saveFile(open(self.filename, 'w'))
+        self.statusbar['text'] = "Leyendo los datos de definición de la estructura..."
+        (self.joints, self.members) = io.load(self.filename)
+        self.statusbar['text'] = "Resolviendo la estructura por el método de la rigidez..."
+        msa(self.joints, self.members)
+        self.statusbar['text'] = "La estructura ha sido resuelta con éxito!"
+        self.drawMoments()
 
 def run():
     window = tk.Tk()
-    window.wm_title("MSA")
-    
-    notebook = Notebook(window)
-
-    # Frame1
-    f1 = tk.Frame(notebook())
-    labelFilename = tk.Label(f1, text="\n   La estructura se encuentra definida en el archivo:   \n")
-    labelFilename.pack()
-    entryFilename = tk.Entry(f1)
-    entryFilename.insert(tk.INSERT, "input.csv")
-    entryFilename.pack()
-    # Abre la plantilla de excel para generar un nuevo estudio
-    bDefine = tk.Button(f1, text="EXCEL", command=lambda:os.startfile("template.xls"))
-    bDefine.pack()
-    lSolve = tk.Label(f1, text="\n   Resuelve la estructura con 'SOLVE'   \n")
-    lSolve.pack()
-    bSolve = tk.Button(f1, text="SOLVE", command=solveMSA)
-    bSolve.pack(fill=tk.BOTH, expand=1)
-    label = tk.Label(f1, text="   ")
-    label.pack()
-
-    # Frame2
-    f2 = tk.Frame(notebook())
-    fig = Figure()
-    canvas = FigureCanvasTkAgg(fig, master=f2)
-    plt = fig.add_subplot(111)
-    plt.set_title("Esquema estructural")
-    plt.set_xlabel("X")
-    plt.set_ylabel("Y")
-    plt.set_aspect('equal')
-    (joints, members) = io.load("input.csv")
-    for n in range(len(members)):
-        plt.plot([members[n].X1, members[n].X2], [members[n].Y1, members[n].Y2], color="gray")
-    canvas.show()
-    canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-    canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-
-    # Frames
-    notebook.add_screen(f1, "Datos")
-    notebook.add_screen(f2, "Esquema")
-
+    window.title("MSA")
+    App(window)
     window.mainloop()
 
 if __name__ == "__main__":

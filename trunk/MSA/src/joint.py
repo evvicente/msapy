@@ -14,11 +14,22 @@ class Joint():
         self.X = X
         self.Y = Y
         self.type = type # type: {fs, hs, rs, rj, hj}
-    # Cargas en los nudos (lN): [FX, FY, MZ]
-    #   FX = Carga según el eje horizontal
-    #   FY = Carga según el eje vertical
-    #   MZ = Momento según el eje Z
+        # Cargas en los nudos (lN): [FX, FY, MZ]
+        #   FX = Carga según el eje horizontal
+        #   FY = Carga según el eje vertical
+        #   MZ = Momento según el eje Z
         self.__load = [FX, FY, MZ]
+
+        # Desplazamientos
+        self.dX = 0
+        self.dY = 0
+        # Giro
+        self.gZ = 0
+
+        # Reacciones
+        self.RX = 0
+        self.RY = 0
+        self.MZ = 0
 
     def setLoad(self, FX, FY, MZ):
         """ Establece las cargas en el nudo:
@@ -31,13 +42,29 @@ class Joint():
     def getLoad(self):
         return self.__load
 
+    def setDisplacements(self, dX, dY, gZ):
+        """ Establece los desplazamientos del nudo:
+            dX = Desplazamiento según el eje X
+            dY = Desplazamiento según el eje Y
+            gZ = Giro según el eje Z """
+
+        (self.dX, self.dY, self.gZ) = (dX, dY, gZ)
+
+    def setReactions(self, RX, RY, MZ):
+        """ Establece las reacciones del apoyo:
+            RX = Reacción según el eje X
+            RY = Reacción según el eje Y
+            MZ = Momento según el eje Z """
+
+        (self.RX, self.RY, self.MZ) = (RX, RY, MZ)
+        
     def draw(self):
         """ Representa el nudo o apoyo """
         
         if self.type == "hj": # hinge joint
             text(self.X, self.Y, "o", verticalalignment='center', horizontalalignment='center', fontsize=9, color='black')
         elif self.type == "fs": # fixed support
-            text(self.X, self.Y, "$\\bot$\n", verticalalignment='top', horizontalalignment='center', fontsize=18, color='black') 
+            text(self.X, self.Y, "$\\bot$\n", verticalalignment='top', horizontalalignment='center', fontsize=18, color='black')
         elif self.type == "hs": # hinge support
             text(self.X, self.Y, "$\\bigtriangleup$\n", verticalalignment='top', horizontalalignment='center', fontsize=18, color='black')
         elif self.type == "rs": # roller support
@@ -71,7 +98,29 @@ class Joint():
             if self.__load[2] != 0:
                 t += "$M = %.2f$\n" %abs(self.__load[2])
             text(self.X, self.Y, t, verticalalignment='bottom', horizontalalignment='center', color='red')
- 
+    
+    def drawReactions(self):
+        """ Dibuja las reacciones en los apoyos """
+
+        if self.RX > 0.001:
+            txt = "\n\n$\\rightarrow$\n %.2f\n" %self.RX
+            text(self.X, self.Y, txt, verticalalignment='top', horizontalalignment='center', fontsize=15, color='red')
+        elif self.RX < 0:
+            txt = "\n\n$\\leftarrow$\n %.2f\n" %abs(self.RX)
+            text(self.X, self.Y, txt, verticalalignment='top', horizontalalignment='center', fontsize=15, color='red')
+        if self.RY > 0.001:
+            txt = "\n\n$\\uparrow$\n %.2f\n" %self.RY
+            text(self.X, self.Y, txt, verticalalignment='top', horizontalalignment='center', fontsize=15, color='green')
+        elif self.RY < 0:
+            txt = "\n\n$\\downarrow$\n %.2f\n" %abs(self.RY)
+            text(self.X, self.Y, txt, verticalalignment='top', horizontalalignment='center', fontsize=15, color='green')
+        if self.MZ > 0.001:
+            txt = "\n\n$\\circlearrowleft$\n %.2f\n" %self.MZ
+            text(self.X, self.Y, txt, verticalalignment='top', horizontalalignment='center', fontsize=15, color='blue')
+        elif self.MZ < 0:
+            txt = "\n\n$\\circlearrowright$\n %.2f\n" %abs(self.MZ)
+            text(self.X, self.Y, txt, verticalalignment='top', horizontalalignment='center', fontsize=15, color='blue')
+
 if __name__ == "__main__":
     joint = Joint(0.1, 0.5, "rs")
     joint.setLoad(10, 10, 10)
