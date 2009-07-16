@@ -42,21 +42,21 @@ class App():
         buttonTemplate = tk.Button(frame, text="EXCEL", command=lambda:os.startfile("template.xls"))
         buttonTemplate.pack(side=tk.RIGHT)
         
-        buttonSchematic = tk.Button(frame, text="Schematic", command=self.drawSchematic)
+        buttonSchematic = tk.Button(frame, text="Schematic", command=self.draw_schematic)
         buttonSchematic.pack(side=tk.LEFT)
 
         buttonSolve = tk.Button(frame, text="SOLVE", command=self.solveMSA)
         buttonSolve.pack(side=tk.LEFT)
 
-        buttonDisplacements = tk.Button(window, text="D", command=self.drawDisplacements)
+        buttonDisplacements = tk.Button(window, text="D", command=self.draw_displacements)
         buttonDisplacements.pack(side=tk.RIGHT)
-        buttonMoments = tk.Button(window, text="M", command=self.drawMoments)
+        buttonMoments = tk.Button(window, text="M", command=self.draw_moments)
         buttonMoments.pack(side=tk.RIGHT)
-        buttonShears = tk.Button(window, text="V", command=self.drawShears)
+        buttonShears = tk.Button(window, text="V", command=self.draw_shears)
         buttonShears.pack(side=tk.RIGHT)
-        buttonNormals = tk.Button(window, text="N", command=self.drawNormals)
+        buttonNormals = tk.Button(window, text="N", command=self.draw_normals)
         buttonNormals.pack(side=tk.RIGHT)
-        buttonReactions = tk.Button(window, text="R", command=self.drawReactions)
+        buttonReactions = tk.Button(window, text="R", command=self.draw_reactions)
         buttonReactions.pack(side=tk.RIGHT)
 
         self.statusbar = tk.Label(window, text="", bd=1, relief=tk.SUNKEN, anchor=tk.W)
