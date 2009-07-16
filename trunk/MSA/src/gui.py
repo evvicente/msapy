@@ -14,7 +14,7 @@ from MSA import *
 
 import os
 
-class App():
+class Gui():
     def __init__(self, window):
         menubar = tk.Menu(window)
         fileMenu = tk.Menu(menubar, tearoff=0)
@@ -141,7 +141,7 @@ class App():
 def run():
     window = tk.Tk()
     window.title("MSA")
-    App(window)
+    Gui(window)
     window.mainloop()
 
 if __name__ == "__main__":
