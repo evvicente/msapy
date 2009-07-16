@@ -8,7 +8,7 @@ from joint import *
 from member import *  
 
 # Diagrama estructural
-def drawSchematic(joints, members):
+def draw_schematic(joints, members):
     """ Dibuja la estructura """
 
     title("Esquema estructural")
@@ -18,14 +18,14 @@ def drawSchematic(joints, members):
     # Dibuja los nudos
     for n in range(len(joints)):
         joints[n].draw()
-        joints[n].drawLoads()
+        joints[n].draw_loads()
     # Dibuja las barras
     for n in range(len(members)):
         members[n].draw()
-        members[n].drawLoads(0.001)
+        members[n].draw_loads(0.001)
 
 # Diagrama de reacciones
-def drawReactions(joints, members):
+def draw_reactions(joints, members):
     """ Dibuja las reacciones """
     
     title("Reacciones")
@@ -34,13 +34,13 @@ def drawReactions(joints, members):
     axis('equal')
     for n in range(len(joints)):
         joints[n].draw()
-        joints[n].drawLoads()
-        joints[n].drawReactions()
+        joints[n].draw_loads()
+        joints[n].draw_reactions()
     for n in range(len(members)):
         members[n].draw()
 
 # Diagrama de normales
-def drawNormals(members):
+def draw_normals(members):
     """ Dibuja el diagrama de esfuerzos normales """
 
     title("Diagrama de esfuerzos normales (N)   $\leftarrow \lfloor\\rceil \\rightarrow$")
@@ -48,10 +48,10 @@ def drawNormals(members):
     ylabel("Y")
     axis('equal')
     for n in range(len(members)):
-        members[n].drawNormal(0.01)
+        members[n].draw_normal(0.01)
 
 # Diagrama de cortantes
-def drawShears(members):
+def draw_shears(members):
     """ Dibuja el diagrama de esfuerzos cortantes """
 
     title("Diagrama de esfuerzos cortantes (V)   $\downarrow \lfloor\\rceil \uparrow$")
@@ -59,10 +59,10 @@ def drawShears(members):
     ylabel("Y")
     axis('equal')
     for n in range(len(members)):
-        members[n].drawShear(0.001)
+        members[n].draw_shear(0.001)
 
 # Diagrama de momentos
-def drawMoments(members):
+def draw_moments(members):
     """ Dibuja el diagrama de momentos """
 
     title("Diagrama de momentos flectores (M)   $\curvearrowright \lfloor\\rceil \curvearrowleft$")
@@ -70,9 +70,9 @@ def drawMoments(members):
     ylabel("Y")
     axis('equal')
     for n in range(len(members)):
-        members[n].drawMoment(0.01)
+        members[n].draw_moment(0.01)
 
-def drawDisplacements(joints, members):
+def draw_displacements(joints, members):
     """ Dibuja los desplazamientos """
 
     title("Diagrama de desplazamientos (f)")
@@ -103,19 +103,19 @@ def draw(joints, members):
 
     # Schematic
     figure(1)
-    drawSchematic(joints, members)
+    draw_schematic(joints, members)
     
     figure(2)
-    drawNormals(members)
+    draw_normals(members)
 
     figure(3)
-    drawShears(members)
+    draw_shears(members)
 
     figure(4)
-    drawMoments(members)
+    draw_moments(members)
 
     figure(5)
-    drawDisplacements(joints, members)
+    draw_displacements(joints, members)
 
     show()
 
@@ -144,7 +144,6 @@ def load(filename):
             
             joints.append(Joint(X, Y, FX, FY, MZ, type))
 
-    n = 0
     members = [] 
     for s in str:
         s = s.replace(',', '.')
@@ -152,7 +151,6 @@ def load(filename):
         
         # Definición de los miembros de la estructura
         if re.search('^B', l[0]):
-            n += 1    
             i = int(l[1])
             j = int(l[2])
             X1 = joints[i].X

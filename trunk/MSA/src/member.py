@@ -92,7 +92,7 @@ class Member():
         sin = (self.Y2 - self.Y1)/self.L
         return sin
 
-    def drawLoads(self, scale = 0.0001):
+    def draw_loads(self, scale = 0.0001):
         """ Dibuja las cargas sobre la barra """
         if self.qy != 0:
             s = self.__getSin()
@@ -106,7 +106,7 @@ class Member():
             txt = "$q_y = %d$" %self.qy
             text((self.X1 + self.X2 + XL1 + XL2)/4, (self.Y1 + self.Y2 + YL1 + YL2)/4, txt, verticalalignment='center', horizontalalignment='center', color='red')
 
-    def drawNormal(self, scale=0.001):
+    def draw_normal(self, scale=0.001):
         """ Dibuja el diagrama de esfuerzos normales """
         
         s = self.__getSin()
@@ -121,7 +121,7 @@ class Member():
         # Dibuja el diagrama
         fill([self.X1, XN1, XN2, self.X2], [self.Y1, YN1, YN2, self.Y2], facecolor='red')
 
-    def drawShear(self, scale=0.0001):
+    def draw_shear(self, scale=0.0001):
         """ Dibuja el diagrama de esfuerzos cortantes """
         
         s = self.__getSin()
@@ -155,7 +155,7 @@ class Member():
         else:
             text(X[-2], Y[-2], txt, verticalalignment='top', horizontalalignment='center', fontsize=9, color='black')
 
-    def drawMoment(self, scale=0.0001):
+    def draw_moment(self, scale=0.0001):
         """ Dibuja el diagrama de momentos flectores """
 
         s = self.__getSin()
@@ -200,9 +200,9 @@ if __name__ == "__main__":
     member.setUniform(150)
     axis('equal')
     member.draw()
-    member.drawLoads()
-    member.drawNormal(100, -100)
-    member.drawShear(100, -100)
-    member.drawMoment(100, -100, 1000, 0)
+    member.draw_loads()
+    member.draw_normal(100, -100)
+    member.draw_shear(100, -100)
+    member.draw_moment(100, -100, 1000, 0)
     show()
     

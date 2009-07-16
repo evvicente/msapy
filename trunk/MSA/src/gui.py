@@ -86,7 +86,7 @@ class App():
         except:
             pass
 
-    def drawSchematic(self):
+    def draw_schematic(self):
         file = open(self.filename, "w")
         contents = str(self.text.get(0.0, tk.END))
         file.write(contents)
@@ -95,37 +95,37 @@ class App():
         (self.joints, self.members) = io.load(self.filename)
         fig = figure(1)
         fig.clear()
-        io.drawSchematic(self.joints, self.members)
+        io.draw_schematic(self.joints, self.members)
         fig.show()
 
-    def drawReactions(self):
+    def draw_reactions(self):
         fig = figure(1)
         fig.clear()
-        io.drawReactions(self.joints, self.members)
+        io.draw_reactions(self.joints, self.members)
         fig.show()
 
-    def drawNormals(self):
+    def draw_normals(self):
         fig = figure(1)
         fig.clear()
-        io.drawNormals(self.members)
+        io.draw_normals(self.members)
         fig.show()
 
-    def drawShears(self):
+    def draw_shears(self):
         fig = figure(1)
         fig.clear()
-        io.drawShears(self.members)
+        io.draw_shears(self.members)
         fig.show()
 
-    def drawMoments(self):
+    def draw_moments(self):
         fig = figure(1)
         fig.clear()
-        io.drawMoments(self.members)
+        io.draw_moments(self.members)
         fig.show()
 
-    def drawDisplacements(self):
+    def draw_displacements(self):
         fig = figure(1)
         fig.clear()
-        io.drawDisplacements(self.joints, self.members)
+        io.draw_displacements(self.joints, self.members)
         fig.show()
 
     def solveMSA(self):
@@ -136,7 +136,7 @@ class App():
         self.statusbar['text'] = "Resolviendo la estructura por el método de la rigidez..."
         msa(self.joints, self.members)
         self.statusbar['text'] = "La estructura ha sido resuelta con éxito!"
-        self.drawMoments()
+        self.draw_moments()
 
 def run():
     window = tk.Tk()

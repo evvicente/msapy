@@ -1,5 +1,5 @@
 # -*- coding: latin-1 -*-
-__author__="Jorge"
+__author__="Jorge Rodríguez Araújo"
 __date__ ="$26-jun-2009 15:31:23$"
 
 from pylab import *
@@ -70,7 +70,7 @@ class Joint():
         elif self.type == "rs": # roller support
             text(self.X, self.Y, "$\\triangleq$\n", verticalalignment='top', horizontalalignment='center', fontsize=18, color='black')
 
-    def drawLoads(self):
+    def draw_loads(self):
         """ Dibuja las cargas sobre el nudo """
 
         t = ""
@@ -99,7 +99,7 @@ class Joint():
                 t += "$M = %.2f$\n" %abs(self.__load[2])
             text(self.X, self.Y, t, verticalalignment='bottom', horizontalalignment='center', color='red')
     
-    def drawReactions(self):
+    def draw_reactions(self):
         """ Dibuja las reacciones en los apoyos """
 
         if self.RX > 0.001:
@@ -125,6 +125,6 @@ if __name__ == "__main__":
     joint = Joint(0.1, 0.5, "rs")
     joint.setLoad(10, 10, 10)
     joint.draw()
-    joint.drawLoads(3)
+    joint.draw_loads(3)
     show()
     
