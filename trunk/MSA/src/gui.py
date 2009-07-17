@@ -40,7 +40,7 @@ class Gui():
         frame = tk.Frame(window)
         frame.pack(fill=tk.BOTH, padx=5, pady=5)
 
-        buttonTemplate = tk.Button(frame, text="EXCEL", command=lambda:os.startfile("template.xls"))
+        buttonTemplate = tk.Button(frame, text="EXCEL", command=lambda:os.startfile("input.xls"))
         buttonTemplate.pack(side=tk.RIGHT)
         
         buttonSchematic = tk.Button(frame, text="Schematic", command=self.draw_schematic)
