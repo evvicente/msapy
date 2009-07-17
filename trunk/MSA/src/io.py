@@ -1,6 +1,7 @@
 # -*- coding: latin-1 -*-
+
 __author__="Jorge Rodríguez Araújo"
-__date__ ="$24-jun-2009 16:02:23$"
+__date__ ="24-jun-2009"
 
 from pylab import *
 
@@ -167,19 +168,16 @@ def load(filename):
     return joints, members
 
 # Guarda los datos de la estructura
-def save(joints, members, D, R, f):
-    print "Guardando los datos de la estructura..."
-
-    file = open("output.csv", "w")
+def save(joints, members, filename="output.csv"):
+    file = open(filename, "w")
 
     s = "Nudos;X;Y;u;v;r;N;V;M\n"
     for n in range(len(joints)):
-        k = n*3
-        s += "N%d;%f;%f;%f;%f;%f;%f;%f;%f\n" %(n, joints[n].X, joints[n].Y, D[k], D[k+1], D[k+2], R[k], R[k+1], R[k+2])
+        s += "N%d;%f;%f;%f;%f;%f;%f;%f;%f\n" %(n, joints[n].X, joints[n].Y, joints[n].dX, joints[n].dY, joints[n].gZ, joints[n].RX, joints[n].RY, joints[n].RMZ)
     s += "\n"
     s += "Barras;i;f;Ni;Vi;Mi;Nf;Vf;Mf\n"
     for n in range(len(members)):
-        s += "B%d;N%d;N%d;%f;%f;%f;%f;%f;%f\n" %(n, members[n].i, members[n].j, f[0,n], f[1,n], f[2,n], f[3,n], f[4,n], f[5,n])
+        s += "B%d;N%d;N%d;%f;%f;%f;%f;%f;%f\n" %(n, members[n].i, members[n].j, members[n].N1, members[n].V1, members[n].M1, members[n].N2, members[n].V2, members[n].M2)
     s = s.replace('.',',')
 
     file.write(s)

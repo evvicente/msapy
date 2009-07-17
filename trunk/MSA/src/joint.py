@@ -8,39 +8,38 @@ class Joint():
     def __init__(self, X, Y, FX, FY, MZ, type = "rj"):
         """ Define un nudo de la estructura a partir de sus coordenadas y tipo """
 
-        # Nudos (N): [X, Y]
-        #   X = Coordenada horizontal en el eje de referencia absoluto
-        #   Y = Coordenada vertical en el eje de referencia absoluto
-        self.X = X
-        self.Y = Y
-        self.type = type # type: {fs, hs, rs, rj, hj}
-        # Cargas en los nudos (lN): [FX, FY, MZ]
-        #   FX = Carga según el eje horizontal
-        #   FY = Carga según el eje vertical
-        #   MZ = Momento según el eje Z
-        self.__load = [FX, FY, MZ]
+        # Coordenadas en el eje de referencia absoluto
+        self.X = X # Horizontal
+        self.Y = Y # Vertical
 
-        # Desplazamientos
+        # Tipo de nudo o apoyo
+        self.type = type # type: {fs, hs, rs, rj, hj}
+
+        # Cargas en el nudo
+        self.FX = FX
+        self.FY = FY
+        self.MZ = MZ
+
+        # Desplazamientos y giro
         self.dX = 0
         self.dY = 0
-        # Giro
         self.gZ = 0
 
         # Reacciones
         self.RX = 0
         self.RY = 0
-        self.MZ = 0
+        self.RMZ = 0
 
     def setLoad(self, FX, FY, MZ):
         """ Establece las cargas en el nudo:
-           FX = Carga en el nudo según el eje X
-           FY = Carga en el nudo según el eje Y
-           MZ = Momento en el nudo según el eje Z """
+            FX = Carga según el eje X
+            FY = Carga según el eje Y
+            MZ = Momento según el eje Z """
 
-        self.__load = [FX, FY, MZ]
+        (self.FX, self.FY, self.MZ) = (FX, FY, MZ)
 
     def getLoad(self):
-        return self.__load
+        return [self.FX, self.FY, self.MZ]
 
     def setDisplacements(self, dX, dY, gZ):
         """ Establece los desplazamientos del nudo:
@@ -50,13 +49,13 @@ class Joint():
 
         (self.dX, self.dY, self.gZ) = (dX, dY, gZ)
 
-    def setReactions(self, RX, RY, MZ):
+    def setReactions(self, RX, RY, RMZ):
         """ Establece las reacciones del apoyo:
             RX = Reacción según el eje X
             RY = Reacción según el eje Y
-            MZ = Momento según el eje Z """
+            RMZ = Momento según el eje Z """
 
-        (self.RX, self.RY, self.MZ) = (RX, RY, MZ)
+        (self.RX, self.RY, self.RMZ) = (RX, RY, RMZ)
         
     def draw(self):
         """ Representa el nudo o apoyo """
@@ -74,29 +73,29 @@ class Joint():
         """ Dibuja las cargas sobre el nudo """
 
         t = ""
-        if self.__load[0] > 0:
+        if self.FX > 0:
             t = "$\\rightarrow$"
-        elif self.__load[0] < 0:
+        elif self.FX < 0:
             t = "$\\leftarrow$"
         text(self.X, self.Y, t, verticalalignment='bottom', horizontalalignment='center', fontsize=18, color='black')
-        if self.__load[1] > 0:
+        if self.FY > 0:
             t = "$\uparrow$"
-        elif self.__load[1] < 0:
+        elif self.FY < 0:
             t = "$\downarrow$"
         text(self.X, self.Y, t, verticalalignment='bottom', horizontalalignment='center', fontsize=18, color='black')
-        if self.__load[2] > 0:
+        if self.MZ > 0:
             t = "$\circlearrowleft$"
-        elif self.__load[2] < 0:
+        elif self.MZ < 0:
             t = "$\circlearrowright$"
         text(self.X, self.Y, t, verticalalignment='bottom', horizontalalignment='center', fontsize=18, color='black')
-        if self.__load != [0,0,0]:
+        if self.getLoad() != [0,0,0]:
             t = ""
-            if self.__load[0] != 0:
-                t += "$N = %.2f$\n" %abs(self.__load[0])
-            if self.__load[1] != 0:
-                t += "$P_y = %d$\n" %abs(self.__load[1])
-            if self.__load[2] != 0:
-                t += "$M = %.2f$\n" %abs(self.__load[2])
+            if self.FX != 0:
+                t += "$N = %.2f$\n" %abs(self.FX)
+            if self.FY != 0:
+                t += "$P_y = %d$\n" %abs(self.FY)
+            if self.MZ != 0:
+                t += "$M = %.2f$\n" %abs(self.MZ)
             text(self.X, self.Y, t, verticalalignment='bottom', horizontalalignment='center', color='red')
     
     def draw_reactions(self):
@@ -114,17 +113,10 @@ class Joint():
         elif self.RY < 0:
             txt = "\n\n$\\downarrow$\n %.2f\n" %abs(self.RY)
             text(self.X, self.Y, txt, verticalalignment='top', horizontalalignment='center', fontsize=15, color='green')
-        if self.MZ > 0.001:
-            txt = "\n\n$\\circlearrowleft$\n %.2f\n" %self.MZ
+        if self.RMZ > 0.001:
+            txt = "\n\n$\\circlearrowleft$\n %.2f\n" %self.RMZ
             text(self.X, self.Y, txt, verticalalignment='top', horizontalalignment='center', fontsize=15, color='blue')
-        elif self.MZ < 0:
-            txt = "\n\n$\\circlearrowright$\n %.2f\n" %abs(self.MZ)
+        elif self.RMZ < 0:
+            txt = "\n\n$\\circlearrowright$\n %.2f\n" %abs(self.RMZ)
             text(self.X, self.Y, txt, verticalalignment='top', horizontalalignment='center', fontsize=15, color='blue')
 
-if __name__ == "__main__":
-    joint = Joint(0.1, 0.5, "rs")
-    joint.setLoad(10, 10, 10)
-    joint.draw()
-    joint.draw_loads(3)
-    show()
-    

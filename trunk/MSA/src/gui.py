@@ -10,7 +10,8 @@ import tkFileDialog
 import io
 from joint import *
 from member import *
-from MSA import *
+
+import msa2d
 
 import os
 
@@ -134,7 +135,9 @@ class Gui():
         self.statusbar['text'] = "Leyendo los datos de definición de la estructura..."
         (self.joints, self.members) = io.load(self.filename)
         self.statusbar['text'] = "Resolviendo la estructura por el método de la rigidez..."
-        msa(self.joints, self.members)
+        msa2d.msa(self.joints, self.members)
+        self.statusbar['text'] = "Guardando los resultados..."
+        io.save(self.joints, self.members, self.filename)
         self.statusbar['text'] = "La estructura ha sido resuelta con éxito!"
         self.draw_moments()
 
