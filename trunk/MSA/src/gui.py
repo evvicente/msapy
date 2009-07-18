@@ -137,7 +137,7 @@ class Gui():
         self.statusbar['text'] = "Resolviendo la estructura por el método de la rigidez..."
         msa2d.msa(self.joints, self.members)
         self.statusbar['text'] = "Guardando los resultados..."
-        io.save(self.joints, self.members, self.filename)
+        io.save(self.joints, self.members)
         self.statusbar['text'] = "La estructura ha sido resuelta con éxito!"
         self.draw_moments()
 

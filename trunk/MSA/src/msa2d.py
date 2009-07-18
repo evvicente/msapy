@@ -8,6 +8,27 @@ __date__ ="17-jul-2009"
 
 from pylab import *
 
+# Calcula la matriz de rigidez local
+def getStiffnessMatrix(E, A, I, L):
+    """ Calcula la matriz de rigidez local de una barra """
+
+    E = float(E)
+    A = float(A)
+    I = float(I)
+    L = float(L)
+
+    k = matrix(zeros((6,6)))
+    k[0,0] = k[3,3] = (E*A/L)
+    k[0,3] = k[3,0] = (-E*A/L)
+    k[1,1] = k[4,4] = (12*E*I/L**3)
+    k[4,1] = k[1,4] = (-12*E*I/L**3)
+    k[1,2] = k[1,5] = k[2,1] = k[5,1] = (6*E*I/L**2)
+    k[4,2] = k[4,5] = k[2,4] = k[5,4] = (-6*E*I/L**2)
+    k[2,2] = k[5,5] = (4*E*I/L)
+    k[2,5] = k[5,2] = (2*E*I/L)
+
+    return k
+
 def msa(joints, members):
     # Definición de la estructura
     #----------------------------------------------------------
@@ -226,8 +247,8 @@ def msa(joints, members):
     # Asigna los desplazamientos y reacciones a los nudos correspondientes
     for n in range(len(joints)):
         k = n*3
-        joints[n].setDisplacements(float(D[k]), float(D[k+1]), float(D[k+2]))
-        joints[n].setReactions(float(R[k]), float(R[k+1]), float(R[k+2]))
+        joints[n].set_displacements(float(D[k]), float(D[k+1]), float(D[k+2]))
+        joints[n].set_reactions(float(R[k]), float(R[k+1]), float(R[k+2]))
 
     # Asigna los esfuerzos en extremos de barra a su correspondiente
     for n in range(len(members)):

@@ -18,11 +18,11 @@ def draw_schematic(joints, members):
     axis('equal')
     # Dibuja los nudos
     for n in range(len(joints)):
-        joints[n].draw()
+        joints[n].draw_joint()
         joints[n].draw_loads()
     # Dibuja las barras
     for n in range(len(members)):
-        members[n].draw()
+        members[n].draw_member()
         members[n].draw_loads(0.001)
 
 # Diagrama de reacciones
@@ -34,22 +34,29 @@ def draw_reactions(joints, members):
     ylabel("Y")
     axis('equal')
     for n in range(len(joints)):
-        joints[n].draw()
+        joints[n].draw_joint()
         joints[n].draw_loads()
         joints[n].draw_reactions()
     for n in range(len(members)):
-        members[n].draw()
+        members[n].draw_member()
 
 # Diagrama de normales
 def draw_normals(members):
     """ Dibuja el diagrama de esfuerzos normales """
+
+    # Busca un factor de escala apropiado
+    maxN = 0
+    for n in range(len(members)):
+        if members[n].N1 > maxN:
+            maxN = members[n].N1
+    scale = 1/maxN
 
     title("Diagrama de esfuerzos normales (N)   $\leftarrow \lfloor\\rceil \\rightarrow$")
     xlabel("X")
     ylabel("Y")
     axis('equal')
     for n in range(len(members)):
-        members[n].draw_normal(0.01)
+        members[n].draw_normal(scale)
 
 # Diagrama de cortantes
 def draw_shears(members):
@@ -99,7 +106,7 @@ def draw_displacements(joints, members):
         j = members[n].j
         plot([X[i], X[j]], [Y[i], Y[j]], '--', color='green', lw=2)
 
-def draw(joints, members):
+def draw_joint(joints, members):
     print "Mostrando la estructura..."
 
     # Schematic
