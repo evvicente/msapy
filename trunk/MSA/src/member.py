@@ -37,9 +37,9 @@ class Member():
         self.Mz2 = 0
         self.__load = [0, 0, 0, 0, 0, 0]
         # Datos auxiliares
-        self.L = self.getLength()
-        self.sin = self.getSin()
-        self.cos = self.getCos()
+        self.L = self.get_length()
+        self.sin = self.get_sin()
+        self.cos = self.get_cos()
         # Transformación de la carga uniforme
         if qy != 0:
             self.setUniform(qy)
@@ -51,16 +51,16 @@ class Member():
         self.V2 = 0
         self.M2 = 0
     
-    def getLength(self):
+    def get_length(self):
         """ Calcula la longitud de la barra """
         L = sqrt((self.X2 - self.X1)**2 + (self.Y2 - self.Y1)**2)
         return L
 
-    def getSin(self):
+    def get_sin(self):
         sin = (self.Y2 - self.Y1)/self.L
         return sin
 
-    def getCos(self):
+    def get_cos(self):
         cos = (self.X2 - self.X1)/self.L
         return cos
 

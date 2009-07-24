@@ -44,12 +44,14 @@ def draw_reactions(joints, members):
 def draw_normals(members):
     """ Dibuja el diagrama de esfuerzos normales """
 
+    scale = 0.01
     # Busca un factor de escala apropiado
     maxN = 0
     for n in range(len(members)):
         if members[n].N1 > maxN:
             maxN = members[n].N1
-    scale = 1/maxN
+    if maxN != 0:
+        scale = 1/maxN
 
     title("Diagrama de esfuerzos normales (N)   $\leftarrow \lfloor\\rceil \\rightarrow$")
     xlabel("X")

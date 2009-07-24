@@ -27,9 +27,16 @@ class Gui():
         menubar.add_cascade(label="File", menu=fileMenu)
         menubar.add_cascade(label="Help", menu=helpMenu)
         window.config(menu=menubar)
+        
+        frame = tk.Frame(window)
+        frame.pack(fill=tk.X)
+        scrollbar = tk.Scrollbar(frame)
+        self.text = tk.Text(frame, fg="orange", font="Courier 10")
+        scrollbar.config(command=self.text.yview)
+        self.text.config(yscrollcommand=scrollbar.set)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.text.pack(fill=tk.BOTH)
 
-        self.text = tk.Text(window, fg="orange", font="Courier 10", height=15)
-        self.text.pack(fill=tk.BOTH, padx=1, pady=1)
         self.filename = "input.csv"
         file = open(self.filename, "r")
         contents = file.read()
@@ -38,30 +45,31 @@ class Gui():
         self.text.insert(tk.CURRENT, contents)
 
         frame = tk.Frame(window)
-        frame.pack(fill=tk.BOTH, padx=5, pady=5)
-
+        frame.pack(fill=tk.X, padx=5, pady=5)
         buttonTemplate = tk.Button(frame, text="EXCEL", command=lambda:os.startfile("input.xls"))
         buttonTemplate.pack(side=tk.RIGHT)
-        
         buttonSchematic = tk.Button(frame, text="Schematic", command=self.draw_schematic)
         buttonSchematic.pack(side=tk.LEFT)
-
         buttonSolve = tk.Button(frame, text="SOLVE", command=self.solveMSA)
         buttonSolve.pack(side=tk.LEFT)
 
-        buttonDisplacements = tk.Button(window, text="D", command=self.draw_displacements)
+        frame = tk.Frame(window)
+        frame.pack(fill=tk.X)
+        buttonDisplacements = tk.Button(frame, text="D", command=self.draw_displacements, relief=tk.GROOVE)
         buttonDisplacements.pack(side=tk.RIGHT)
-        buttonMoments = tk.Button(window, text="M", command=self.draw_moments)
+        buttonMoments = tk.Button(frame, text="M", command=self.draw_moments, relief=tk.GROOVE)
         buttonMoments.pack(side=tk.RIGHT)
-        buttonShears = tk.Button(window, text="V", command=self.draw_shears)
+        buttonShears = tk.Button(frame, text="V", command=self.draw_shears, relief=tk.GROOVE)
         buttonShears.pack(side=tk.RIGHT)
-        buttonNormals = tk.Button(window, text="N", command=self.draw_normals)
+        buttonNormals = tk.Button(frame, text="N", command=self.draw_normals, relief=tk.GROOVE)
         buttonNormals.pack(side=tk.RIGHT)
-        buttonReactions = tk.Button(window, text="R", command=self.draw_reactions)
+        buttonReactions = tk.Button(frame, text="R", command=self.draw_reactions, relief=tk.GROOVE)
         buttonReactions.pack(side=tk.RIGHT)
 
-        self.statusbar = tk.Label(window, text="", bd=1, relief=tk.SUNKEN, anchor=tk.W)
+        self.statusbar = tk.Label(frame, text="", bd=1, relief=tk.SUNKEN, anchor=tk.W)
         self.statusbar.pack(side=tk.BOTTOM, fill=tk.X)
+        #w = tk.Label(window, text="Prueba", bg="red", fg="white")
+        #w.pack(fill=tk.X)
 
         self.joints = []
         self.members = []
