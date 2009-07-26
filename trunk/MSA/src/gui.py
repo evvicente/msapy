@@ -6,6 +6,7 @@ from pylab import *
 
 import Tkinter as tk
 import tkFileDialog
+import tkMessageBox
 
 import io
 from joint import *
@@ -25,6 +26,7 @@ class Gui():
         fileMenu.add_separator()
         fileMenu.add_command(label="Exit", command=window.quit)
         menubar.add_cascade(label="File", menu=fileMenu)
+        helpMenu.add_command(label="About", command=lambda:tkMessageBox.showinfo("About", "MSA is a Python implementation of direct Matrix Stiffness Method for static structural analysis.\nAuthor: Jorge Rodríguez Araújo <grrodri@gmail.com>"))
         menubar.add_cascade(label="Help", menu=helpMenu)
         window.config(menu=menubar)
         
@@ -46,7 +48,7 @@ class Gui():
 
         frame = tk.Frame(window)
         frame.pack(fill=tk.X, padx=5, pady=5)
-        buttonTemplate = tk.Button(frame, text="EXCEL", command=lambda:os.startfile("input.xls"))
+        buttonTemplate = tk.Button(frame, text="EXCEL", fg='darkgreen', command=lambda:os.startfile("input.xls"))
         buttonTemplate.pack(side=tk.RIGHT)
         buttonSchematic = tk.Button(frame, text="Schematic", command=self.draw_schematic)
         buttonSchematic.pack(side=tk.LEFT)
@@ -55,15 +57,15 @@ class Gui():
 
         frame = tk.Frame(window)
         frame.pack(fill=tk.X)
-        buttonDisplacements = tk.Button(frame, text="D", command=self.draw_displacements, relief=tk.GROOVE)
+        buttonDisplacements = tk.Button(frame, text="D", bg='gray', command=self.draw_displacements, relief=tk.GROOVE)
         buttonDisplacements.pack(side=tk.RIGHT)
-        buttonMoments = tk.Button(frame, text="M", command=self.draw_moments, relief=tk.GROOVE)
+        buttonMoments = tk.Button(frame, text="M", bg='gray', command=self.draw_moments, relief=tk.GROOVE)
         buttonMoments.pack(side=tk.RIGHT)
-        buttonShears = tk.Button(frame, text="V", command=self.draw_shears, relief=tk.GROOVE)
+        buttonShears = tk.Button(frame, text="V", bg='gray', command=self.draw_shears, relief=tk.GROOVE)
         buttonShears.pack(side=tk.RIGHT)
-        buttonNormals = tk.Button(frame, text="N", command=self.draw_normals, relief=tk.GROOVE)
+        buttonNormals = tk.Button(frame, text="N", bg='gray', command=self.draw_normals, relief=tk.GROOVE)
         buttonNormals.pack(side=tk.RIGHT)
-        buttonReactions = tk.Button(frame, text="R", command=self.draw_reactions, relief=tk.GROOVE)
+        buttonReactions = tk.Button(frame, text="R", bg='gray', command=self.draw_reactions, relief=tk.GROOVE)
         buttonReactions.pack(side=tk.RIGHT)
 
         self.statusbar = tk.Label(frame, text="", bd=1, relief=tk.SUNKEN, anchor=tk.W)
