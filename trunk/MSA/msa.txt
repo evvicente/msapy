@@ -1,0 +1,51 @@
+= MSA =
+MSA es una implementación libre (GPL) del método de la rigidez para la resolución de estructuras planas.
+
+== Descripción ==
+Con este desarrollo se pretende ofrecer una aplicación funcional que permita la resolución de todo tipo de estructuras planas.
+Para facilitar y agilizar el desarrollo se ha optado por la implementación en Python, dado que además de facilitar el desarrollo rápido de aplicaciones, dispone de potentes herramientas de cálculo matricial.
+
+== Instalación ==
+Esta aplicación puede ser ejecutada en cualquier plataforma para la que se encuentren disponibles los siguientes paquetes:
+
+  * Python: [http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi]
+  * Numpy: [http://downloads.sourceforge.net/sourceforge/numpy/numpy-1.3.0-win32-superpack-python2.5.exe http://downloads.sourceforge.net/sourceforge/numpy/numpy-1.3.0-win32-superpack-python2.5.exe]
+  * matplotlib: [http://downloads.sourceforge.net/sourceforge/matplotlib/matplotlib-0.98.5.3.win32-py2.5.exe http://downloads.sourceforge.net/sourceforge/matplotlib/matplotlib-0.98.5.3.win32-py2.5.exe]
+
+Una vez instalados los paquetes anteriores, descarga y descomprime el ZIP de la aplicación en una carpeta. En el directorio "src" encontrarás el archivo principal de la aplicación (MSA.py) que tendrás que ejecutar (en windows haz doble clic sobre el archivo). 
+
+== Estudio de una viga de dos vanos ==
+Aunque MSA aún se encuentra en fases tempranas de desarrollo, a continuación se muestra como ejemplo el estudio de una viga simple de dos vanos.
+
+[http://lh5.ggpht.com/_OQVfrwwtV00/Sl-4mSvkeBI/AAAAAAAAALU/conExZ1ls-g/gui.png http://lh5.ggpht.com/_OQVfrwwtV00/Sl-4mSvkeBI/AAAAAAAAALU/conExZ1ls-g/gui.png]
+
+=== Definición de la estructura ===
+Para definir la estructura se utiliza la plantilla "template.xls" desde EXCEL o CALC y se guardan los datos en el archivo "input.csv" como valores separados por punto y coma.
+
+[http://lh6.ggpht.com/_OQVfrwwtV00/SlH49-N5U-I/AAAAAAAAAKo/aoBEHxIRF-s/beam.png http://lh6.ggpht.com/_OQVfrwwtV00/SlH49-N5U-I/AAAAAAAAAKo/aoBEHxIRF-s/beam.png]
+
+En la columna "Restraints" se especifica el tipo de nudo (nudo rígido (rj) o articulado (hj)) o el tipo de apoyo (empotramiento (fs), articulado (hs) o rodillo (rs)).
+
+=== Resultados ===
+[http://lh4.ggpht.com/_OQVfrwwtV00/SlH497HvPMI/AAAAAAAAAKs/WgXoN1KS3v0/s640/beam-sch.png http://lh4.ggpht.com/_OQVfrwwtV00/SlH497HvPMI/AAAAAAAAAKs/WgXoN1KS3v0/s640/beam-sch.png]
+
+[http://lh5.ggpht.com/_OQVfrwwtV00/SlH4-IerEnI/AAAAAAAAAKw/v3Fy_6mLRZs/s640/beam-N.png http://lh5.ggpht.com/_OQVfrwwtV00/SlH4-IerEnI/AAAAAAAAAKw/v3Fy_6mLRZs/s640/beam-N.png]
+
+[http://lh6.ggpht.com/_OQVfrwwtV00/SlH4-BPIakI/AAAAAAAAAK0/-0OrmM0YGLw/s640/beam-V.png http://lh6.ggpht.com/_OQVfrwwtV00/SlH4-BPIakI/AAAAAAAAAK0/-0OrmM0YGLw/s640/beam-V.png]
+
+[http://lh3.ggpht.com/_OQVfrwwtV00/SlH4-VOwPpI/AAAAAAAAAK4/xW6kWIMQnJg/s640/beam-M.png http://lh3.ggpht.com/_OQVfrwwtV00/SlH4-VOwPpI/AAAAAAAAAK4/xW6kWIMQnJg/s640/beam-M.png]
+
+== Planifación ==
+|| ~~ Versión 0.1: Implementación del método de la rigidez ~~ ||
+
+|| ~~ Versión 0.2: Generación del esquema estructural ~~ ||
+
+|| ~~ Versión 0.3: Generación de los diagramas de esfuerzos ~~ ||
+
+|| Versión 0.4: Comprobación resistente ||
+
+|| Versión 0.5: Refactorización ||
+
+|| Versión 0.6: Generación de hipótesis de carga ||
+
+|| Versión 0.7: Comprobación a pandeo ||
