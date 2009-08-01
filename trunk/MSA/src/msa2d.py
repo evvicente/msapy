@@ -8,6 +8,72 @@ __date__ ="17-jul-2009"
 
 from pylab import *
 
+from joint import *
+from member import *  
+
+# Carga los datos de la estructura
+import re # Expresiones regulares
+def load(filename):
+    """ Lee los datos de la estructura """
+
+    file = open(filename, "r")
+    str = file.readlines()
+    file.close()
+
+    joints = []
+    for s in str:
+        s = s.replace(',', '.')
+        l = s.split(';')
+        
+        # Definición de los nudos de la estructura
+        if re.search('^N', l[0]):
+            X = float(l[1])
+            Y = float(l[2])
+            type = l[3]
+            FX = float(l[4])
+            FY = float(l[5])
+            MZ = float(l[6])
+            
+            joints.append(Joint(X, Y, FX, FY, MZ, type))
+
+    members = [] 
+    for s in str:
+        s = s.replace(',', '.')
+        l = s.split(';')
+        
+        # Definición de los miembros de la estructura
+        if re.search('^B', l[0]):
+            i = int(l[1])
+            j = int(l[2])
+            X1 = joints[i].X
+            Y1 = joints[i].Y
+            X2 = joints[j].X
+            Y2 = joints[j].Y
+            qy = float(l[3])
+            E = float(l[4])
+            A = float(l[5])
+            I = float(l[6])
+
+            members.append(Member(i, j, X1, Y1, X2, Y2, E, A, I, qy))
+
+    return joints, members
+
+# Guarda los datos de la estructura
+def save(joints, members, filename="output.csv"):
+    file = open(filename, "w")
+
+    s = "Nudos;X;Y;u;v;r;N;V;M\n"
+    for n in range(len(joints)):
+        s += "N%d;%f;%f;%f;%f;%f;%f;%f;%f\n" %(n, joints[n].X, joints[n].Y, joints[n].dX, joints[n].dY, joints[n].gZ, joints[n].RX, joints[n].RY, joints[n].RMZ)
+    s += "\n"
+    s += "Barras;i;f;Ni;Vi;Mi;Nf;Vf;Mf\n"
+    for n in range(len(members)):
+        s += "B%d;N%d;N%d;%f;%f;%f;%f;%f;%f\n" %(n, members[n].i, members[n].j, members[n].N1, members[n].V1, members[n].M1, members[n].N2, members[n].V2, members[n].M2)
+    s = s.replace('.',',')
+
+    file.write(s)
+    file.close()
+
 # Calcula la matriz de rigidez local
 def getStiffnessMatrix(E, A, I, L):
     """ Calcula la matriz de rigidez local de una barra """

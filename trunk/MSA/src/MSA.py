@@ -10,9 +10,9 @@ __date__ = "26-jul-2009"
 import sys
 
 import gui
-import io
 
 import msa2d
+import draw2d
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
@@ -21,10 +21,10 @@ if __name__ == "__main__":
         filename = sys.argv[1]
         
         print "Leyendo los datos de definición de la estructura..."
-        (joints, members) = io.load(filename)
+        (joints, members) = draw2d.load(filename)
         print "Resolviendo la estructura por el método de la rigidez..."
         msa2d.msa(joints, members)
         print "Guardando los datos de la estructura..."
-        io.save(joints, members)
+        draw2d.save(joints, members)
         print "Mostrando los resultados..."
-        io.draw_joint(joints, members)
+        draw2d.draw(joints, members)
