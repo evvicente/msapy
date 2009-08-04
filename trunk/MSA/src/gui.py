@@ -28,21 +28,21 @@ class Gui():
         frame = tk.Frame(window)
         frame.pack(fill=tk.X, padx=3, pady=3)
         button = tk.Button(frame, text=" Open File... ", bg='lightgray', command=self.open_file)
-        button.pack(side=tk.LEFT)
+        button.pack(side='left')
         button = tk.Button(frame, text=" Save As... ", bg='lightgray', command=self.save_file)
-        button.pack(side=tk.LEFT)
+        button.pack(side='left')
         button = tk.Button(frame, text=" MSA ", fg='darkorange', bg='lightgray', command=lambda:tkMessageBox.showinfo("About", "MSA is a Python implementation of direct Matrix Stiffness Method for static structural analysis.\nAuthor: Jorge Rodríguez Araújo <grrodri@gmail.com>"), relief=tk.GROOVE)
         button.pack(side=tk.RIGHT)
 
         # Editor
         frame = tk.Frame(window)
-        frame.pack(fill=tk.BOTH)
+        frame.pack(fill=tk.BOTH, expand='yes')
         scrollbar = tk.Scrollbar(frame)
-        self.text = tk.Text(frame, fg='black', bg='lightyellow', font="Courier 10")
+        self.text = tk.Text(frame, fg='darkorange', bg='white', font="Courier 10")
         scrollbar.config(command=self.text.yview)
         self.text.config(yscrollcommand=scrollbar.set)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.text.pack(fill=tk.BOTH)
+        self.text.pack(fill=tk.BOTH, expand='yes')
         
         self.open_file(name = self.filename)
 
@@ -50,10 +50,11 @@ class Gui():
         frame = tk.Frame(window)
         frame.pack(fill=tk.X, padx=5, pady=5)
         button = tk.Button(frame, text=" SCHEMATIC ", fg='darkblue', command=self.draw_schematic)
-        button.pack(side=tk.LEFT)
+        button.pack(side='left')
         button = tk.Button(frame, text=" SOLVE ", fg='darkred', command=self.solveMSA)
-        button.pack(side=tk.LEFT)
-        button = tk.Button(frame, text=" EXCEL ", fg='darkgreen', command=lambda:os.startfile("input.xls"))
+        button.pack(side='left')
+        img = tk.PhotoImage(file='icons/excel.gif')
+        button = tk.Button(frame, image=img, text="EXCEL", compound='left', fg='darkgreen', command=lambda:os.startfile("input.xls"))
         button.pack(side=tk.RIGHT)
 
         frame = tk.Frame(window)
@@ -160,6 +161,7 @@ class Gui():
 def run():
     window = tk.Tk()
     window.title("MSA")
+    window.iconbitmap('icons/msa.ico')
     Gui(window)
     window.mainloop()
 
