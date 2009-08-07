@@ -27,18 +27,27 @@ class Gui():
         # Menú
         frame = tk.Frame(window)
         frame.pack(fill=tk.X, padx=3, pady=3)
-        button = tk.Button(frame, text=" Open File... ", bg='lightgray', command=self.open_file)
+        # Open file
+        img = tk.PhotoImage(file='icons/open.gif')
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='lightgray', command=self.open_file)
+        button.image = img
         button.pack(side='left')
-        button = tk.Button(frame, text=" Save As... ", bg='lightgray', command=self.save_file)
+        # Save file
+        img = tk.PhotoImage(file='icons/save.gif')
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='lightgray', command=self.save_file)
+        button.image = img
         button.pack(side='left')
-        button = tk.Button(frame, text=" MSA ", fg='darkorange', bg='lightgray', command=lambda:tkMessageBox.showinfo("About", "MSA is a Python implementation of direct Matrix Stiffness Method for static structural analysis.\nAuthor: Jorge Rodríguez Araújo <grrodri@gmail.com>"), relief=tk.GROOVE)
+        # About
+        img = tk.PhotoImage(file='icons/about.gif')
+        button = tk.Button(frame, image=img, text=" ", compound='center', fg='darkorange', bg='lightgray', command=lambda:tkMessageBox.showinfo("About", "MSA is a Python implementation of direct Matrix Stiffness Method for static structural analysis.\nAuthor: Jorge Rodríguez Araújo <grrodri@gmail.com>"), relief=tk.GROOVE)
+        button.image = img
         button.pack(side=tk.RIGHT)
 
         # Editor
         frame = tk.Frame(window)
         frame.pack(fill=tk.BOTH, expand='yes')
         scrollbar = tk.Scrollbar(frame)
-        self.text = tk.Text(frame, fg='darkorange', bg='white', font="Courier 10")
+        self.text = tk.Text(frame, fg='orange', bg='black', font="Courier 10")
         scrollbar.config(command=self.text.yview)
         self.text.config(yscrollcommand=scrollbar.set)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -54,8 +63,9 @@ class Gui():
         button = tk.Button(frame, text=" SOLVE ", fg='darkred', command=self.solveMSA)
         button.pack(side='left')
         img = tk.PhotoImage(file='icons/excel.gif')
-        button = tk.Button(frame, image=img, text="EXCEL", compound='left', fg='darkgreen', command=lambda:os.startfile("input.xls"))
-        button.pack(side=tk.RIGHT)
+        button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', command=lambda:os.system("input.xls"))
+        button.image = img
+        button.pack(side='right')
 
         frame = tk.Frame(window)
         frame.pack(fill=tk.X)

@@ -64,27 +64,27 @@ class Joint():
     def draw_forces(self, fX, fY, mZ):
         """ Dibuja las fuerzas actuantes sobre un nudo y sus valores correspondientes """
 
-        if fX > 0.001:
+        if fX > 0:
             text(self.X, self.Y, "$\\rightarrow$", va='center', ha='right', fontsize=20, color='black')
             txt = "%d     \n" %fX
             text(self.X, self.Y, txt, va='bottom', ha='right', fontsize=10, color='red')
-        elif fX < -0.001:
+        elif fX < 0:
             text(self.X, self.Y, "$\\leftarrow$", va='center', ha='left', fontsize=20, color='black')
             txt = "\n    %d" %fX
             text(self.X, self.Y, txt, va='top', ha='left', fontsize=10, color='red')
-        if fY > 0.001:
+        if fY > 0:
             text(self.X, self.Y, "$\uparrow$", va='top', ha='center', fontsize=20, color='black')
             txt = "\n\n\n %d" %fY
             text(self.X, self.Y, txt, va='top', ha='center', fontsize=10, color='green')
-        elif fY < -0.001:
+        elif fY < 0:
             text(self.X, self.Y, "$\downarrow$", va='bottom', ha='center', fontsize=20, color='black')
             txt = "%d \n\n" %fY
             text(self.X, self.Y, txt, va='bottom', ha='center', fontsize=10, color='green')
-        if mZ > 0.001:
+        if mZ > 0:
             text(self.X, self.Y, "$\circlearrowleft$", va='center', ha='center', fontsize=20, color='blue')
             txt = "%d \n\n" %mZ
             text(self.X, self.Y, txt, va='bottom', ha='center', fontsize=10, color='black')            
-        elif mZ < -0.001:
+        elif mZ < 0:
             text(self.X, self.Y, "$\circlearrowright$", va='center', ha='center', fontsize=20, color='blue')
             txt = "\n\n %d" %mZ
             text(self.X, self.Y, txt, va='top', ha='center', fontsize=10, color='black')
@@ -95,5 +95,4 @@ class Joint():
     
     def draw_reactions(self):
         """ Dibuja las reacciones en los apoyos """
-        self.draw_forces(self.RX, self.RY, self.RMZ)
-
+        self.draw_forces(round(self.RX), round(self.RY), round(self.RMZ))
