@@ -118,7 +118,7 @@ class Member():
         XN2 = self.X2 - scale * self.N2 * self.sin
         YN2 = self.Y2 + scale * self.N2 * self.cos
         fill([self.X1, XN1, XN2, self.X2], [self.Y1, YN1, YN2, self.Y2], facecolor='red')
-        txt = "%.4f\n" %self.N2
+        txt = "%d\n" %round(self.N2)
         text((self.X1 + self.X2 + XN1 + XN2)/4, (self.Y1 + self.Y2 + YN1 + YN2)/4, txt, va='center', ha='center', fontsize=10, color='black')
 
     def draw_shear(self, scale=0.0001):
@@ -158,8 +158,6 @@ class Member():
     def draw_moment(self, scale=0.0001):
         """ Dibuja el diagrama de momentos flectores """
 
-        s = self.sin
-        c = self.cos
         # Dibuja el diagrama
         M = 0
         if self.qy == 0:
@@ -176,23 +174,23 @@ class Member():
             txt = "\n x = %.4f\n Mmax = %.4f\n\n\n" %(xmax, Mmax)
             text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='center', horizontalalignment='center', fontsize=9, color='red')
 
-        X = x * c + self.X1
-        Y = x * s + self.Y1
-        X = X + (scale * s * M)
-        Y = Y - (scale * c * M)
+        X = x * self.cos + self.X1
+        Y = x * self.sin + self.Y1
+        X = X + (scale * self.sin * M)
+        Y = Y - (scale * self.cos * M)
         X = [self.X1] + list(X) + [self.X2]
         Y = [self.Y1] + list(Y) + [self.Y2]
         fill(X, Y, facecolor='blue')
         # Escribe los valores de los momentos en extremo de barra
-        txt = "\n\n%.4f\n" %abs(self.M1)
+        txt = "\n\n%d\n" %abs(round(self.M1))
         if self.M1 > 0:
-            text(X[1], Y[1], txt, verticalalignment='bottom', horizontalalignment='center', fontsize=9, color='black')
+            text(X[1], Y[1], txt, va='bottom', ha='left', fontsize=9, color='black')
         else:
-            text(X[1], Y[1], txt, verticalalignment='top', horizontalalignment='center', fontsize=9, color='black')
-        txt = "\n\n%.4f\n" %abs(self.M2)
+            text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
+        txt = "\n\n%d\n" %abs(round(self.M2))
         if self.M2 > 0:
-            text(X[-2], Y[-2], txt, verticalalignment='top', horizontalalignment='center', fontsize=9, color='black')
-        else:
-            text(X[-2], Y[-2], txt, verticalalignment='bottom', horizontalalignment='center', fontsize=9, color='black')
+            text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
+        elif self.M2 < 0:
+            text(X[-2], Y[-2], txt, va='bottom', ha='right', fontsize=9, color='black')
 
     

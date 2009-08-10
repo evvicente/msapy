@@ -6,7 +6,6 @@ from pylab import *
 
 import Tkinter as tk
 import tkFileDialog
-import tkMessageBox
 
 from joint import *
 from member import *
@@ -15,6 +14,7 @@ import msa2d
 import draw2d
 
 import os
+import webbrowser
 
 class Gui():
     def __init__(self, window):
@@ -24,22 +24,22 @@ class Gui():
         
         self.filename = "input.csv"
 
-        # Menú
+        # Menu
         frame = tk.Frame(window)
         frame.pack(fill=tk.X, padx=3, pady=3)
         # Open file
         img = tk.PhotoImage(file='icons/open.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', bg='lightgray', command=self.open_file)
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.open_file)
         button.image = img
         button.pack(side='left')
         # Save file
         img = tk.PhotoImage(file='icons/save.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', bg='lightgray', command=self.save_file)
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.save_file)
         button.image = img
         button.pack(side='left')
-        # About
-        img = tk.PhotoImage(file='icons/about.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', fg='darkorange', bg='lightgray', command=lambda:tkMessageBox.showinfo("About", "MSA is a Python implementation of direct Matrix Stiffness Method for static structural analysis.\nAuthor: Jorge Rodríguez Araújo <grrodri@gmail.com>"), relief=tk.GROOVE)
+        # Help
+        img = tk.PhotoImage(file='icons/help.gif')
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open('help/index.html'))
         button.image = img
         button.pack(side=tk.RIGHT)
 
@@ -47,7 +47,7 @@ class Gui():
         frame = tk.Frame(window)
         frame.pack(fill=tk.BOTH, expand='yes')
         scrollbar = tk.Scrollbar(frame)
-        self.text = tk.Text(frame, fg='orange', bg='black', font="Courier 10")
+        self.text = tk.Text(frame, fg='darkorange', bg='white', font="Courier 10")
         scrollbar.config(command=self.text.yview)
         self.text.config(yscrollcommand=scrollbar.set)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -55,13 +55,20 @@ class Gui():
         
         self.open_file(name = self.filename)
 
-        # Solver
+        # Tools
         frame = tk.Frame(window)
         frame.pack(fill=tk.X, padx=5, pady=5)
-        button = tk.Button(frame, text=" SCHEMATIC ", fg='darkblue', command=self.draw_schematic)
+        # Refresh
+        img = tk.PhotoImage(file='icons/refresh.gif')
+        button = tk.Button(frame, image=img, text=" SCHEMATIC ", compound='left', bg='gray', fg='darkblue', relief=tk.GROOVE, command=self.draw_schematic)
+        button.image = img
         button.pack(side='left')
-        button = tk.Button(frame, text=" SOLVE ", fg='darkred', command=self.solveMSA)
+        # Solver
+        img = tk.PhotoImage(file='icons/solve.gif')
+        button = tk.Button(frame, image=img, text=" SOLVE ", compound='left', bg='gray', fg='darkred', relief=tk.GROOVE, command=self.solveMSA)
+        button.image = img
         button.pack(side='left')
+        # Template
         img = tk.PhotoImage(file='icons/excel.gif')
         button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', command=lambda:os.system("input.xls"))
         button.image = img
@@ -171,7 +178,7 @@ class Gui():
 def run():
     window = tk.Tk()
     window.title("MSA")
-    window.iconbitmap('icons/msa.ico')
+    #window.iconbitmap('icons/msa.ico')
     Gui(window)
     window.mainloop()
 
