@@ -15,8 +15,8 @@ Para facilitar y agilizar el desarrollo se ha optado por la implementación en Py
 Dado que esta aplicación se encuentra desarrollada completamente en Python, puede ser ejecutada en cualquier plataforma para la que se encuentren disponibles los paquetes Numpy y matplotlib.
 
 Para ejecutar MSA en Windows, simplemente:
- * Instala los paquetes: [Python http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi], [Numpy http://downloads.sourceforge.net/sourceforge/numpy/numpy-1.3.0-win32-superpack-python2.5.exe] y [matplotlib http://downloads.sourceforge.net/sourceforge/matplotlib/matplotlib-0.98.5.3.win32-py2.5.exe]
- * Una vez instalados los paquetes anteriores, dado que aún no se dispone de instalador, descarga y descomprime la última versión disponible de la aplicación.
+ * Instala los paquetes: [http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi Python], [http://downloads.sourceforge.net/sourceforge/numpy/numpy-1.3.0-win32-superpack-python2.5.exe Numpy] y [http://downloads.sourceforge.net/sourceforge/matplotlib/matplotlib-0.98.5.3.win32-py2.5.exe matplotlib]
+ * Una vez instalados los paquetes anteriores, dado que aún no se dispone de instalador, descarga y descomprime la [http://code.google.com/p/msapy/downloads/list última versión] disponible de la aplicación.
  * Haz doble clic sobre el archivo "MSA.py" que se encunetra en el directorio "src/".
 
 == Estudio de una viga de dos vanos ==
@@ -43,38 +43,26 @@ En la columna "Restraints" se especifica el tipo de nudo (nudo rígido (rj) o art
 
 [http://lh3.ggpht.com/_OQVfrwwtV00/SlH4-VOwPpI/AAAAAAAAAK4/xW6kWIMQnJg/s640/beam-M.png]
 
-== Planifación ==
+== Planifación y Versiones ==
 
 || ~~ Versión 0.1: Implementación del método de la rigidez ~~ ||
+
+ * v 0.1.0 (2009-06-15): Implementación del método matricial.
+ * v 0.1.1 (2009-06-21): Corrección de errores.
+
 || ~~ Versión 0.2: Generación del esquema estructural ~~ ||
+
+ * v 0.2.0 (2009-06-23): Generación del esquema estructural.
+ * v 0.2.1 (2009-06-24): Corrección de errores.
+
 || ~~ Versión 0.3: Generación de los diagramas de esfuerzos ~~ ||
+
+ * v 0.3.0 (2009-06-30): Generación de los diagramas de esfuerzos.
+ * v 0.3.1 (2009-07-06): Corrección de errores.
+ * v 0.3.5 (2009-07-16): Interfaz gráfica de usuario.
+ * v 0.3.6 (2009-08-11): Corrección de errores.
+
 || Versión 0.4: Comprobación resistente ||
 || Versión 0.5: Refactorización ||
 || Versión 0.6: Generación de hipótesis de carga ||
 || Versión 0.7: Comprobación a pandeo ||
-
-== Versiones ==
-
-VERSION 0.3.6 2009-08-13
-  * Corrección de errores. 
-
-VERSION 0.3.5 2009-07-23
-  * Interfaz gráfica de usuario.
-
-VERSION 0.3.1 2009-06-11
-  * Corrección de errores.
-
-VERSION 0.3.0 2009-06-10
-  * Generación de los diagramas de esfuerzos.
-
-VERSION 0.2.1 2009-05-09
-  * Corrección de errores.
-
-VERSION 0.2.0 2009-05-03
-  * Generación del esquema estructural.
-
-VERSION 0.1.1 2009-04-27
-  * Corrección de errores.
-
-VERSION 0.1.0 2009-04-25
-  * Implementación del método matricial.
