@@ -25,6 +25,6 @@ if __name__ == "__main__":
         print "Resolviendo la estructura por el método de la rigidez..."
         msa2d.msa(joints, members)
         print "Guardando los datos de la estructura..."
-        draw2d.save(joints, members)
+        msa2d.save(joints, members)
         print "Mostrando los resultados..."
         draw2d.draw(joints, members)

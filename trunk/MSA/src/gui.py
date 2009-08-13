@@ -60,12 +60,17 @@ class Gui():
         frame.pack(fill=tk.X, padx=5, pady=5)
         # Refresh
         img = tk.PhotoImage(file='icons/refresh.gif')
-        button = tk.Button(frame, image=img, text=" SCHEMATIC ", compound='left', bg='gray', fg='darkblue', relief=tk.GROOVE, command=self.draw_schematic)
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.draw_schematic)
         button.image = img
         button.pack(side='left')
         # Solver
         img = tk.PhotoImage(file='icons/solve.gif')
         button = tk.Button(frame, image=img, text=" SOLVE ", compound='left', bg='gray', fg='darkred', relief=tk.GROOVE, command=self.solveMSA)
+        button.image = img
+        button.pack(side='left')
+        # Report
+        img = tk.PhotoImage(file='icons/report.gif')
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open('output/report.html'))
         button.image = img
         button.pack(side='left')
         # Template
@@ -89,8 +94,8 @@ class Gui():
 
         self.statusbar = tk.Label(frame, text="", bd=1, fg='white', relief=tk.SUNKEN, anchor=tk.W)
         self.statusbar.pack(side=tk.BOTTOM, fill=tk.X, padx=3, pady=3)
-        self.statusbar['text'] = "Pulsa SCHEMATIC para representar la estructura"
-        self.statusbar['background'] = 'darkblue'
+        self.statusbar['text'] = ""
+        self.statusbar['background'] = 'lightblue'
     
     def open_file(self, name=""):
         """ Abre un archivo """
@@ -127,8 +132,9 @@ class Gui():
         fig = figure(1)
         fig.clear()
         draw2d.draw_schematic(self.joints, self.members)
+        fig.savefig('output/schematic.png')
         fig.show()
-
+        
         self.statusbar['text'] = "Pulsa SOLVE para resolver la estructura"
         self.statusbar['background'] = 'darkred'
 
@@ -136,30 +142,35 @@ class Gui():
         fig = figure(1)
         fig.clear()
         draw2d.draw_reactions(self.joints, self.members)
+        fig.savefig('output/reactions.png')
         fig.show()
 
     def draw_normals(self):
         fig = figure(1)
         fig.clear()
         draw2d.draw_normals(self.members)
+        fig.savefig('output/normals.png')
         fig.show()
 
     def draw_shears(self):
         fig = figure(1)
         fig.clear()
         draw2d.draw_shears(self.members)
+        fig.savefig('output/shears.png')
         fig.show()
 
     def draw_moments(self):
         fig = figure(1)
         fig.clear()
         draw2d.draw_moments(self.members)
+        fig.savefig('output/moments.png')
         fig.show()
 
     def draw_displacements(self):
         fig = figure(1)
         fig.clear()
         draw2d.draw_displacements(self.joints, self.members)
+        fig.savefig('output/displacements.png')
         fig.show()
 
     def solveMSA(self):

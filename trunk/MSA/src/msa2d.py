@@ -59,10 +59,11 @@ def load(filename):
     return joints, members
 
 # Guarda los datos de la estructura
-def save(joints, members, filename="output.csv"):
+def save(joints, members, filename="output/report.html"):
     file = open(filename, "w")
 
-    s = "Nudos;X;Y;u;v;r;N;V;M\n"
+    s = '<html><head></head><body>'
+    s += "Nudos;X;Y;u;v;r;N;V;M\n"
     for n in range(len(joints)):
         s += "N%d;%f;%f;%f;%f;%f;%f;%f;%f\n" %(n, joints[n].X, joints[n].Y, joints[n].dX, joints[n].dY, joints[n].gZ, joints[n].RX, joints[n].RY, joints[n].RMZ)
     s += "\n"
@@ -70,6 +71,8 @@ def save(joints, members, filename="output.csv"):
     for n in range(len(members)):
         s += "B%d;N%d;N%d;%f;%f;%f;%f;%f;%f\n" %(n, members[n].i, members[n].j, members[n].N1, members[n].V1, members[n].M1, members[n].N2, members[n].V2, members[n].M2)
     s = s.replace('.',',')
+    s += '<img src="schematic.png" alt="Esquema"/>'
+    s += '</body></html>'
 
     file.write(s)
     file.close()
