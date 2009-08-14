@@ -62,7 +62,7 @@ def load(filename):
 def save(joints, members, filename="output/report.html"):
     file = open(filename, "w")
 
-    s = '<html><head></head><body align="center">'
+    s = '<html><head><title></title></head><body><center>'
     s += '<table border="1">'
     s += '<thead>'
     s += '<tr><th>Nudos</th><th>X</th><th>Y</th><th>u</th><th>v</th><th>r</th><th>N</th><th>V</th><th>M</th></tr>'
@@ -71,7 +71,7 @@ def save(joints, members, filename="output/report.html"):
     for n in range(len(joints)):
         s += '<tr><td>N%d</td><td>%.2f</td><td>%.2f</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, joints[n].X, joints[n].Y, joints[n].dX, joints[n].dY, joints[n].gZ, joints[n].RX, joints[n].RY, joints[n].RMZ)
     s += '</tbody>'
-    s += '</table>'
+    s += '</table><br>'
     s += '<table border="1">'
     s += '<thead>'
     s += '<tr><th>Barras</th><th>i</th><th>f</th><th>Ni</th><th>Vi</th><th>Mi</th><th>Nf</th><th>Vf</th><th>Mf</th></tr>'
@@ -80,7 +80,7 @@ def save(joints, members, filename="output/report.html"):
     for n in range(len(members)):
         s += '<tr><td>B%d</td><td>N%d</td><td>N%d</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, members[n].i, members[n].j, members[n].N1, members[n].V1, members[n].M1, members[n].N2, members[n].V2, members[n].M2)
     s += '</tbody>'
-    s += '</table>'
+    s += '</table><br>'
     s = s.replace('.',',')
     s += '<img src="schematic.png" alt="Esquema estructural"/>'
     s += '<img src="reactions.png" alt="Reacciones"/>'
@@ -88,7 +88,7 @@ def save(joints, members, filename="output/report.html"):
     s += '<img src="shears.png" alt="Cortantes"/>'
     s += '<img src="moments.png" alt="Momentos"/>'
     s += '<img src="displacements.png" alt="Desplazamientos"/>'
-    s += '</body></html>'
+    s += '</center></body></html>'
 
     file.write(s)
     file.close()
