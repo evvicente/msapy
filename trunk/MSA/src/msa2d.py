@@ -203,7 +203,7 @@ def msa(joints, members):
             i = members[n].i
             j = members[n].j
 
-            p = matrix(members[n].getLoad()).T
+            p = matrix(members[n].get_loads()).T
             r = RotationMatrix(i, j)
 
             P = -r.T * p
@@ -213,7 +213,7 @@ def msa(joints, members):
 
         # Cargas aplicadas directamente en los nudos
         for n in range(len(joints)):
-            AddLoadVector(L, matrix(joints[n].getLoad()).T, n)
+            AddLoadVector(L, matrix(joints[n].get_loads()).T, n)
 
     # Genera la matriz de rigidez de la estructura (S)
     n = len(joints)
@@ -289,7 +289,7 @@ def msa(joints, members):
         k = StiffnessMatrix(E, A, I, L)
 
         f[:,n] = k * d
-        f[:,n] += matrix(members[n].getLoad()).T
+        f[:,n] += matrix(members[n].get_loads()).T
 
     print "Esfuerzos en los extremos de barra (f)"
     print f.T

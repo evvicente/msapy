@@ -32,7 +32,7 @@ class Joint():
             MZ = Momento según el eje Z """
         (self.FX, self.FY, self.MZ) = (FX, FY, MZ)
 
-    def getLoad(self):
+    def get_loads(self):
         return [self.FX, self.FY, self.MZ]
 
     def set_displacements(self, dX, dY, gZ):
@@ -50,8 +50,7 @@ class Joint():
         (self.RX, self.RY, self.RMZ) = (RX, RY, RMZ)
         
     def draw_joint(self):
-        """ Representa el nudo o apoyo """
-        
+        """ Representa el nudo o apoyo """        
         if self.type == "hj": # hinge joint
             text(self.X, self.Y, "o", va='center', ha='center', fontsize=10, color='black')
         elif self.type == "fs": # fixed support
@@ -63,7 +62,6 @@ class Joint():
 
     def draw_forces(self, fX, fY, mZ):
         """ Dibuja las fuerzas actuantes sobre un nudo y sus valores correspondientes """
-
         if fX > 0:
             text(self.X, self.Y, "$\\rightarrow$", va='center', ha='right', fontsize=20, color='black')
             txt = "%d     \n" %fX

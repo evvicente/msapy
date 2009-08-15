@@ -74,7 +74,7 @@ class Member():
             Mzj = Momento en el nudo j según el eje z de la barra """
         self.__load = [Fxi, Fyi, Mzi, Fxj, Fyj, Mzj]
 
-    def getLoad(self):
+    def get_loads(self):
         return self.__load
 
     def setEfforts(self, N1, V1, M1, N2, V2, M2):
@@ -182,12 +182,12 @@ class Member():
         Y = [self.Y1] + list(Y) + [self.Y2]
         fill(X, Y, facecolor='blue')
         # Escribe los valores de los momentos en extremo de barra
-        txt = "\n\n%d\n" %abs(round(self.M1))
+        txt = "\n\n%d\n" %abs(self.M1)
         if self.M1 > 0:
             text(X[1], Y[1], txt, va='bottom', ha='left', fontsize=9, color='black')
         else:
             text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
-        txt = "\n\n%d\n" %abs(round(self.M2))
+        txt = "\n\n%d\n" %abs(self.M2)
         if self.M2 > 0:
             text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
         elif self.M2 < 0:
