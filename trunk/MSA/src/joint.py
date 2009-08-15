@@ -73,21 +73,21 @@ class Joint():
             txt = "\n    %d" %fX
             text(self.X, self.Y, txt, va='top', ha='left', fontsize=10, color='red')
         if fY > 0:
-            text(self.X, self.Y, "$\uparrow$", va='top', ha='center', fontsize=20, color='black')
+            text(self.X, self.Y, "$\\uparrow$", va='top', ha='center', fontsize=20, color='black')
             txt = "\n\n\n %d" %fY
             text(self.X, self.Y, txt, va='top', ha='center', fontsize=10, color='green')
         elif fY < 0:
-            text(self.X, self.Y, "$\downarrow$", va='bottom', ha='center', fontsize=20, color='black')
+            text(self.X, self.Y, "$\\downarrow$", va='bottom', ha='center', fontsize=20, color='black')
             txt = "%d \n\n" %fY
             text(self.X, self.Y, txt, va='bottom', ha='center', fontsize=10, color='green')
         if mZ > 0:
-            text(self.X, self.Y, "$\circlearrowleft$", va='center', ha='center', fontsize=20, color='blue')
-            txt = "%d \n\n" %mZ
-            text(self.X, self.Y, txt, va='bottom', ha='center', fontsize=10, color='black')            
-        elif mZ < 0:
-            text(self.X, self.Y, "$\circlearrowright$", va='center', ha='center', fontsize=20, color='blue')
+            text(self.X, self.Y, "$\\circlearrowleft$", va='center', ha='center', fontsize=20, color='black')
             txt = "\n\n %d" %mZ
-            text(self.X, self.Y, txt, va='top', ha='center', fontsize=10, color='black')
+            text(self.X, self.Y, txt, va='top', ha='right', fontsize=10, color='blue')
+        elif mZ < 0:
+            text(self.X, self.Y, "$\\circlearrowright$", va='center', ha='center', fontsize=20, color='black')
+            txt = "  %d \n" %mZ
+            text(self.X, self.Y, txt, va='bottom', ha='left', fontsize=10, color='blue')
 
     def draw_loads(self):
         """ Dibuja las cargas sobre el nudo """
