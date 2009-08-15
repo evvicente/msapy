@@ -4,10 +4,11 @@
 __author__ = "Jorge Rodríguez Araújo <grrodri@gmail.com>"
 __copyright__ = "Copyright (c) 2009 Jorge Rodríguez Araújo"
 __license__ = "GPL"
-__version__ = "0.3.5"
-__date__ = "26-jul-2009"
+__version__ = "0.3.6"
+__date__ = "13-ago-2009"
 
 import sys
+import webbrowser
 
 import gui
 
@@ -24,7 +25,6 @@ if __name__ == "__main__":
         (joints, members) = draw2d.load(filename)
         print "Resolviendo la estructura por el método de la rigidez..."
         msa2d.msa(joints, members)
-        print "Guardando los datos de la estructura..."
-        msa2d.save(joints, members)
-        print "Mostrando los resultados..."
-        draw2d.draw(joints, members)
+        print "Guardando y mostrando los resultados..."
+        draw2d.report(joints, members)
+        webbrowser.open('output/report.html')

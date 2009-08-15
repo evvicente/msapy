@@ -65,14 +65,14 @@ class Gui():
         button.pack(side='left')
         # Solver
         img = tk.PhotoImage(file='icons/solve.gif')
-        button = tk.Button(frame, image=img, text=" SOLVE ", compound='left', bg='gray', fg='darkred', relief=tk.GROOVE, command=self.solveMSA)
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solveMSA)
         button.image = img
         button.pack(side='left')
         # Report
         img = tk.PhotoImage(file='icons/report.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open('output/report.html'))
         button.image = img
-        button.pack(side='left')
+        button.pack(side='left', padx=10)
         # Template
         img = tk.PhotoImage(file='icons/excel.gif')
         button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', command=lambda:os.system("input.xls"))
@@ -132,45 +132,39 @@ class Gui():
         fig = figure(1)
         fig.clear()
         draw2d.draw_schematic(self.joints, self.members)
-        fig.savefig('output/schematic.png')
         fig.show()
         
-        self.statusbar['text'] = "Pulsa SOLVE para resolver la estructura"
-        self.statusbar['background'] = 'darkred'
+        self.statusbar['text'] = ""
+        self.statusbar['background'] = 'darkgray'
 
     def draw_reactions(self):
         fig = figure(1)
         fig.clear()
         draw2d.draw_reactions(self.joints, self.members)
-        fig.savefig('output/reactions.png')
         fig.show()
 
     def draw_normals(self):
         fig = figure(1)
         fig.clear()
         draw2d.draw_normals(self.members)
-        fig.savefig('output/normals.png')
         fig.show()
 
     def draw_shears(self):
         fig = figure(1)
         fig.clear()
         draw2d.draw_shears(self.members)
-        fig.savefig('output/shears.png')
         fig.show()
 
     def draw_moments(self):
         fig = figure(1)
         fig.clear()
         draw2d.draw_moments(self.members)
-        fig.savefig('output/moments.png')
         fig.show()
 
     def draw_displacements(self):
         fig = figure(1)
         fig.clear()
         draw2d.draw_displacements(self.joints, self.members)
-        fig.savefig('output/displacements.png')
         fig.show()
 
     def solveMSA(self):
@@ -181,9 +175,9 @@ class Gui():
         self.statusbar['text'] = "Resolviendo la estructura por el método de la rigidez..."
         msa2d.msa(self.joints, self.members)
         self.statusbar['text'] = "Guardando los resultados..."
-        msa2d.save(self.joints, self.members)
+        draw2d.report(self.joints, self.members)
         self.statusbar['text'] = "La estructura se ha resuelto con éxito"
-        self.statusbar['background'] = 'darkgreen'
+        self.statusbar['background'] = 'lightgreen'
         self.draw_moments()
 
 def run():
