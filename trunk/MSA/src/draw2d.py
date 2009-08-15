@@ -11,7 +11,6 @@ from member import *
 # Diagrama estructural
 def draw_schematic(joints, members):
     """ Dibuja la estructura """
-
     title("Esquema estructural")
     xlabel("X")
     ylabel("Y")
@@ -28,7 +27,6 @@ def draw_schematic(joints, members):
 # Diagrama de reacciones
 def draw_reactions(joints, members):
     """ Dibuja las reacciones """
-    
     title("Reacciones")
     xlabel("X")
     ylabel("Y")
@@ -63,7 +61,6 @@ def draw_normals(members):
 # Diagrama de cortantes
 def draw_shears(members):
     """ Dibuja el diagrama de esfuerzos cortantes """
-
     title("Diagrama de esfuerzos cortantes (V)   $\downarrow \lfloor\\rceil \uparrow$")
     xlabel("X")
     ylabel("Y")
@@ -74,7 +71,6 @@ def draw_shears(members):
 # Diagrama de momentos
 def draw_moments(members):
     """ Dibuja el diagrama de momentos """
-
     title("Diagrama de momentos flectores (M)   $\curvearrowright \lfloor\\rceil \curvearrowleft$")
     xlabel("X")
     ylabel("Y")
@@ -85,7 +81,6 @@ def draw_moments(members):
 # Diagrama de desplazamientos
 def draw_displacements(joints, members):
     """ Dibuja los desplazamientos """
-
     title("Diagrama de desplazamientos (f)")
     xlabel("X")
     ylabel("Y")

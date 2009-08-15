@@ -112,7 +112,6 @@ class Member():
 
     def draw_normal(self, scale=0.001):
         """ Dibuja el diagrama de esfuerzos normales """
-
         XN1 = self.X1 + scale * self.N1 * self.sin
         YN1 = self.Y1 - scale * self.N1 * self.cos
         XN2 = self.X2 - scale * self.N2 * self.sin
@@ -123,9 +122,7 @@ class Member():
 
     def draw_shear(self, scale=0.0001):
         """ Dibuja el diagrama de esfuerzos cortantes """
-        
-        s = self.sin
-        c = self.cos
+
         # Dibuja el diagrama
         V = 0
         if self.qy == 0:
@@ -136,24 +133,25 @@ class Member():
             x = arange(0, 1.1, 0.5)
             x = x * self.L
             V = - self.V1 - self.qy * x
-        X = x * c + self.X1
-        Y = x * s + self.Y1
-        X = X - (scale * s * V)
-        Y = Y + (scale * c * V)
+
+        X = x * self.cos + self.X1
+        Y = x * self.sin + self.Y1
+        X = X - (scale * self.sin * V)
+        Y = Y + (scale * self.cos * V)
         X = [self.X1] + list(X) + [self.X2]
         Y = [self.Y1] + list(Y) + [self.Y2]
         fill(X, Y, facecolor='green')
         # Escribe los valores de los esfuerzos cortantes
-        txt = "\n\n%.4f\n" %abs(self.V1)
+        txt = "\n\n%d\n" %abs(self.V1)
         if self.V1 > 0:
-            text(X[1], Y[1], txt, verticalalignment='top', horizontalalignment='center', fontsize=9, color='black')
+            text(X[1], Y[1], txt, verticalalignment='top', horizontalalignment='left', fontsize=9, color='black')
         else:
-            text(X[1], Y[1], txt, verticalalignment='bottom', horizontalalignment='center', fontsize=9, color='black')
-        txt = "\n\n%.4f\n" %abs(self.V2)
+            text(X[1], Y[1], txt, verticalalignment='bottom', horizontalalignment='left', fontsize=9, color='black')
+        txt = "\n\n%d\n" %abs(self.V2)
         if self.V2 > 0:
-            text(X[-2], Y[-2], txt, verticalalignment='bottom', horizontalalignment='center', fontsize=9, color='black')
+            text(X[-2], Y[-2], txt, verticalalignment='bottom', horizontalalignment='right', fontsize=9, color='black')
         else:
-            text(X[-2], Y[-2], txt, verticalalignment='top', horizontalalignment='center', fontsize=9, color='black')
+            text(X[-2], Y[-2], txt, verticalalignment='top', horizontalalignment='right', fontsize=9, color='black')
 
     def draw_moment(self, scale=0.0001):
         """ Dibuja el diagrama de momentos flectores """
@@ -192,5 +190,3 @@ class Member():
             text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
         elif self.M2 < 0:
             text(X[-2], Y[-2], txt, va='bottom', ha='right', fontsize=9, color='black')
-
-    
