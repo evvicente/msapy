@@ -109,26 +109,94 @@ def draw_displacements(joints, members):
         j = members[n].j
         plot([X[i], X[j]], [Y[i], Y[j]], '--', color='green', lw=2)
 
-# Dibuja todos los diagramas
-def draw(joints, members):
-    """ Dibuja todos los diagramas """
+# Genera el informe
+def report(joints, members, filename="output/report.html"):
+    """ Genera el informe resultado del análisis de la estructura """
 
+    # Se escribe el informe
+
+    file = open(filename, "w")
+
+    s = '<html><head><title></title></head><body><center>'
+    s += '<img src="schematic.png" alt="Esquema estructural"/>'
+    s += '<table border="1">'
+    s += '<thead>'
+    s += '<tr><th>Nudos</th><th>X</th><th>Y</th></tr>'
+    s += '</thead>'
+    s += '<tbody>'
+    for n in range(len(joints)):
+        s += '<tr><td>N%d</td><td>%.2f</td><td>%.2f</td></tr>' %(n, joints[n].X, joints[n].Y)
+    s += '</tbody>'
+    s += '</table><br>'
+    s += '<table border="1">'
+    s += '<thead>'
+    s += '<tr><th>Barras</th><th>i</th><th>f</th></tr>'
+    s += '</thead>'
+    s += '<tbody>'
+    for n in range(len(members)):
+        s += '<tr><td>B%d</td><td>N%d</td><td>N%d</td></tr>' %(n, members[n].i, members[n].j)
+    s += '</tbody>'
+    s += '</table><br>'
+    s += '<img src="reactions.png" alt="Reacciones"/>'
+    s += '<table border="1">'
+    s += '<thead>'
+    s += '<tr><th>Nudos</th><th>RX</th><th>RY</th><th>RMZ</th></tr>'
+    s += '</thead>'
+    s += '<tbody>'
+    for n in range(len(joints)):
+        s += '<tr><td>N%d</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, joints[n].RX, joints[n].RY, joints[n].RMZ)
+    s += '</tbody>'
+    s += '</table><br>'
+    s += '<img src="normals.png" alt="Normales"/>'
+    s += '<img src="shears.png" alt="Cortantes"/>'
+    s += '<img src="moments.png" alt="Momentos"/>'
+    s += '<table border="1">'
+    s += '<thead>'
+    s += '<tr><th>Barras</th><th>N1</th><th>V1</th><th>M1</th><th>N2</th><th>V2</th><th>M2</th></tr>'
+    s += '</thead>'
+    s += '<tbody>'
+    for n in range(len(members)):
+        s += '<tr><td>B%d</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, members[n].N1, members[n].V1, members[n].M1, members[n].N2, members[n].V2, members[n].M2)
+    s += '</tbody>'
+    s += '</table><br>'
+    s += '<img src="displacements.png" alt="Desplazamientos"/>'
+    s += '<table border="1">'
+    s += '<thead>'
+    s += '<tr><th>Nudos</th><th>dX</th><th>dY</th><th>gZ</th></tr>'
+    s += '</thead>'
+    s += '<tbody>'
+    for n in range(len(joints)):
+        s += '<tr><td>N%d</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, joints[n].dX, joints[n].dY, joints[n].gZ)
+    s += '</tbody>'
+    s += '</table><br>'
+    s += '</center></body></html>'
+
+    file.write(s)
+    file.close()
+
+    # Se dibujan y guardan todos los diagramas
+
+    # Schematic
     figure(1)
     draw_schematic(joints, members)
-    
+    savefig('output/schematic.png')
+    # Reactions
     figure(2)
     draw_reactions(joints, members)
-    
+    savefig('output/reactions.png')
+    # Normals
     figure(3)
     draw_normals(members)
-
+    savefig('output/normals.png')
+    # Shears
     figure(4)
     draw_shears(members)
-
+    savefig('output/shears.png')
+    # Moments
     figure(5)
     draw_moments(members)
-
+    savefig('output/moments.png')
+    # Displacements
     figure(6)
     draw_displacements(joints, members)
-
-    show()
+    savefig('output/displacements.png')
