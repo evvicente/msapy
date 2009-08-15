@@ -75,7 +75,7 @@ class Gui():
         button.pack(side='left', padx=10)
         # Template
         img = tk.PhotoImage(file='icons/excel.gif')
-        button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', command=lambda:os.system("input.xls"))
+        button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', command=lambda:os.system('input.xls'))
         button.image = img
         button.pack(side='right')
 
@@ -183,7 +183,7 @@ class Gui():
 def run():
     window = tk.Tk()
     window.title("MSA")
-    #window.iconbitmap('icons/msa.ico')
+    window.iconbitmap('icons/msa.ico')
     Gui(window)
     window.mainloop()
 
