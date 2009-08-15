@@ -121,11 +121,11 @@ def report(joints, members, filename="output/report.html"):
     s += '<img src="schematic.png" alt="Esquema estructural"/>'
     s += '<table border="1">'
     s += '<thead>'
-    s += '<tr><th>Nudos</th><th>X</th><th>Y</th></tr>'
+    s += '<tr><th>Nudos</th><th>X</th><th>Y</th><th>FX</th><th>FY</th><th>MZ</th></tr>'
     s += '</thead>'
     s += '<tbody>'
     for n in range(len(joints)):
-        s += '<tr><td>N%d</td><td>%.2f</td><td>%.2f</td></tr>' %(n, joints[n].X, joints[n].Y)
+        s += '<tr><td>N%d</td><td>%.1f</td><td>%.1f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td></tr>' %(n, joints[n].X, joints[n].Y, joints[n].FX, joints[n].FY, joints[n].MZ)
     s += '</tbody>'
     s += '</table><br>'
     s += '<table border="1">'
