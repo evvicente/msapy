@@ -130,11 +130,11 @@ def report(joints, members, filename="output/report.html"):
     s += '</table><br>'
     s += '<table border="1">'
     s += '<thead>'
-    s += '<tr><th>Barras</th><th>i</th><th>f</th></tr>'
+    s += '<tr><th>Barras</th><th>i</th><th>f</th><th>L</th><th>qy</th></tr>'
     s += '</thead>'
     s += '<tbody>'
     for n in range(len(members)):
-        s += '<tr><td>B%d</td><td>N%d</td><td>N%d</td></tr>' %(n, members[n].i, members[n].j)
+        s += '<tr><td>B%d</td><td>N%d</td><td>N%d</td><td>%.f</td><td>%.1f</td></tr>' %(n, members[n].i, members[n].j, members[n].L, members[n].qy)
     s += '</tbody>'
     s += '</table><br>'
     s += '<img src="reactions.png" alt="Reacciones"/>'
