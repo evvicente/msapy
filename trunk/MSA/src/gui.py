@@ -41,7 +41,12 @@ class Gui():
         img = tk.PhotoImage(file='icons/help.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open('help/index.html'))
         button.image = img
-        button.pack(side=tk.RIGHT)
+        button.pack(side='right')
+        # Template
+        img = tk.PhotoImage(file='icons/excel.gif')
+        button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', command=lambda:os.system('input.xls'))
+        button.image = img
+        button.pack(side='right', padx=10)
 
         # Editor
         frame = tk.Frame(window)
@@ -52,8 +57,6 @@ class Gui():
         self.text.config(yscrollcommand=scrollbar.set)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.text.pack(fill=tk.BOTH, expand='yes')
-        
-        self.open_file(name = self.filename)
 
         # Tools
         frame = tk.Frame(window)
@@ -74,14 +77,7 @@ class Gui():
         button.image = img
         button.pack(side='left', padx=10)
         #button.pack_forget()
-        # Template
-        img = tk.PhotoImage(file='icons/excel.gif')
-        button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', command=lambda:os.system('input.xls'))
-        button.image = img
-        button.pack(side='right')
-
-        frame = tk.Frame(window)
-        frame.pack(fill=tk.X)
+        # Graphics
         buttonDisplacements = tk.Button(frame, text=" D ", bg='gray', command=self.draw_displacements, relief=tk.GROOVE)
         buttonDisplacements.pack(side=tk.RIGHT)
         buttonMoments = tk.Button(frame, text=" M ", bg='gray', command=self.draw_moments, relief=tk.GROOVE)
@@ -92,11 +88,12 @@ class Gui():
         buttonNormals.pack(side=tk.RIGHT)
         buttonReactions = tk.Button(frame, text=" R ", bg='gray', command=self.draw_reactions, relief=tk.GROOVE)
         buttonReactions.pack(side=tk.RIGHT)
-
+        # Status bar
         self.statusbar = tk.Label(frame, text="", bd=1, fg='white', relief=tk.SUNKEN, anchor=tk.W)
         self.statusbar.pack(side=tk.BOTTOM, fill=tk.X, padx=3, pady=3)
-        self.statusbar['text'] = ""
-        self.statusbar['background'] = 'lightblue'
+
+        # Open default file
+        self.open_file(name = self.filename)
     
     def open_file(self, name=""):
         """ Abre un archivo """
@@ -110,8 +107,11 @@ class Gui():
             self.text.insert(tk.CURRENT, contents)
             self.filename = file.name
             self.window.title("MSA - " + self.filename)
+            self.statusbar['text'] = ""
+            self.statusbar['background'] = 'lightblue'
         except:
-            pass
+            self.statusbar['text'] = "Warning! No se ha podido abrir el archivo."
+            self.statusbar['background'] = 'red'
     
     def save_file(self, name=""):
         """ Guarda un archivo """
