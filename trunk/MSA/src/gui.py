@@ -7,8 +7,8 @@ from pylab import *
 import Tkinter as tk
 import tkFileDialog
 
-from joint import *
-from member import *
+from joint2d import *
+from member2d import *
 
 import msa2d
 import draw2d
@@ -68,7 +68,7 @@ class Gui():
         button.pack(side='left')
         # Solver
         img = tk.PhotoImage(file='icons/solve.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solveMSA)
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
         button.image = img
         button.pack(side='left')
         # Report
@@ -168,7 +168,7 @@ class Gui():
         draw2d.draw_displacements(self.joints, self.members)
         fig.show()
 
-    def solveMSA(self):
+    def solve_msa(self):
         self.statusbar['text'] = "Guardando los datos de definición de la estructura..."
         self.save_file(self.filename)
         self.statusbar['text'] = "Leyendo los datos de definición de la estructura..."

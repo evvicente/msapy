@@ -8,8 +8,8 @@ __date__ ="17-jul-2009"
 
 from pylab import *
 
-from joint import *
-from member import *  
+from joint2d import *
+from member2d import *
 
 # Carga los datos de la estructura
 import re # Expresiones regulares
@@ -58,8 +58,7 @@ def load(filename):
 
     return joints, members
 
-# Calcula la matriz de rigidez local
-def getStiffnessMatrix(E, A, I, L):
+def get_stiffness_matrix(E, A, I, L):
     """ Calcula la matriz de rigidez local de una barra """
 
     E = float(E)
@@ -79,6 +78,26 @@ def getStiffnessMatrix(E, A, I, L):
 
     return k
 
+def get_rotation_matrix(joints, i, j):
+    """ Calcula la matriz de rotación de la barra que une los nudos i, j """
+
+    X1 = joints[i].X
+    Y1 = joints[i].Y
+    X2 = joints[j].X
+    Y2 = joints[j].Y
+
+    L = sqrt( (X2-X1)**2 + (Y2-Y1)**2 )
+    sin = (Y2-Y1) / L
+    cos = (X2-X1) / L
+
+    r = matrix(zeros((6,6)))
+    r[0,0] = r[1,1] = r[3,3] = r[4,4] = cos
+    r[0,1] = r[3,4] = sin
+    r[1,0] = r[4,3] = -sin
+    r[2,2] = r[5,5] = 1
+
+    return r
+
 def msa(joints, members):
     # Definición de la estructura
     #----------------------------------------------------------
@@ -93,7 +112,7 @@ def msa(joints, members):
     # Restricciones de los nudos (dN): [dX, dY, rZ]
     #   dX = Desplazaminto horizontal impedido (0)
     #   dY = Desplazamiento vertical impedido (0)
-    #   rZ = Rotación impedida (0)
+    #   gZ = Giro impedido (0)
     types = {'fs':[0, 0, 0],
              'hs':[0, 0, 1],
              'rs':[1, 0, 1],
@@ -103,48 +122,6 @@ def msa(joints, members):
     dN = []
     for n in range(len(joints)):
         dN.append(types[joints[n].type])
-
-    # Matriz de rigidez local
-    def StiffnessMatrix(E, A, I, L):
-        """ Define la matriz de rigidez local de la barra. """
-        
-        E = float(E)
-        A = float(A)
-        I = float(I)
-        L = float(L)
-
-        k = matrix(zeros((6,6)))
-        k[0,0] = k[3,3] = (E*A/L)
-        k[0,3] = k[3,0] = (-E*A/L)
-        k[1,1] = k[4,4] = (12*E*I/L**3)
-        k[4,1] = k[1,4] = (-12*E*I/L**3)
-        k[1,2] = k[1,5] = k[2,1] = k[5,1] = (6*E*I/L**2)
-        k[4,2] = k[4,5] = k[2,4] = k[5,4] = (-6*E*I/L**2)
-        k[2,2] = k[5,5] = (4*E*I/L)
-        k[2,5] = k[5,2] = (2*E*I/L)
-
-        return k
-
-    # Matriz de rotación
-    def RotationMatrix(i, j):
-        """ Define la matriz de rotación de la barra que une los nudos i, j. """
-
-        X1 = joints[i].X
-        Y1 = joints[i].Y
-        X2 = joints[j].X
-        Y2 = joints[j].Y
-
-        L = sqrt( (X2-X1)**2 + (Y2-Y1)**2 )
-        sin = (Y2-Y1) / L
-        cos = (X2-X1) / L
-
-        r = matrix(zeros((6,6)))
-        r[0,0] = r[1,1] = r[3,3] = r[4,4] = cos
-        r[0,1] = r[3,4] = sin
-        r[1,0] = r[4,3] = -sin
-        r[2,2] = r[5,5] = 1
-
-        return r
 
     # Añade una barra a la matriz de rigidez de la estructura
     def AddStiffnessMatrix(S, K, i, j):
@@ -168,8 +145,8 @@ def msa(joints, members):
             A = members[n].A
             I = members[n].I
 
-            k = StiffnessMatrix(E, A, I, L)
-            r = RotationMatrix(i, j)
+            k = get_stiffness_matrix(E, A, I, L)
+            r = get_rotation_matrix(joints, i, j)
 
             K = r.T * k * r
 
@@ -204,7 +181,7 @@ def msa(joints, members):
             j = members[n].j
 
             p = matrix(members[n].get_loads()).T
-            r = RotationMatrix(i, j)
+            r = get_rotation_matrix(joints, i, j)
 
             P = -r.T * p
 
@@ -282,11 +259,11 @@ def msa(joints, members):
         A = members[n].A
         I = members[n].I
         L = members[n].L
-        r = RotationMatrix(members[n].i, members[n].j)
+        r = get_rotation_matrix(joints, members[n].i, members[n].j)
 
         d = r * d
 
-        k = StiffnessMatrix(E, A, I, L)
+        k = get_stiffness_matrix(E, A, I, L)
 
         f[:,n] = k * d
         f[:,n] += matrix(members[n].get_loads()).T
@@ -308,5 +285,5 @@ def msa(joints, members):
         N2 = f[3,n]
         V2 = f[4,n]
         M2 = f[5,n]
-        members[n].setEfforts(N1, V1, M1, N2, V2, M2)
+        members[n].set_efforts(N1, V1, M1, N2, V2, M2)
 

@@ -5,8 +5,8 @@ __date__ ="24-jun-2009"
 
 from pylab import *
 
-from joint import *
-from member import *  
+from joint2d import *
+from member2d import *
 
 # Diagrama estructural
 def draw_schematic(joints, members):

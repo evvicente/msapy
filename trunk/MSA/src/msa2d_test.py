@@ -23,7 +23,7 @@ class  Msa2d_TestCase(TestCase):
         E = 1; A = 0.09; I = 0.000675; L = 4
         k = mat("[0.0225 0 0 -0.0225 0 0; 0 0.0001266 0.000253 0 -0.00013 0.000253; 0 0.0002531 0.000675 0 -0.00025 0.000338; -0.0225 0 0 0.0225 0 0; 0 -0.0001266 -0.000253 0 0.000127 -0.00025; 0 0.0002531 0.000338 0 -0.00025 0.000675]")
         
-        result = msa2d.getStiffnessMatrix(E, A, I, L)
+        result = msa2d.get_stiffnessMatrix(E, A, I, L)
         assert_almost_equal(result, k, decimal=5)
 
 if __name__ == '__main__':

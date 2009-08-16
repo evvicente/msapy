@@ -42,7 +42,7 @@ class Member():
         self.cos = self.get_cos()
         # Transformación de la carga uniforme
         if qy != 0:
-            self.setUniform(qy)
+            self.set_uniform(qy)
         # Esfuerzos resultantes en extremo de barra
         self.N1 = 0
         self.V1 = 0
@@ -77,11 +77,11 @@ class Member():
     def get_loads(self):
         return self.__load
 
-    def setEfforts(self, N1, V1, M1, N2, V2, M2):
+    def set_efforts(self, N1, V1, M1, N2, V2, M2):
         (self.N1, self.V1, self.M1, self.N2, self.V2, self.M2) = (N1, V1, M1, N2, V2, M2)
 
     # Carga uniforme
-    def setUniform(self, qy):
+    def set_uniform(self, qy):
         """ Calcula las reacciones de empotramiento perfecto para una carga
         uniformente repartida en toda la barra. """
 
