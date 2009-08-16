@@ -44,7 +44,7 @@ class Gui():
         button.pack(side='right')
         # Template
         img = tk.PhotoImage(file='icons/excel.gif')
-        button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', command=lambda:os.system('input.xls'))
+        button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', relief=tk.GROOVE, command=lambda:os.system('input.xls'))
         button.image = img
         button.pack(side='right', padx=10)
 
@@ -89,7 +89,7 @@ class Gui():
         buttonReactions = tk.Button(frame, text=" R ", bg='gray', command=self.draw_reactions, relief=tk.GROOVE)
         buttonReactions.pack(side=tk.RIGHT)
         # Status bar
-        self.statusbar = tk.Label(frame, text="", bd=1, fg='white', relief=tk.SUNKEN, anchor=tk.W)
+        self.statusbar = tk.Label(frame, text="", bd=1, fg='white', relief=tk.GROOVE, anchor=tk.W)
         self.statusbar.pack(side=tk.BOTTOM, fill=tk.X, padx=3, pady=3)
 
         # Open default file
@@ -178,7 +178,7 @@ class Gui():
         self.statusbar['text'] = "Guardando los resultados..."
         draw2d.report(self.joints, self.members)
         self.statusbar['text'] = "La estructura se ha resuelto con éxito"
-        self.statusbar['background'] = 'lightgreen'
+        self.statusbar['background'] = 'green'
         self.draw_moments()
 
 def run():

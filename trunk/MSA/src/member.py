@@ -142,12 +142,12 @@ class Member():
         Y = [self.Y1] + list(Y) + [self.Y2]
         fill(X, Y, facecolor='green')
         # Escribe los valores de los esfuerzos cortantes
-        txt = "\n\n%d\n" %abs(self.V1)
+        txt = "\n\n  %d\n" %abs(self.V1)
         if self.V1 > 0:
             text(X[1], Y[1], txt, verticalalignment='top', horizontalalignment='left', fontsize=9, color='black')
         else:
             text(X[1], Y[1], txt, verticalalignment='bottom', horizontalalignment='left', fontsize=9, color='black')
-        txt = "\n\n%d\n" %abs(self.V2)
+        txt = "\n\n%d  \n" %abs(self.V2)
         if self.V2 > 0:
             text(X[-2], Y[-2], txt, verticalalignment='bottom', horizontalalignment='right', fontsize=9, color='black')
         else:
@@ -180,12 +180,12 @@ class Member():
         Y = [self.Y1] + list(Y) + [self.Y2]
         fill(X, Y, facecolor='blue')
         # Escribe los valores de los momentos en extremo de barra
-        txt = "\n\n%d\n" %abs(self.M1)
+        txt = "\n\n  %d\n" %abs(self.M1)
         if self.M1 > 0:
             text(X[1], Y[1], txt, va='bottom', ha='left', fontsize=9, color='black')
         else:
             text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
-        txt = "\n\n%d\n" %abs(self.M2)
+        txt = "\n\n%d  \n" %abs(self.M2)
         if self.M2 > 0:
             text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
         elif self.M2 < 0:
