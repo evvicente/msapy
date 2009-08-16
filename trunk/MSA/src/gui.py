@@ -73,6 +73,7 @@ class Gui():
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open('output/report.html'))
         button.image = img
         button.pack(side='left', padx=10)
+        #button.pack_forget()
         # Template
         img = tk.PhotoImage(file='icons/excel.gif')
         button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', command=lambda:os.system('input.xls'))
