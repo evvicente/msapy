@@ -117,15 +117,14 @@ def add_load_vector(L, P, n):
     n *= 3
     L[n:n+3,0] += P[0:3,0]
 
-def msa(joints, members):
-    # Definición de la estructura
-    #----------------------------------------------------------
+# Definición de propiedades {'name':[E, A, Iz]}
+#   E = Módulo de elasticidad
+#   A = Area de la sección de la barra
+#   Iz = Momento de inercia de la sección
+properties = {'IPN 200':[210000e6, 0, 21.4e-6], 'p2':[21000, 2, 100]}
 
-    # Definición de propiedades {'name':[E, A, Iz]}
-    #   E = Módulo de elasticidad
-    #   A = Area de la sección de la barra
-    #   Iz = Momento de inercia de la sección
-    properties = {'IPN 200':[210000e6, 0, 21.4e-6], 'p2':[21000, 2, 100]}
+def msa(joints, members):
+    """ Método matricial para la resolución de estructuras planas """
 
     # Tipos de nudos
     # Restricciones de los nudos (dN): [dX, dY, rZ]
