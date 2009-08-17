@@ -98,6 +98,25 @@ def get_rotation_matrix(joints, i, j):
 
     return r
 
+def add_stiffness_matrix(S, K, i, j):
+    """ Añade la matriz de rigidez global de una barra (K) a la matriz de rigidez de la estructura (S) """
+
+    # i = Nudo inicial de la barra
+    # j = Nudo final de la barra
+    i *= 3
+    j *= 3
+    S[i:i+3,i:i+3] += K[0:3,0:3]
+    S[i:i+3,j:j+3] += K[0:3,3:6]
+    S[j:j+3,j:j+3] += K[3:6,3:6]
+    S[j:j+3,i:i+3] += K[3:6,0:3]
+    
+def add_load_vector(L, P, n):
+    """ Añade un estado de carga a un nudo de la estructura """
+    
+    # P = Vector de cargas en un nudo
+    n *= 3
+    L[n:n+3,0] += P[0:3,0]
+
 def msa(joints, members):
     # Definición de la estructura
     #----------------------------------------------------------
@@ -123,18 +142,6 @@ def msa(joints, members):
     for n in range(len(joints)):
         dN.append(types[joints[n].type])
 
-    # Añade una barra a la matriz de rigidez de la estructura
-    def AddStiffnessMatrix(S, K, i, j):
-        # K = Matriz de rigidez global de la barra
-        # i = Nudo inicial de la barra
-        # j = Nudo final de la barra
-        i *= 3
-        j *= 3
-        S[i:i+3,i:i+3] += K[0:3,0:3]
-        S[i:i+3,j:j+3] += K[0:3,3:6]
-        S[j:j+3,j:j+3] += K[3:6,3:6]
-        S[j:j+3,i:i+3] += K[3:6,0:3]
-
     # Determina la matriz de rigidez de la estructura (S)
     def StructureStiffnessMatrix(S):
         for n in range(len(members)):
@@ -150,7 +157,7 @@ def msa(joints, members):
 
             K = r.T * k * r
 
-            AddStiffnessMatrix(S, K, i, j)
+            add_stiffness_matrix(S, K, i, j)
 
             print "#-------------------------------------------------"
             print "#  Barra %d:     Longitud = %0.2f m" %(n, L)
@@ -168,12 +175,6 @@ def msa(joints, members):
             print S
             print
 
-    # Añade un estado de carga a un nudo de la estructura
-    def AddLoadVector(L, P, n):
-        # P = Vector de cargas en un nudo
-        n *= 3
-        L[n:n+3,0] += P[0:3,0]
-
     # Determina el vector de cargas de la estructura (L)
     def StructureLoadVector(L):
         for n in range(len(members)):
@@ -185,12 +186,12 @@ def msa(joints, members):
 
             P = -r.T * p
 
-            AddLoadVector(L, P[0:3,0], i)
-            AddLoadVector(L, P[3:6,0], j)
+            add_load_vector(L, P[0:3,0], i)
+            add_load_vector(L, P[3:6,0], j)
 
         # Cargas aplicadas directamente en los nudos
         for n in range(len(joints)):
-            AddLoadVector(L, matrix(joints[n].get_loads()).T, n)
+            add_load_vector(L, matrix(joints[n].get_loads()).T, n)
 
     # Genera la matriz de rigidez de la estructura (S)
     n = len(joints)
