@@ -178,13 +178,13 @@ class Gui():
         self.statusbar['text'] = "Guardando los resultados..."
         draw2d.report(self.joints, self.members)
         self.statusbar['text'] = "La estructura se ha resuelto con éxito"
-        self.statusbar['background'] = 'green'
+        self.statusbar['background'] = 'lightblue'
         self.draw_moments()
 
 def run():
     window = tk.Tk()
     window.title("MSA")
-    window.iconbitmap('icons/msa.ico')
+    #window.iconbitmap('icons/msa.ico')
     Gui(window)
     window.mainloop()
 

@@ -123,6 +123,37 @@ def add_load_vector(L, P, n):
 #   Iz = Momento de inercia de la sección
 properties = {'IPN 200':[210000e6, 0, 21.4e-6], 'p2':[21000, 2, 100]}
 
+def get_structure_stiffness_matrix(S, joints, members):
+    """ Determina la matriz de rigidez de la estructura (S) """
+
+    for n in range(len(members)):
+        i = members[n].i
+        j = members[n].j
+        L = members[n].L
+        E = members[n].E
+        A = members[n].A
+        I = members[n].I
+
+        k = get_stiffness_matrix(E, A, I, L)
+        r = get_rotation_matrix(joints, i, j)
+
+        K = r.T * k * r
+
+        add_stiffness_matrix(S, K, i, j)
+
+        print "#-------------------------------------------------"
+        print "#  Barra %d:     Longitud = %0.2f m" %(n, L)
+        print "#-------------------------------------------------"
+        print " Matriz de rigidez local: k = "
+        print k
+        print
+        print " Matriz de rotacion: r = "
+        print r
+        print
+        print " Matriz de rigidez global: K = "
+        print K
+        print
+
 def msa(joints, members):
     """ Método matricial para la resolución de estructuras planas """
 
@@ -140,39 +171,6 @@ def msa(joints, members):
     dN = []
     for n in range(len(joints)):
         dN.append(types[joints[n].type])
-
-    # Determina la matriz de rigidez de la estructura (S)
-    def StructureStiffnessMatrix(S):
-        for n in range(len(members)):
-            i = members[n].i
-            j = members[n].j
-            L = members[n].L
-            E = members[n].E
-            A = members[n].A
-            I = members[n].I
-
-            k = get_stiffness_matrix(E, A, I, L)
-            r = get_rotation_matrix(joints, i, j)
-
-            K = r.T * k * r
-
-            add_stiffness_matrix(S, K, i, j)
-
-            print "#-------------------------------------------------"
-            print "#  Barra %d:     Longitud = %0.2f m" %(n, L)
-            print "#-------------------------------------------------"
-            print " Matriz de rigidez local: k = "
-            print k
-            print
-            print " Matriz de rotacion: r = "
-            print r
-            print
-            print " Matriz de rigidez global: K = "
-            print K
-            print
-            print " Matriz de rigidez de la estructura: S ="
-            print S
-            print
 
     # Determina el vector de cargas de la estructura (L)
     def StructureLoadVector(L):
@@ -194,8 +192,14 @@ def msa(joints, members):
 
     # Genera la matriz de rigidez de la estructura (S)
     n = len(joints)
+
+    # Calcula la matriz de rigidez de la estructura
     S = matrix(zeros((n*3,n*3)))
-    StructureStiffnessMatrix( S )
+    get_structure_stiffness_matrix(S, joints, members)
+    print " Matriz de rigidez de la estructura: S ="
+    print S
+    print
+
     K = matrix(S)
     # Genera el vector de cargas de la estructura (L)
     L = matrix(zeros((n*3))).T
