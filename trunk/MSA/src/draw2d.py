@@ -11,6 +11,16 @@ from member2d import *
 # Diagrama estructural
 def draw_schematic(joints, members):
     """ Dibuja la estructura """
+
+    scale = 0.001
+    # Busca un factor de escala apropiado
+    max = 0
+    for n in range(len(members)):
+        if members[n].qy > max:
+            max = members[n].qy
+    if max != 0:
+        scale = 0.1/max
+
     title("Esquema estructural")
     xlabel("X")
     ylabel("Y")
@@ -22,11 +32,21 @@ def draw_schematic(joints, members):
     # Dibuja las barras
     for n in range(len(members)):
         members[n].draw_member()
-        members[n].draw_loads(0.001)
+        members[n].draw_loads(scale)
 
 # Diagrama de reacciones
 def draw_reactions(joints, members):
     """ Dibuja las reacciones """
+
+    scale = 0.001
+    # Busca un factor de escala apropiado
+    max = 0
+    for n in range(len(members)):
+        if members[n].qy > max:
+            max = members[n].qy
+    if max != 0:
+        scale = 0.1/max
+
     title("Reacciones")
     xlabel("X")
     ylabel("Y")
@@ -37,6 +57,7 @@ def draw_reactions(joints, members):
         joints[n].draw_reactions()
     for n in range(len(members)):
         members[n].draw_member()
+        members[n].draw_loads(scale)
 
 # Diagrama de normales
 def draw_normals(members):
@@ -44,12 +65,12 @@ def draw_normals(members):
 
     scale = 0.01
     # Busca un factor de escala apropiado
-    maxN = 0
+    max = 0
     for n in range(len(members)):
-        if members[n].N1 > maxN:
-            maxN = members[n].N1
-    if maxN != 0:
-        scale = 1/maxN
+        if members[n].N1 > max:
+            max = members[n].N1
+    if max != 0:
+        scale = 0.1/max
 
     title("Diagrama de esfuerzos normales (N)   $\leftarrow \lfloor\\rceil \\rightarrow$")
     xlabel("X")
@@ -61,22 +82,42 @@ def draw_normals(members):
 # Diagrama de cortantes
 def draw_shears(members):
     """ Dibuja el diagrama de esfuerzos cortantes """
+
+    scale = 0.001
+    # Busca un factor de escala apropiado
+    max = 0
+    for n in range(len(members)):
+        if members[n].V1 > max:
+            max = members[n].V1
+    if max != 0:
+        scale = 0.1/max
+
     title("Diagrama de esfuerzos cortantes (V)   $\downarrow \lfloor\\rceil \uparrow$")
     xlabel("X")
     ylabel("Y")
     axis('equal')
     for n in range(len(members)):
-        members[n].draw_shear(0.001)
+        members[n].draw_shear(scale)
 
 # Diagrama de momentos
 def draw_moments(members):
     """ Dibuja el diagrama de momentos """
+
+    scale = 0.01
+    # Busca un factor de escala apropiado
+    max = 0
+    for n in range(len(members)):
+        if members[n].M1 > max:
+            max = members[n].M1
+    if max != 0:
+        scale = 0.1/max
+    
     title("Diagrama de momentos flectores (M)   $\curvearrowright \lfloor\\rceil \curvearrowleft$")
     xlabel("X")
     ylabel("Y")
     axis('equal')
     for n in range(len(members)):
-        members[n].draw_moment(0.01)
+        members[n].draw_moment(scale)
 
 # Diagrama de desplazamientos
 def draw_displacements(joints, members):
@@ -88,7 +129,7 @@ def draw_displacements(joints, members):
     grid(True)
     X = []
     Y = []
-    scale = 100
+    scale = 10
     for n in range(len(joints)):
         X = X + [joints[n].X + scale * joints[n].dX]
         Y = Y + [joints[n].Y + scale * joints[n].dY]
@@ -112,37 +153,58 @@ def report(joints, members, filename="output/report.html"):
 
     file = open(filename, "w")
 
-    s = '<html><head><title></title></head><body><center>'
-    s += '<img src="schematic.png" alt="Esquema estructural"/>'
-    s += '<table border="1">'
-    s += '<thead>'
-    s += '<tr><th>Nudos</th><th>X</th><th>Y</th><th>FX</th><th>FY</th><th>MZ</th></tr>'
-    s += '</thead>'
-    s += '<tbody>'
+    s = """<HTML>
+    <HEAD>
+        <TITLE>Informe</TITLE>
+        <STYLE type="text/css">
+            H1 {text-align:center}
+            H2 {text-align:center}
+            IMG {width:600px; height:450px}
+            TABLE {border-width:thin; border-style:solid; border-color:gray; font-size:11pt}
+            THEAD {background-color:#DDDDDD}
+            TD {text-align:center}
+        </STYLE>
+    </HEAD>
+    <BODY><CENTER>
+        <H1>Informe de resulados</H1>
+        <H2>Problema</H2>
+        <IMG src="schematic.png" alt="Esquema estructural"/>
+        <P>El problema definido ha sido el siguiente:</P>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=2>Coordenadas</TH><TH colspan=3>Cargas</TH></TR>
+                <TR><TH>X [m]</TH><TH>Y [m]</TH><TH>FX [N]</TH><TH>FY [N]</TH><TH>MZ [N·m]</TH></TR>
+            </THEAD>
+        <TBODY>"""
     for n in range(len(joints)):
-        s += '<tr><td>N%d</td><td>%.1f</td><td>%.1f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td></tr>' %(n, joints[n].X, joints[n].Y, joints[n].FX, joints[n].FY, joints[n].MZ)
-    s += '</tbody>'
-    s += '</table><br>'
-    s += '<table border="1">'
-    s += '<thead>'
-    s += '<tr><th>Barras</th><th>i</th><th>f</th><th>L</th><th>A</th><th>E</th><th>Iz</th><th>qy</th></tr>'
-    s += '</thead>'
-    s += '<tbody>'
+        s += '<TR><td>%d</td><td>%.1f</td><td>%.1f</td><td>%d</td><td>%d</td><td>%d</td></TR>' %(n, joints[n].X, joints[n].Y, joints[n].FX, joints[n].FY, joints[n].MZ)
+    s += """                    </TBODY>
+                    </TABLE>
+                    <BR>
+                    <TABLE>
+                        <THEAD>
+                            <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=3>Propiedades</TH><TH>Cargas</TH></TR>
+                            <TR><TH>L [m]</TH><TH>A</TH><TH>E</TH><TH>Iz</TH><TH>qy [N/m]</TH></TR>
+                        </THEAD>
+                        <TBODY>"""
     for n in range(len(members)):
-        s += '<tr><td>B%d</td><td>N%d</td><td>N%d</td><td>%.1f</td><td>%.5f</td><td>%.f</td><td>%.7f</td><td>%.1f</td></tr>' %(n, members[n].i, members[n].j, members[n].L, members[n].A, members[n].E, members[n].I, members[n].qy)
-    s += '</tbody>'
-    s += '</table><br>'
-    s += '<img src="reactions.png" alt="Reacciones"/>'
-    s += '<table border="1">'
-    s += '<thead>'
-    s += '<tr><th>Nudos</th><th>RX</th><th>RY</th><th>RMZ</th></tr>'
-    s += '</thead>'
-    s += '<tbody>'
+        s += '<tr><td>%d/%d</td><td>%.1f</td><td>%.5f</td><td>%.f</td><td>%.7f</td><td>%d</td></tr>' %(members[n].i, members[n].j, members[n].L, members[n].A, members[n].E, members[n].I, members[n].qy)
+    s += """            </TBODY>
+        </TABLE>
+        <H2>Reacciones</H2>
+        <IMG src="reactions.png" alt="Reacciones"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=3>Reacciones</TH></TR>
+                <TR><TH>RX [N]</TH><TH>RY [N]</TH><TH>MZ [N·m]</TH></TR>
+            </THEAD>
+            <TBODY>"""
     for n in range(len(joints)):
-        s += '<tr><td>N%d</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, joints[n].RX, joints[n].RY, joints[n].RMZ)
-    s += '</tbody>'
-    s += '</table><br>'
-    s += '<img src="normals.png" alt="Normales"/>'
+        s += '<tr><td>%d</td><td>%.2f</td><td>%.2f</td><td>%.2f</td></tr>' %(n, joints[n].RX, joints[n].RY, joints[n].RMZ)
+    s += """            </TBODY>
+        </TABLE>
+        <H2>Esfuerzos</H2>
+        <IMG src="normals.png" alt="Normales"/>"""
     s += '<img src="shears.png" alt="Cortantes"/>'
     s += '<img src="moments.png" alt="Momentos"/>'
     s += '<table border="1">'
@@ -151,47 +213,50 @@ def report(joints, members, filename="output/report.html"):
     s += '</thead>'
     s += '<tbody>'
     for n in range(len(members)):
-        s += '<tr><td>B%d</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, members[n].N1, members[n].V1, members[n].M1, members[n].N2, members[n].V2, members[n].M2)
-    s += '</tbody>'
-    s += '</table><br>'
-    s += '<img src="displacements.png" alt="Desplazamientos"/>'
-    s += '<table border="1">'
-    s += '<thead>'
-    s += '<tr><th>Nudos</th><th>dX</th><th>dY</th><th>gZ</th></tr>'
-    s += '</thead>'
-    s += '<tbody>'
+        s += '<tr><td>B%d</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td></tr>' %(n, members[n].N1, members[n].V1, members[n].M1, members[n].N2, members[n].V2, members[n].M2)
+    s += """            </TBODY>
+        </TABLE>
+        <H2>Desplazamientos</H2>
+        <IMG src="displacements.png" alt="Desplazamientos"/>
+        <TABLE border=1>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=3>Desplazamientos</TH></TR>
+                <TR><TH>dX [m]</TH><TH>dY [m]</TH><TH>gZ [rad]</TH></TR>
+            </THEAD>
+            <TBODY>"""
     for n in range(len(joints)):
         s += '<tr><td>N%d</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, joints[n].dX, joints[n].dY, joints[n].gZ)
     s += '</tbody>'
     s += '</table><br>'
-    s += '</center></body></html>'
+    s += """        </CENTER></BODY>
+</HTML>"""
 
     file.write(s)
     file.close()
 
     # Se dibujan y guardan todos los diagramas
-
+    fig = figure(1)
     # Schematic
-    figure(1)
+    fig.clear()
     draw_schematic(joints, members)
     savefig('output/schematic.png')
     # Reactions
-    figure(2)
+    fig.clear()
     draw_reactions(joints, members)
     savefig('output/reactions.png')
     # Normals
-    figure(3)
+    fig.clear()
     draw_normals(members)
     savefig('output/normals.png')
     # Shears
-    figure(4)
+    fig.clear()
     draw_shears(members)
     savefig('output/shears.png')
     # Moments
-    figure(5)
+    fig.clear()
     draw_moments(members)
     savefig('output/moments.png')
     # Displacements
-    figure(6)
+    fig.clear()
     draw_displacements(joints, members)
     savefig('output/displacements.png')

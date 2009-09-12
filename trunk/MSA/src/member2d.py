@@ -107,8 +107,8 @@ class Member():
             YL2 = self.Y2 + scale * abs(self.qy) * c
             fill([self.X1, XL1, XL2, self.X2], [self.Y1, YL1, YL2, self.Y2], hatch='|', facecolor='black')
 
-            txt = "$q_y = %d$" %self.qy
-            text((self.X1 + self.X2 + XL1 + XL2)/4, (self.Y1 + self.Y2 + YL1 + YL2)/4, txt, verticalalignment='center', horizontalalignment='center', color='red')
+            txt = "%d" %self.qy
+            text((self.X1 + self.X2 + XL1 + XL2)/4, (self.Y1 + self.Y2 + YL1 + YL2)/4, txt, va='center', ha='center', color='red')
 
     def draw_normal(self, scale=0.001):
         """ Dibuja el diagrama de esfuerzos normales """
@@ -117,7 +117,7 @@ class Member():
         XN2 = self.X2 - scale * self.N2 * self.sin
         YN2 = self.Y2 + scale * self.N2 * self.cos
         fill([self.X1, XN1, XN2, self.X2], [self.Y1, YN1, YN2, self.Y2], facecolor='red')
-        txt = "%d\n" %round(self.N2)
+        txt = "%.1f\n" %round(self.N2, 1)
         text((self.X1 + self.X2 + XN1 + XN2)/4, (self.Y1 + self.Y2 + YN1 + YN2)/4, txt, va='center', ha='center', fontsize=10, color='black')
 
     def draw_shear(self, scale=0.0001):
@@ -142,12 +142,12 @@ class Member():
         Y = [self.Y1] + list(Y) + [self.Y2]
         fill(X, Y, facecolor='green')
         # Escribe los valores de los esfuerzos cortantes
-        txt = "\n\n  %d\n" %abs(self.V1)
+        txt = "\n\n  %.1f\n" %abs(round(self.V1, 1))
         if self.V1 > 0:
             text(X[1], Y[1], txt, verticalalignment='top', horizontalalignment='left', fontsize=9, color='black')
         else:
             text(X[1], Y[1], txt, verticalalignment='bottom', horizontalalignment='left', fontsize=9, color='black')
-        txt = "\n\n%d  \n" %abs(self.V2)
+        txt = "\n\n%.1f  \n" %abs(round(self.V2, 1))
         if self.V2 > 0:
             text(X[-2], Y[-2], txt, verticalalignment='bottom', horizontalalignment='right', fontsize=9, color='black')
         else:
@@ -180,12 +180,12 @@ class Member():
         Y = [self.Y1] + list(Y) + [self.Y2]
         fill(X, Y, facecolor='blue')
         # Escribe los valores de los momentos en extremo de barra
-        txt = "\n\n  %d\n" %abs(self.M1)
+        txt = "\n\n  %.1f\n" %abs(round(self.M1, 1))
         if self.M1 > 0:
             text(X[1], Y[1], txt, va='bottom', ha='left', fontsize=9, color='black')
         else:
             text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
-        txt = "\n\n%d  \n" %abs(self.M2)
+        txt = "\n\n%.1f  \n" %abs(round(self.M2, 1))
         if self.M2 > 0:
             text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
         elif self.M2 < 0:

@@ -64,27 +64,27 @@ class Joint():
         """ Dibuja las fuerzas actuantes sobre un nudo y sus valores correspondientes """
         if fX > 0:
             text(self.X, self.Y, "$\\rightarrow$", va='center', ha='right', fontsize=20, color='black')
-            txt = "%d     \n" %fX
+            txt = "%.1f     \n" %fX
             text(self.X, self.Y, txt, va='bottom', ha='right', fontsize=10, color='red')
         elif fX < 0:
             text(self.X, self.Y, "$\\leftarrow$", va='center', ha='left', fontsize=20, color='black')
-            txt = "\n    %d" %fX
+            txt = "\n    %.1f" %fX
             text(self.X, self.Y, txt, va='top', ha='left', fontsize=10, color='red')
         if fY > 0:
             text(self.X, self.Y, "$\\uparrow$", va='top', ha='center', fontsize=20, color='black')
-            txt = "\n\n\n %d" %fY
+            txt = "\n\n\n %.1f" %fY
             text(self.X, self.Y, txt, va='top', ha='center', fontsize=10, color='green')
         elif fY < 0:
             text(self.X, self.Y, "$\\downarrow$", va='bottom', ha='center', fontsize=20, color='black')
-            txt = "%d \n\n" %fY
+            txt = "%.1f \n\n" %fY
             text(self.X, self.Y, txt, va='bottom', ha='center', fontsize=10, color='green')
         if mZ > 0:
             text(self.X, self.Y, "$\\circlearrowleft$", va='center', ha='center', fontsize=20, color='black')
-            txt = "\n\n %d" %mZ
+            txt = "\n\n %.1f" %mZ
             text(self.X, self.Y, txt, va='top', ha='right', fontsize=10, color='blue')
         elif mZ < 0:
             text(self.X, self.Y, "$\\circlearrowright$", va='center', ha='center', fontsize=20, color='black')
-            txt = "  %d \n" %mZ
+            txt = "  %.1f \n" %mZ
             text(self.X, self.Y, txt, va='bottom', ha='left', fontsize=10, color='blue')
 
     def draw_loads(self):
@@ -93,4 +93,4 @@ class Joint():
     
     def draw_reactions(self):
         """ Dibuja las reacciones en los apoyos """
-        self.draw_forces(round(self.RX), round(self.RY), round(self.RMZ))
+        self.draw_forces(round(self.RX, 1), round(self.RY, 1), round(self.RMZ, 1))

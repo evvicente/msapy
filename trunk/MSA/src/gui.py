@@ -39,7 +39,7 @@ class Gui():
         button.pack(side='left')
         # Help
         img = tk.PhotoImage(file='icons/help.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open('help/index.html'))
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open(os.path.join('help', 'index.html')))
         button.image = img
         button.pack(side='right')
         # Template
@@ -73,7 +73,7 @@ class Gui():
         button.pack(side='left')
         # Report
         img = tk.PhotoImage(file='icons/report.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open('output/report.html'))
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open(os.path.join('output', 'report.html')))
         button.image = img
         button.pack(side='left', padx=10)
         #button.pack_forget()
@@ -184,7 +184,7 @@ class Gui():
 def run():
     window = tk.Tk()
     window.title("MSA")
-    #window.iconbitmap('icons/msa.ico')
+    #window.iconbitmap(os.path.join('icons', 'msa.ico'))
     Gui(window)
     window.mainloop()
 
