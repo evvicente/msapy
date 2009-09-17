@@ -17,7 +17,7 @@ Dado que esta aplicación se encuentra desarrollada completamente en Python, pued
 Para ejecutar MSA en Windows, simplemente:
  * Instala los paquetes: [http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi Python], [http://downloads.sourceforge.net/sourceforge/numpy/numpy-1.3.0-win32-superpack-python2.5.exe Numpy] y [http://downloads.sourceforge.net/sourceforge/matplotlib/matplotlib-0.98.5.3.win32-py2.5.exe matplotlib]
  * Una vez instalados los paquetes anteriores, dado que aún no se dispone de instalador, descarga y descomprime la [http://code.google.com/p/msapy/downloads/list última versión] disponible de la aplicación.
- * Haz doble clic sobre el archivo "MSA.py" que se encunetra en el directorio "src/".
+ * Haz doble clic sobre el archivo "MSA.py" que se encunetra en el directorio "msa/".
 
 == Estudio de una viga de dos vanos ==
 
@@ -61,6 +61,7 @@ En la columna "Restraints" se especifica el tipo de nudo (nudo rígido (rj) o art
  * v 0.3.1 (2009-07-06): Corrección de errores.
  * v 0.3.5 (2009-07-16): Interfaz gráfica de usuario.
  * v 0.3.6 (2009-08-11): Corrección de errores.
+ * v 0.3.7 (2009-09-17): Generación del informe de resultados.
 
 || Versión 0.4: Comprobación resistente ||
 || Versión 0.5: Refactorización ||

@@ -5,7 +5,7 @@
         <data xmlns="http://nbpython.dev.java.net/ns/php-project/1">
             <name>MSA</name>
             <sources>
-                <root id="src.dir"/>
+                <root id="src.msa.dir"/>
             </sources>
             <tests/>
         </data>
