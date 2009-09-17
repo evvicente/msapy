@@ -1,1 +1,59 @@
-<html><head><title></title></head><body><center><img src="schematic.png" alt="Esquema estructural"/><table border="1"><thead><tr><th>Nudos</th><th>X</th><th>Y</th><th>FX</th><th>FY</th><th>MZ</th></tr></thead><tbody><tr><td>N0</td><td>240.0</td><td>180.0</td><td>0.00</td><td>0.00</td><td>0.00</td></tr><tr><td>N1</td><td>0.0</td><td>0.0</td><td>0.00</td><td>0.00</td><td>0.00</td></tr><tr><td>N2</td><td>480.0</td><td>180.0</td><td>0.00</td><td>0.00</td><td>0.00</td></tr></tbody></table><br><table border="1"><thead><tr><th>Barras</th><th>i</th><th>f</th><th>L</th><th>A</th><th>E</th><th>Iz</th><th>qy</th></tr></thead><tbody><tr><td>B0</td><td>N1</td><td>N0</td><td>300.0</td><td>29000.00000</td><td>12</td><td>600.0000000</td><td>0.0</td></tr><tr><td>B1</td><td>N0</td><td>N2</td><td>240.0</td><td>29000.00000</td><td>12</td><td>600.0000000</td><td>-0.3</td></tr></tbody></table><br><img src="reactions.png" alt="Reacciones"/><table border="1"><thead><tr><th>Nudos</th><th>RX</th><th>RY</th><th>RMZ</th></tr></thead><tbody><tr><td>N0</td><td>0.000000</td><td>-0.000000</td><td>0.000000</td></tr><tr><td>N1</td><td>38.887536</td><td>25.832795</td><td>-266.612857</td></tr><tr><td>N2</td><td>-38.887536</td><td>34.167205</td><td>-1533.402080</td></tr></tbody></table><br><img src="normals.png" alt="Normales"/><img src="shears.png" alt="Cortantes"/><img src="moments.png" alt="Momentos"/><table border="1"><thead><tr><th>Barras</th><th>N1</th><th>V1</th><th>M1</th><th>N2</th><th>V2</th><th>M2</th></tr></thead><tbody><tr><td>B0</td><td>46.609706</td><td>-2.666286</td><td>-266.612857</td><td>-46.609706</td><td>2.666286</td><td>-533.272885</td></tr><tr><td>B1</td><td>38.887536</td><td>25.832795</td><td>533.272885</td><td>-38.887536</td><td>34.167205</td><td>-1533.402080</td></tr></tbody></table><br><img src="displacements.png" alt="Desplazamientos"/><table border="1"><thead><tr><th>Nudos</th><th>dX</th><th>dY</th><th>gZ</th></tr></thead><tbody><tr><td>N0</td><td>0.026819</td><td>-0.102727</td><td>-5.555417</td></tr><tr><td>N1</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr><tr><td>N2</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr></tbody></table><br></center></body></html>
+<HTML>
+    <HEAD>
+        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+        <TITLE>Informe</TITLE>
+        <LINK rel="stylesheet" type="text/css" href="style.css">
+    </HEAD>
+    <BODY><CENTER>
+        <H1>Informe de resulados</H1>
+        <H2>Problema</H2>
+        <IMG src="schematic.png" alt="Esquema estructural"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=2>Coordenadas</TH><TH colspan=3>Cargas</TH></TR>
+                <TR><TH>X [m]</TH><TH>Y [m]</TH><TH>FX [N]</TH><TH>FY [N]</TH><TH>MZ [Nm]</TH></TR>
+            </THEAD>
+        <TBODY><TR><td>0</td><td>2.4</td><td>1.8</td><td>0</td><td>0</td><td>0</td></TR><TR><td>1</td><td>0.0</td><td>0.0</td><td>0</td><td>0</td><td>0</td></TR><TR><td>2</td><td>4.8</td><td>1.8</td><td>0</td><td>0</td><td>0</td></TR>                    </TBODY>
+                    </TABLE>
+                    <BR>
+                    <TABLE>
+                        <THEAD>
+                            <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=3>Propiedades</TH><TH>Cargas</TH></TR>
+                            <TR><TH>L [m]</TH><TH>A [m2]</TH><TH>E</TH><TH>Iz</TH><TH>qy [N/m]</TH></TR>
+                        </THEAD>
+                        <TBODY><tr><td>1/0</td><td>3.00000</td><td>0.1</td><td>29000</td><td>0.0060000</td><td>0</td></tr><tr><td>0/2</td><td>2.40000</td><td>0.1</td><td>29000</td><td>0.0060000</td><td>-250</td></tr>            </TBODY>
+        </TABLE><BR>
+        <H2>Reacciones</H2>
+        <IMG src="reactions.png" alt="Reacciones"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=3>Reacciones</TH></TR>
+                <TR><TH>RX [N]</TH><TH>RY [N]</TH><TH>MZ [Nm]</TH></TR>
+            </THEAD>
+            <TBODY><tr><td>0</td><td>0.00</td><td>0.00</td><td>0.00</td></tr><tr><td>1</td><td>204.49</td><td>184.84</td><td>46.47</td></tr><tr><td>2</td><td>-204.49</td><td>415.16</td><td>-247.32</td></tr>            </TBODY>
+        </TABLE><BR>
+        <H2>Esfuerzos</H2>
+        <IMG src="normals.png" alt="Normales"/>
+        <IMG src="shears.png" alt="Cortantes"/>
+        <IMG src="moments.png" alt="Momentos"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH>Barras</TH><TH>N1</TH><TH>V1</TH><TH>M1</TH><TH>N2</TH><TH>V2</TH><TH>M2</TH></TR>
+            </THEAD>
+            <TBODY><tr><td>1/0</td><td>274.50</td><td>25.18</td><td>46.47</td><td>-274.50</td><td>-25.18</td><td>29.07</td></tr><tr><td>0/2</td><td>204.49</td><td>184.84</td><td>-29.07</td><td>-204.49</td><td>415.16</td><td>-247.32</td></tr>            </TBODY>
+        </TABLE><BR>
+        <H2>Desplazamientos</H2>
+        <IMG src="displacements.png" alt="Desplazamientos"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=3>Desplazamientos</TH></TR>
+                <TR><TH>dX [m]</TH><TH>dY [m]</TH><TH>gZ [rad]</TH></TR>
+            </THEAD>
+            <TBODY><tr><td>0</td><td>0.141029</td><td>-0.582434</td><td>-0.149999</td></tr><tr><td>1</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr><tr><td>2</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr>                </TBODY>
+            </TABLE>
+        <P><BR>______________________________<BR>
+	Informe generado mediante <A href="http://code.google.com/p/msapy">MSA</A>, con la aplicación del método matricial de la rigidez.<BR>
+        <A href="http://code.google.com/p/msapy">MSA</A> - Copyright 2009, Jorge Rodríguez Araújo (grrodri@gmail.com).</P>
+        </CENTER>
+    </BODY>
+</HTML>
