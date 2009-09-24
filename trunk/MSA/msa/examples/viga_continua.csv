@@ -1,0 +1,17 @@
+;Type;A[mm2];E[N/mm2];Iz[cm4];Wz[cm3];
+P0;IPE 160;2010;210000;869;109;
+
+Joints;X[m];Y[m];Type;FX[N];FY[N];MZ[Nm];
+N0;0;0;hs;0;0;0;
+N1;1;0;rs;0;0;0;
+N2;2;0;rs;0;0;0;
+N3;3;0;rs;0;0;0;
+
+Members;Ni;Nf;qy[N/m];Type;
+B0;0;1;-100;IPE 160;
+B1;1;2;-100;IPE 160;
+B2;2;3;-100;IPE 160;
+
+
+
+
