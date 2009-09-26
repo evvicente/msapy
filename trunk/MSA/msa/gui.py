@@ -78,10 +78,10 @@ class Gui():
         button.image = img
         button.pack(side='left', padx=10)
         # Exit
-        """img = tk.PhotoImage(file='icons/exit.gif')
+        img = tk.PhotoImage(file='icons/exit.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
         button.image = img
-        button.pack(side='right', padx=1)"""
+        button.pack(side='right', padx=1)
         # Graphics
         buttonDisplacements = tk.Button(frame, text=" D ", bg='gray', command=self.draw_displacements, relief=tk.GROOVE)
         buttonDisplacements.pack(side='right')

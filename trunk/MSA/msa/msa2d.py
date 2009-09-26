@@ -68,7 +68,7 @@ def load(filename):
     return joints, members
 
 def get_stiffness_matrix(E, A, I, L):
-    """ Calcula la matriz de rigidez local de una barra """
+    """ Calcula la matriz de rigidez local de una barra (k) """
 
     E = float(E)
     A = float(A)
@@ -88,7 +88,7 @@ def get_stiffness_matrix(E, A, I, L):
     return k
 
 def get_rotation_matrix(X1, Y1, X2, Y2):
-    """ Calcula la matriz de rotación de la barra cuyas coordenadas
+    """ Calcula la matriz de rotación de la barra (r) cuyas coordenadas
     de los nudos inicial y final son (X1, Y1) y (X2, Y2) respectivamente. """
 
     L = sqrt( (X2-X1)**2 + (Y2-Y1)**2 )
@@ -104,7 +104,7 @@ def get_rotation_matrix(X1, Y1, X2, Y2):
     return r
 
 def add_stiffness_matrix(S, K, i, j):
-    """ A�ade la matriz de rigidez global de una barra (K) a la matriz de rigidez de la estructura (S) """
+    """ Añade la matriz de rigidez global de una barra (K) a la matriz de rigidez de la estructura (S) """
 
     # i = Nudo inicial de la barra
     # j = Nudo final de la barra
@@ -122,8 +122,11 @@ def add_load_vector(L, P, n):
     n *= 3
     L[n:n+3,0] += P[0:3,0]
 
-def get_structure_stiffness_matrix(S, joints, members):
-    """ Determina la matriz de rigidez de la estructura (S) """
+def get_structure_stiffness_matrix(joints, members):
+    """ Calcula la matriz de rigidez de la estructura (S) """
+
+    n = len(joints) # Numero de nudos
+    S = matrix(zeros((n*3,n*3))) # Matriz de rigidez
 
     for n in range(len(members)):
         i = members[n].i
@@ -160,8 +163,13 @@ def get_structure_stiffness_matrix(S, joints, members):
         print K
         print
 
-def get_structure_load_vector(L, joints, members):
-    """ Determina el vector de cargas de la estructura (L) """
+    return S
+
+def get_structure_load_vector(joints, members):
+    """ Calcula el vector de cargas de la estructura (L) """
+
+    n = len(joints) # Numero de nudos
+    L = matrix(zeros((n*3))).T # Vector de cargas
 
     for n in range(len(members)):
         i = members[n].i
@@ -179,8 +187,11 @@ def get_structure_load_vector(L, joints, members):
     for n in range(len(joints)):
         add_load_vector(L, matrix(joints[n].get_loads()).T, n)
 
-def msa(joints, members):
-    """ Método matricial para la resolución de estructuras planas """
+    return L
+
+def set_restraints(joints, S, L):
+    """ Impone las condiciones de contorno mediante la eliminación de
+    los grados de libertad impedidos """
 
     # Tipos de nudos
     # Restricciones de los nudos (dN): [dX, dY, rZ]
@@ -197,21 +208,6 @@ def msa(joints, members):
     for n in range(len(joints)):
         dN.append(types[joints[n].type])
 
-    # Numero de nudos
-    n = len(joints)
-
-    # Se genera la matriz de rigidez de la estructura (S)
-    S = matrix(zeros((n*3,n*3)))
-    get_structure_stiffness_matrix(S, joints, members)
-    K = matrix(S) # copia de la matriz de rigidez
-
-    # Se genera el vector de cargas de la estructura (L)
-    L = matrix(zeros((n*3))).T
-    get_structure_load_vector(L, joints, members)
-    P = matrix(L) # copia del vector de cargas
-
-    # Se imponen las condiciones de contorno mediante la eliminaci�n de
-    # los grados de libertad impedidos
     for n in range(len(joints)):
         k0 = n*3
         k1 = k0 + 1
@@ -231,26 +227,19 @@ def msa(joints, members):
         if S[k,k] == 0:
             S[k,k] = 1
 
-    # Se calculan los desplazamientos (D) y las reacciones (R)
-    D = solve(S, L)
-    R = K * D - P
+def get_displacements(S, L):
+    """ Calcula los desplazamientos de los nudos de la estructura """
 
-    # Se imprimen los resultados
-    print
-    print 'Matriz de rigidez de la estructura (S)'
-    print S
-    print
-    print 'Vector de cargas de la estructura (L)'
-    print L
-    print
-    print "Desplazamientos de los nudos (D)"
-    print D
-    print
-    print "Reacciones (R)"
-    print R
-    print
+    return solve(S, L)
 
-    # Se calculan los esfuerzos en los extremos de barra
+def get_reactions(K, D, P):
+    """ Calcula las reacciones en los apoyos de la estructura """
+
+    return K * D - P
+
+def get_efforts(members, D):
+    """ Calcula los esfuerzos en los extremos de barra """
+
     d = matrix(zeros(6)).T
     f = matrix(zeros([6, len(members)]))
     for n in range(len(members)):
@@ -259,8 +248,6 @@ def msa(joints, members):
 
         d[0:3,0] = D[i:i+3,0]
         d[3:6,0] = D[j:j+3,0]
-
-        L = members[n].L
 
         r = members[n].get_rotation_matrix()
 
@@ -271,6 +258,43 @@ def msa(joints, members):
         f[:,n] = k * d
         f[:,n] += matrix(members[n].get_loads()).T
 
+    return f
+
+def msa(joints, members):
+    """ Método matricial para la resolución de estructuras planas """
+
+    # Se genera la matriz de rigidez de la estructura (S)
+    S = get_structure_stiffness_matrix(joints, members)
+    print 'Matriz de rigidez de la estructura (S)'
+    print S
+    print
+    K = matrix(S) # copia de la matriz de rigidez
+
+    # Se genera el vector de cargas de la estructura (L)
+    L = get_structure_load_vector(joints, members)
+    print 'Vector de cargas de la estructura (L)'
+    print L
+    print
+    P = matrix(L) # copia del vector de cargas
+
+    # Se imponen las condiciones de contorno
+    set_restraints(joints, S, L)
+
+    # Se calculan los desplazamientos (D)
+    D = get_displacements(S, L)
+    print "Desplazamientos de los nudos (D)"
+    print D
+    print
+
+    # Se calculan las reacciones (R)
+    R = get_reactions(K, D, P)
+    print "Reacciones (R)"
+    print R
+    print
+
+    # Se calculan los esfuerzos en extremo de barra (f)
+    f = get_efforts(members, D)
+    print
     print "Esfuerzos en los extremos de barra (f)"
     print f.T
 
