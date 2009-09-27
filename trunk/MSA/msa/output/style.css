@@ -9,10 +9,11 @@ TABLE {
 	border-width:thin;
 	border-style:solid;
 	border-color:gray;
-	font-size:11pt
+	font-size:11pt;
+        width: 550px;
 	}
 THEAD {
-	background-color:#DDDDDD
+	background-color:#DDDDDD;
 	}
 
 TD {
@@ -28,13 +29,11 @@ IMG {
 
 H1  {
 	text-align:center;
-	color: white;
+	color: #996633;
 	font-size: 18pt;	
 	font-weight: bold;	
-	margin-top: 1em;	
-	margin-bottom: .3em;
-	background: #666666;
-	padding: .05em;	
+	background: #E0E0E0;
+        width:800px;
 }
 
 H2	{
@@ -42,14 +41,16 @@ H2	{
 	color: #333333;
 	font-size: 14pt;
 	font-weight: bold;
-	background: #999999;
+	background: #D0D0D0;
+        width:750px;
 }
 
 H3	{
 	text-align:center;
 	font-size: 12pt;
 	font-weight: bold;	
-	background: #CCCCCC;
+	background: #F0F0F0;
+        width:700px;
 }
 
 a:link,a:visited,a:active {

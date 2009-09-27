@@ -10,18 +10,34 @@
         <IMG src="schematic.png" alt="Esquema estructural"/>
         <TABLE>
             <THEAD>
-                <TR><TH rowspan=2>Nudos</TH><TH colspan=2>Coordenadas</TH><TH colspan=3>Cargas</TH></TR>
-                <TR><TH>X [m]</TH><TH>Y [m]</TH><TH>FX [N]</TH><TH>FY [N]</TH><TH>MZ [Nm]</TH></TR>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=2>Coordenadas</TH><TH rowspan=2>Coacciones</TH></TR>
+                <TR><TH>X [m]</TH><TH>Y [m]</TH></TR>
             </THEAD>
-        <TBODY><TR><td>0</td><td>0.0</td><td>0.0</td><td>0</td><td>0</td><td>0</td></TR><TR><td>1</td><td>2.4</td><td>1.8</td><td>0</td><td>0</td><td>0</td></TR><TR><td>2</td><td>4.8</td><td>1.8</td><td>0</td><td>0</td><td>0</td></TR>                    </TBODY>
+        <TBODY><TR><td>0</td><td>0.0</td><td>0.0</td><td>fs</td></TR><TR><td>1</td><td>2.4</td><td>1.8</td><td>rj</td></TR><TR><td>2</td><td>4.8</td><td>1.8</td><td>fs</td></TR>                    </TBODY>
                     </TABLE>
                     <BR>
                     <TABLE>
                         <THEAD>
-                            <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=3>Propiedades</TH><TH>Cargas</TH></TR>
-                            <TR><TH>L [m]</TH><TH>A [mm2]</TH><TH>E [N/mm2]</TH><TH>Iz [cm4]</TH><TH>qy [N/m]</TH></TR>
+                            <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=3>Propiedades</TH></TR>
+                            <TR><TH>L [m]</TH><TH>A [mm2]</TH><TH>E [N/mm2]</TH><TH>Iz [cm4]</TH></TR>
                         </THEAD>
-                        <TBODY><tr><td>0/1</td><td>3.0</td><td>0</td><td>29000</td><td>0.0</td><td>0</td></tr><tr><td>1/2</td><td>2.4</td><td>0</td><td>29000</td><td>0.0</td><td>-250</td></tr>            </TBODY>
+                        <TBODY><tr><td>0/1</td><td>3.0</td><td>0</td><td>29000</td><td>0.0</td></tr><tr><td>1/2</td><td>2.4</td><td>0</td><td>29000</td><td>0.0</td></tr>            </TBODY>
+        </TABLE><BR>
+        <H2>Cargas</H2>
+        <IMG src="loads.png" alt="Cargas"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=3>Cargas</TH></TR>
+                <TR><TH>FX [N]</TH><TH>FY [N]</TH><TH>MZ [Nm]</TH></TR>
+            </THEAD>
+        <TBODY><TR><td>0</td><td>0</td><td>0</td><td>0</td></TR><TR><td>1</td><td>0</td><td>0</td><td>0</td></TR><TR><td>2</td><td>0</td><td>0</td><td>0</td></TR>                    </TBODY>
+                    </TABLE><BR>
+                    <TABLE>
+                        <THEAD>
+                            <TR><TH rowspan=2>Barras</TH><TH>Cargas</TH></TR>
+                            <TR><TH>qy [N/m]</TH></TR>
+                        </THEAD>
+                        <TBODY><tr><td>0/1</td><td>0</td></tr><tr><td>1/2</td><td>-250</td></tr>            </TBODY>
         </TABLE><BR>
         <H2>Reacciones</H2>
         <IMG src="reactions.png" alt="Reacciones"/>

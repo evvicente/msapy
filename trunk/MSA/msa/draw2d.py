@@ -22,6 +22,23 @@ def draw_schematic(joints, members):
     # Dibuja los nudos
     for n in range(len(joints)):
         joints[n].draw_joint()
+        txt = "\n %d" %n
+        text(joints[n].X, joints[n].Y, txt, va='top', ha='left', fontsize=10, color='red')
+    # Dibuja las barras
+    for n in range(len(members)):
+        members[n].draw_member()
+
+# Diagrama de cargas
+def draw_loads(joints, members):
+    """ Dibuja la estructura cargada"""
+
+    title("Hipotesis de carga")
+    xlabel("X")
+    ylabel("Y")
+    axis('equal')
+    # Dibuja los nudos
+    for n in range(len(joints)):
+        joints[n].draw_joint()
         joints[n].draw_loads()
     # Dibuja las barras
     for n in range(len(members)):
@@ -165,23 +182,45 @@ def report(joints, members, filename="output/report.html"):
         <IMG src="schematic.png" alt="Esquema estructural"/>
         <TABLE>
             <THEAD>
-                <TR><TH rowspan=2>Nudos</TH><TH colspan=2>Coordenadas</TH><TH colspan=3>Cargas</TH></TR>
-                <TR><TH>X [m]</TH><TH>Y [m]</TH><TH>FX [N]</TH><TH>FY [N]</TH><TH>MZ [Nm]</TH></TR>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=2>Coordenadas</TH><TH rowspan=2>Coacciones</TH></TR>
+                <TR><TH>X [m]</TH><TH>Y [m]</TH></TR>
             </THEAD>
         <TBODY>"""
     for n in range(len(joints)):
-        s += '<TR><td>%d</td><td>%.1f</td><td>%.1f</td><td>%d</td><td>%d</td><td>%d</td></TR>' %(n, joints[n].X, joints[n].Y, joints[n].FX, joints[n].FY, joints[n].MZ)
+        s += '<TR><td>%d</td><td>%.1f</td><td>%.1f</td><td>%s</td></TR>' %(n, joints[n].X, joints[n].Y, joints[n].type)
     s += """                    </TBODY>
                     </TABLE>
                     <BR>
                     <TABLE>
                         <THEAD>
-                            <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=3>Propiedades</TH><TH>Cargas</TH></TR>
-                            <TR><TH>L [m]</TH><TH>A [mm2]</TH><TH>E [N/mm2]</TH><TH>Iz [cm4]</TH><TH>qy [N/m]</TH></TR>
+                            <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=3>Propiedades</TH></TR>
+                            <TR><TH>L [m]</TH><TH>A [mm2]</TH><TH>E [N/mm2]</TH><TH>Iz [cm4]</TH></TR>
                         </THEAD>
                         <TBODY>"""
     for n in range(len(members)):
-        s += '<tr><td>%d/%d</td><td>%.1f</td><td>%d</td><td>%d</td><td>%.1f</td><td>%d</td></tr>' %(members[n].i, members[n].j, members[n].L, members[n].A, members[n].E, members[n].Iz, members[n].qy)
+        s += '<tr><td>%d/%d</td><td>%.1f</td><td>%d</td><td>%d</td><td>%.1f</td></tr>' %(members[n].i, members[n].j, members[n].L, members[n].A, members[n].E, members[n].Iz)
+    s += """            </TBODY>
+        </TABLE><BR>
+        <H2>Cargas</H2>
+        <IMG src="loads.png" alt="Cargas"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=3>Cargas</TH></TR>
+                <TR><TH>FX [N]</TH><TH>FY [N]</TH><TH>MZ [Nm]</TH></TR>
+            </THEAD>
+        <TBODY>"""
+    for n in range(len(joints)):
+        s += '<TR><td>%d</td><td>%d</td><td>%d</td><td>%d</td></TR>' %(n, joints[n].FX, joints[n].FY, joints[n].MZ)
+    s += """                    </TBODY>
+                    </TABLE><BR>
+                    <TABLE>
+                        <THEAD>
+                            <TR><TH rowspan=2>Barras</TH><TH>Cargas</TH></TR>
+                            <TR><TH>qy [N/m]</TH></TR>
+                        </THEAD>
+                        <TBODY>"""
+    for n in range(len(members)):
+        s += '<tr><td>%d/%d</td><td>%d</td></tr>' %(members[n].i, members[n].j, members[n].qy)
     s += """            </TBODY>
         </TABLE><BR>
         <H2>Reacciones</H2>
@@ -245,6 +284,10 @@ def report(joints, members, filename="output/report.html"):
     fig.clear()
     draw_schematic(joints, members)
     savefig('output/schematic.png')
+    # Loads
+    fig.clear()
+    draw_loads(joints, members)
+    savefig('output/loads.png')
     # Reactions
     fig.clear()
     draw_reactions(joints, members)
