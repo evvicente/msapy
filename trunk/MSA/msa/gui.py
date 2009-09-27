@@ -1,6 +1,5 @@
-# -*- coding: latin-1 -*-
-__author__="Jorge Rodr�guez Ara�jo"
-__date__ ="$11-jul-2009 21:41:52$"
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 from pylab import *
 
@@ -71,11 +70,6 @@ class Gui():
         img = tk.PhotoImage(file='icons/solve.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
         button.image = img
-        button.pack(side='left')
-        # Report
-        img = tk.PhotoImage(file='icons/report.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open(os.path.join('output', 'report.html')))
-        button.image = img
         button.pack(side='left', padx=10)
         # Exit
         img = tk.PhotoImage(file='icons/exit.gif')
@@ -94,7 +88,7 @@ class Gui():
         buttonReactions = tk.Button(frame, text=" R ", bg='gray', command=self.draw_reactions, relief=tk.GROOVE)
         buttonReactions.pack(side='right')
         # Status bar
-        self.statusbar = tk.Label(frame, text=" ", bd=1, anchor=tk.W)
+        self.statusbar = tk.Label(frame, text=" MSA - Copyright 2009 Jorge Rodríguez Araújo ", bd=1, anchor=tk.W)
         self.statusbar.pack(side=tk.BOTTOM, fill=tk.X, expand='yes')
 
         # Open default file
@@ -136,6 +130,7 @@ class Gui():
         fig = figure(1)
         fig.clear()
         draw2d.draw_schematic(self.joints, self.members)
+        draw2d.draw_loads(self.joints, self.members)
         fig.show()
         
         self.statusbar['text'] = ""
@@ -182,11 +177,12 @@ class Gui():
         draw2d.report(self.joints, self.members)
         t = time.clock() - t0
         self.statusbar['text'] = " La estructura se ha resuelto en %.2f segundos " %t
-        self.draw_moments()
+        webbrowser.open(os.path.join('output', 'report.html'))
 
 def run():
     window = tk.Tk()
     window.title("MSA")
+    window.geometry("+%d+%d" %(0, 0))
     #window.iconbitmap(os.path.join('icons', 'msa.ico'))
     Gui(window)
     window.mainloop()

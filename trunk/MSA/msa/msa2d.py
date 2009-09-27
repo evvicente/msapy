@@ -24,7 +24,7 @@ def load(filename):
         row = row.replace(',', '.')
         values = row.split(';')
 
-        if re.search('^P', values[0]):
+        if re.search('^P\d+', values[0]):
             # Definicion de las propiedades de la estructura
             name = values[1]
             A = float(values[2])
@@ -33,7 +33,7 @@ def load(filename):
 
             properties.append([name, A, E, I])
 
-        elif re.search('^N', values[0]):
+        elif re.search('^N\d+', values[0]):
             # Definicion de los nudos de la estructura
             X = float(values[1])
             Y = float(values[2])
@@ -44,7 +44,7 @@ def load(filename):
 
             joints.append(Joint(X, Y, FX, FY, MZ, type))
 
-        elif re.search('^B', values[0]):
+        elif re.search('^B\d+', values[0]):
             # Definicion de las barras de la estructura
             i = int(values[1])
             j = int(values[2])
@@ -150,9 +150,9 @@ def get_structure_stiffness_matrix(joints, members):
 
         add_stiffness_matrix(S, K, i, j)
 
-        print "#-------------------------------------------------"
-        print "#  Barra %d:     Longitud = %0.2f m" %(n, L)
-        print "#-------------------------------------------------"
+        print 
+        print "  Barra %d:     Longitud = %0.2f m" %(n, L)
+        print "-------------------------------------------------"
         print " Matriz de rigidez local: k = "
         print k
         print

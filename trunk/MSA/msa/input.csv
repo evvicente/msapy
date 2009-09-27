@@ -1,11 +1,15 @@
-;Name;A[mm2];E[N/mm2];Iz[cm4];Wz[cm3];
-P0;IPE A;0,12;29000;0,006;
+Calculo de uno de los tramos de una escalera
 
-Joints;X[m];Y[m];Type;FX[N];FY[N];MZ[Nm];
+Propiedades;Tipo;A[mm2];E[N/mm2];Iz[cm4];Wz[cm3];
+P0;IPE 160;2010;210000;869;109;
+
+Nudos;X[m];Y[m];Tipo;FX[N];FY[N];MZ[Nm];
 N0;0;0;fs;0;0;0;
-N1;2,40;1,80;rj;0;0;0;
-N2;4,80;1,80;fs;0;0;0;
+N1;1;0;rj;0;0;0;
+N2;4;1,5;rj;0;0;0;
+N3;5;1,5;fs;0;0;0
 
-Members;Ni;Nf;qy[N/m];Type;
-B0;0;1;0;IPE A;
-B1;1;2;-250;IPE A;
+Barras;Ni;Nf;qy[N/m];Tipo;
+B0;0;1;-4190;IPE 160;
+B1;1;2;-4190;IPE 160;
+B2;2;3;-4190;IPE 160;
