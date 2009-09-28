@@ -3,7 +3,7 @@
 from pylab import *
 
 class Member():
-    def __init__(self, i, j, X1, Y1, X2, Y2, qy = 0):
+    def __init__(self, i, j, X1, Y1, X2, Y2, qy = 0, qY = 0):
         """ Define un miembro estructural a partir de sus coordenadas """
 
         # Identificacion de los nudos inicial y final
@@ -29,6 +29,7 @@ class Member():
         # Cargas uniformemente distribuidas
         self.qx = 0
         self.qy = qy
+        self.qY = qY # Peso
 
         # Cargas en extremo de barra: inicial (1) y final (2)
         #   Fx = Carga en el extremo segun el eje x de la barra
@@ -43,9 +44,9 @@ class Member():
 
         self.__load = [0, 0, 0, 0, 0, 0]
 
-        # Transformacion de la carga uniforme
-        if qy != 0:
-            self.set_uniform(qy)
+        # Transformacion de las cargas uniformes
+        if qy != 0 or qY != 0:
+            self.set_uniforms_loads(qy, qY)
 
         # Esfuerzos resultantes en extremo de barra
         self.N1 = 0
@@ -86,15 +87,23 @@ class Member():
         (self.N1, self.V1, self.M1, self.N2, self.V2, self.M2) = (N1, V1, M1, N2, V2, M2)
 
     # Carga uniforme
-    def set_uniform(self, qy):
+    def set_uniforms_loads(self, qy, qY):
         """ Calcula las reacciones de empotramiento perfecto para una carga
         uniformente repartida en toda la barra. """
-        self.qy = qy
 
+        if qY!=0:
+            x = abs(self.X2 - self.X1)
+            qx = (qY * x / self.L) * self.sin
+            qy = qy + (qY * x / self.L) * self.cos        
+            self.qx = qx
+            self.qy = qy
+            N = - qx * self.L
+
+        N = 0
         V = - qy * self.L / 2
         M = qy * self.L**2 / 12
 
-        self.__load = [0, V, -M, 0, V, M]
+        self.__load = [N, V, -M, N, V, M]
 
     # Momentos
     def M(self, x):
@@ -114,7 +123,15 @@ class Member():
 
     def draw_loads(self, scale):
         """ Dibuja las cargas sobre la barra """
-        if self.qy != 0:
+        if self.qY != 0:
+            YL1 = self.Y1 + scale * abs(self.qy)
+            YL2 = self.Y2 + scale * abs(self.qy)
+            fill([self.X1, self.X1, self.X2, self.X2], [self.Y1, YL1, YL2, self.Y2], hatch='|', facecolor='black')
+
+            txt = "%d" %self.qY
+            text((self.X1 + self.X2)/2, (self.Y1 + self.Y2 + YL1 + YL2)/4, txt, va='center', ha='center', color='red')
+
+        elif self.qy != 0:
             s = self.sin
             c = self.cos
             XL1 = self.X1 - scale * abs(self.qy) * s
@@ -128,13 +145,34 @@ class Member():
 
     def draw_normal(self, scale):
         """ Dibuja el diagrama de esfuerzos normales """
-        XN1 = self.X1 + scale * self.N1 * self.sin
-        YN1 = self.Y1 - scale * self.N1 * self.cos
-        XN2 = self.X2 - scale * self.N2 * self.sin
-        YN2 = self.Y2 + scale * self.N2 * self.cos
-        fill([self.X1, XN1, XN2, self.X2], [self.Y1, YN1, YN2, self.Y2], facecolor='red')
-        txt = "%.1f\n" %round(self.N2, 1)
-        text((self.X1 + self.X2 + XN1 + XN2)/4, (self.Y1 + self.Y2 + YN1 + YN2)/4, txt, va='center', ha='center', fontsize=10, color='black')
+        N = 0
+        if self.qx == 0:
+            x = arange(0, 1.1, 0.5)
+            x = x * self.L
+            N = - self.N1
+        else:
+            x = arange(0, 1.1, 0.5)
+            x = x * self.L
+            N = - self.N1 - self.qx * x
+
+        X = x * self.cos + self.X1
+        Y = x * self.sin + self.Y1
+        X = X - (scale * self.sin * N)
+        Y = Y + (scale * self.cos * N)
+        X = [self.X1] + list(X) + [self.X2]
+        Y = [self.Y1] + list(Y) + [self.Y2]
+        fill(X, Y, facecolor='red')
+        # Escribe los valores de los esfuerzos normales
+        txt = "\n\n  %.1f\n" %abs(round(self.N1, 1))
+        if self.N1 > 0:
+            text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
+        else:
+            text(X[1], Y[1], txt, va='bottom', ha='left', fontsize=9, color='black')
+        txt = "\n\n%.1f  \n" %abs(round(self.N2, 1))
+        if self.N2 > 0:
+            text(X[-2], Y[-2], txt, va='bottom', ha='right', fontsize=9, color='black')
+        else:
+            text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
 
     def draw_shear(self, scale):
         """ Dibuja el diagrama de esfuerzos cortantes """
@@ -182,10 +220,10 @@ class Member():
             x = arange(0, 1.1, 0.1)
             x = x * self.L
             M = - self.M1 + (self.V1 * x) + (self.qy * x * x/2)
-            # Momento m�ximo (x = - V1/qy)
+            # Momento maximo (x = - V1/qy)
             xmax = - self.V1 / self.qy
             Mmax = - self.M1 - ((self.V1 * self.V1) / (2 * self.qy))
-            txt = "\n x = %.4f\n Mmax = %.4f\n\n\n" %(xmax, Mmax)
+            txt = "\n x = %.3f\n Mmax = %.1f\n\n\n" %(xmax, Mmax)
             text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='center', horizontalalignment='center', fontsize=9, color='red')
 
         X = x * self.cos + self.X1

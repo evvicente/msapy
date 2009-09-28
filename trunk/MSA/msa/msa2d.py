@@ -53,6 +53,7 @@ def load(filename):
             X2 = joints[j].X
             Y2 = joints[j].Y
             qy = float(values[3])
+            #qY = float(values[4])
             type = values[4]
             for prop in properties:
                 if prop[0]==type:
@@ -301,15 +302,43 @@ def msa(joints, members):
     # Se asignan los desplazamientos y reacciones a los nudos correspondientes
     for n in range(len(joints)):
         k = n*3
-        joints[n].set_displacements(float(D[k]), float(D[k+1]), float(D[k+2]))
-        joints[n].set_reactions(float(R[k]), float(R[k+1]), float(R[k+2]))
+        joints[n].set_displacements(D[k,0], D[k+1,0], D[k+2,0])
+        joints[n].set_reactions(R[k,0], R[k+1,0], R[k+2,0])
 
     # Se asignan los esfuerzos en extremos a su correspondiente barra
     for n in range(len(members)):
+        members[n].set_efforts(f[0,n], f[1,n], f[2,n], f[3,n], f[4,n], f[5,n])
+
+    # Comprobación del equilibrio global de la estructura
+    FX = 0
+    FY = 0
+    MZ = 0
+    for n in range(len(joints)):
+        k = n * 3
+        FX += R[k] + P[k]
+        FY += R[k+1] + P[k+1]
+        MZ += R[k+2] + P[k+2]
+        
+    print
+    print "Comprobacion del equilibrio global de la estructura"
+    print "Suma de fuerzas en X =", round(FX, 7)
+    print "Suma de fuerzas en Y =", round(FY, 7)
+    print "Suma de momentos en Z =", round(MZ, 7)
+
+    print
+    print "Comprobacion del equilibrio local de cada barra"
+    for n in range(len(members)):
+        k = n * 3
         N1 = f[0,n]
         V1 = f[1,n]
         M1 = f[2,n]
         N2 = f[3,n]
         V2 = f[4,n]
         M2 = f[5,n]
-        members[n].set_efforts(N1, V1, M1, N2, V2, M2)
+        Fx = N1 + N2
+        Fy = V1 + V2 + members[n].qy * members[n].L
+        Mz = M1 + M2 + members[n].qy * members[n].L**2 / 2 + V2 * members[n].L
+        print "Barra ", n
+        print "Fx = ", round(Fx, 7)
+        print "Fy = ", round(Fy, 7)
+        print "Mz = ", round(Mz, 7)

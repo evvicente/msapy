@@ -44,7 +44,7 @@ class Gui():
         button.pack(side='right')
         # Template
         img = tk.PhotoImage(file='icons/excel.gif')
-        button = tk.Button(frame, image=img, text=" EXCEL ", compound='left', fg='darkgreen', relief=tk.GROOVE, command=lambda:os.system('input.xls'))
+        button = tk.Button(frame, image=img, text=" ", compound='center', relief=tk.GROOVE, command=lambda:os.system('input.xls'))
         button.image = img
         button.pack(side='right', padx=10)
 
@@ -60,22 +60,22 @@ class Gui():
 
         # Tools
         frame = tk.Frame(window)
-        frame.pack(fill=tk.X, padx=5, pady=5)
+        frame.pack(fill=tk.X, pady=5)
         # Refresh
         img = tk.PhotoImage(file='icons/refresh.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.draw_schematic)
         button.image = img
-        button.pack(side='left')
+        button.pack(side='left', padx=5)
         # Solver
         img = tk.PhotoImage(file='icons/solve.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
         button.image = img
-        button.pack(side='left', padx=10)
+        button.pack(side='left')
         # Exit
         img = tk.PhotoImage(file='icons/exit.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
         button.image = img
-        button.pack(side='right', padx=1)
+        button.pack(side='right', padx=5)
         # Graphics
         buttonDisplacements = tk.Button(frame, text=" D ", bg='gray', command=self.draw_displacements, relief=tk.GROOVE)
         buttonDisplacements.pack(side='right')

@@ -54,7 +54,6 @@ def draw_reactions(joints, members):
     ylabel("Y")
     axis('equal')
     for n in range(len(joints)):
-        joints[n].draw_joint()
         joints[n].draw_loads()
         joints[n].draw_reactions()
     for n in range(len(members)):
@@ -193,12 +192,12 @@ def report(joints, members, filename="output/report.html"):
                     <BR>
                     <TABLE>
                         <THEAD>
-                            <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=3>Propiedades</TH></TR>
-                            <TR><TH>L [m]</TH><TH>A [mm2]</TH><TH>E [N/mm2]</TH><TH>Iz [cm4]</TH></TR>
+                            <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=4>Propiedades</TH></TR>
+                            <TR><TH>L [m]</TH><TH>A [mm2]</TH><TH>E [N/mm2]</TH><TH>Iz [cm4]</TH><TH>Wz [cm3]</TH></TR>
                         </THEAD>
                         <TBODY>"""
     for n in range(len(members)):
-        s += '<tr><td>%d/%d</td><td>%.1f</td><td>%d</td><td>%d</td><td>%.1f</td></tr>' %(members[n].i, members[n].j, members[n].L, members[n].A, members[n].E, members[n].Iz)
+        s += '<tr><td>%d/%d</td><td>%.1f</td><td>%d</td><td>%d</td><td>%.1f</td><td>%.1f</td></tr>' %(members[n].i, members[n].j, members[n].L, members[n].A, members[n].E, members[n].Iz, members[n].Wz)
     s += """            </TBODY>
         </TABLE><BR>
         <H2>Cargas</H2>
@@ -215,12 +214,12 @@ def report(joints, members, filename="output/report.html"):
                     </TABLE><BR>
                     <TABLE>
                         <THEAD>
-                            <TR><TH rowspan=2>Barras</TH><TH>Cargas</TH></TR>
-                            <TR><TH>qy [N/m]</TH></TR>
+                            <TR><TH rowspan=2>Barras</TH><TH colspan=2>Cargas</TH></TR>
+                            <TR><TH>qx [N/m]</TH><TH>qy [N/m]</TH></TR>
                         </THEAD>
                         <TBODY>"""
     for n in range(len(members)):
-        s += '<tr><td>%d/%d</td><td>%d</td></tr>' %(members[n].i, members[n].j, members[n].qy)
+        s += '<tr><td>%d/%d</td><td>%d</td><td>%d</td></tr>' %(members[n].i, members[n].j, members[n].qx, members[n].qy)
     s += """            </TBODY>
         </TABLE><BR>
         <H2>Reacciones</H2>
