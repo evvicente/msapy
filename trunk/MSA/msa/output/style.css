@@ -38,19 +38,11 @@ H1  {
 
 H2	{
 	text-align:center;
-	color: #333333;
+	color: #2222DD;
 	font-size: 14pt;
 	font-weight: bold;
-	background: #D0D0D0;
+	background: #F2F2F2;
         width:750px;
-}
-
-H3	{
-	text-align:center;
-	font-size: 12pt;
-	font-weight: bold;	
-	background: #F0F0F0;
-        width:700px;
 }
 
 a:link,a:visited,a:active {

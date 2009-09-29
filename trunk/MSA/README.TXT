@@ -17,7 +17,7 @@ Dado que esta aplicación se encuentra desarrollada completamente en Python, pued
 Para ejecutar MSA en Windows, simplemente:
  * Instala los paquetes: [http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi Python], [http://downloads.sourceforge.net/sourceforge/numpy/numpy-1.3.0-win32-superpack-python2.5.exe Numpy] y [http://downloads.sourceforge.net/sourceforge/matplotlib/matplotlib-0.98.5.3.win32-py2.5.exe matplotlib]
  * Una vez instalados los paquetes anteriores, dado que aún no se dispone de instalador, descarga y descomprime la [http://code.google.com/p/msapy/downloads/list última versión] disponible de la aplicación.
- * Haz doble clic sobre el archivo "MSA.py" que se encunetra en el directorio "msa/".
+ * Haz doble clic sobre el archivo "MSA.py" que se encunetra en el directorio principal.
 
 == Estudio de una viga de dos vanos ==
 

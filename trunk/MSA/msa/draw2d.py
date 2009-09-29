@@ -161,9 +161,13 @@ def get_draw_scales(members):
         
     return [sq, sN, sV, sM]
 
+# Tipos de coacciones
+JointType = {'fs':"empotramiento", 'hs':"apoyo articulado", 'rs':"rodillo",
+             'rj':"nudo rigido", 'hj':"nudo articulado"}
+
 # Genera el informe
 def report(joints, members, filename="output/report.html"):
-    """ Genera el informe resultado del an�lisis de la estructura """
+    """ Genera el informe resultado del analisis de la estructura """
 
     # Se escribe el informe
 
@@ -186,7 +190,7 @@ def report(joints, members, filename="output/report.html"):
             </THEAD>
         <TBODY>"""
     for n in range(len(joints)):
-        s += '<TR><td>%d</td><td>%.1f</td><td>%.1f</td><td>%s</td></TR>' %(n, joints[n].X, joints[n].Y, joints[n].type)
+        s += '<TR><td>%d</td><td>%.1f</td><td>%.1f</td><td>%s</td></TR>' %(n, joints[n].X, joints[n].Y, JointType[joints[n].type])
     s += """                    </TBODY>
                     </TABLE>
                     <BR>

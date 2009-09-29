@@ -5,6 +5,7 @@ from pylab import *
 
 from joint2d import *
 from member2d import *
+from properties import *
 
 import re # Expresiones regulares
 def load(filename):
@@ -22,13 +23,14 @@ def load(filename):
         values = row.split(';')
 
         if re.search('^P\d+', values[0]):
-            # Definicion de las propiedades de la estructura
+            # Definicion de las propiedades de los materiales
             name = values[1]
             A = float(values[2])
             E = float(values[3])
-            I = float(values[4])
+            Iz = float(values[4])
+            Wz = float(values[5])
 
-            properties.append([name, A, E, I])
+            properties.append(Properties(name, A, E, Iz, Wz))
 
         elif re.search('^N\d+', values[0]):
             # Definicion de los nudos de la estructura
@@ -51,17 +53,11 @@ def load(filename):
             Y2 = joints[j].Y
             qy = float(values[3])
             #qY = float(values[4])
+            members.append(Member(i, j, X1, Y1, X2, Y2, qy))
             type = values[4]
             for prop in properties:
-                if prop[0]==type:
-                    A = prop[1]
-                    E = prop[2]
-                    Iz = prop[3]
-
-            members.append(Member(i, j, X1, Y1, X2, Y2, qy))
-            print members[-1]
-            members[-1].set_properties(A, E, Iz, 0)
-            print members[-1]
+                if prop.name==type:
+                    members[-1].set_properties(prop.A, prop.E, prop.Iz, prop.Wz)
 
     return joints, members
 
@@ -127,25 +123,23 @@ def get_structure_stiffness_matrix(joints, members):
     n = len(joints) # Numero de nudos
     S = matrix(zeros((n*3,n*3)))
 
-    for n in range(len(members)):
+    for member in members:
         print
-        print "Calculo de la matriz de rigidez local (k) de la barra", n
-        members[n].k = get_stiffness_matrix(members[n].E, members[n].A,
-                                 members[n].Iz, members[n].L)
-        print members[n].k
+        print "Calculo de la matriz de rigidez local (k) de la barra %d/%d" %(member.i, member.j)
+        member.k = get_stiffness_matrix(member.E, member.A, member.Iz, member.L)
+        print member.k
         
         print
-        print "Calculo de la matriz de rotacion (r) de la barra", n
-        members[n].r = get_rotation_matrix(members[n].X1, members[n].Y1,
-                                members[n].X2, members[n].Y2)
-        print members[n].r
+        print "Calculo de la matriz de rotacion (r) de la barra %d/%d" %(member.i, member.j)
+        member.r = get_rotation_matrix(member.X1, member.Y1, member.X2, member.Y2)
+        print member.r
         
         print
-        print "Calculo de la matriz de rigidez global (K) de la barra", n
-        K = members[n].r.T * members[n].k * members[n].r
+        print "Calculo de la matriz de rigidez global (K) de la barra %d/%d" %(member.i, member.j)
+        K = member.r.T * member.k * member.r
         print K
 
-        add_stiffness_matrix(S, K, members[n].i, members[n].j)
+        add_stiffness_matrix(S, K, member.i, member.j)
 
     return S
 
@@ -155,13 +149,13 @@ def get_structure_load_vector(joints, members):
     n = len(joints) # Numero de nudos
     L = matrix(zeros((n*3))).T
 
-    for n in range(len(members)):
-        p = matrix(members[n].get_loads()).T
+    for member in members:
+        p = matrix(member.get_loads()).T
 
-        P = - members[n].r.T * p
+        P = - member.r.T * p
 
-        add_load_vector(L, P[0:3,0], members[n].i)
-        add_load_vector(L, P[3:6,0], members[n].j)
+        add_load_vector(L, P[0:3,0], member.i)
+        add_load_vector(L, P[3:6,0], member.j)
 
     # Cargas aplicadas directamente en los nudos
     for n in range(len(joints)):
@@ -284,7 +278,7 @@ def msa(joints, members):
         MZ += R[k+2] + P[k+2]
     print "FX =", round(FX, 7)
     print "FY =", round(FY, 7)
-    print "FZ =", round(MZ, 7)
+    print "¡No implementado! MZ =", round(MZ, 7)
 
     print
     print "Comprobacion del equilibrio local de cada barra"
