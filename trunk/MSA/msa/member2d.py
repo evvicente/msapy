@@ -25,6 +25,7 @@ class Member():
         self.A = 0 # Area de la seccion
         self.Iz = 0 # Momento de inercia de la seccion
         self.Wz = 0 # Modulo resistente
+        self.fyd = 0 # Resistencia ultima del material
 
         # Cargas uniformemente distribuidas
         self.qx = 0
@@ -59,21 +60,14 @@ class Member():
         # Matrices de la barra
         self.k = 0 # Matriz de rigidez
         self.r = 0 # Matriz de rotacion
-    
-    def get_rotation_matrix(self):
-        """ Devuelve la matriz de rotación de la barra """
-        return self.r
 
-    def get_stiffness_matrix(self):
-        """ Devuelve la matriz de rigidez de la barra """
-        return self.k
-
-    def set_properties(self, A, E, Iz, Wz):
+    def set_properties(self, A, E, Iz, Wz, fyd):
         """ Establece las propiedades de la barra """
         self.A = A
         self.E = E
         self.Iz = Iz
         self.Wz = Wz
+        self.fyd = fyd
 
     def set_loads(self, Fx1, Fy1, Mz1, Fx2, Fy2, Mz2):
         """ Establece las cargas en los extremos inicial (1) y final (2) de la barra,

@@ -11,95 +11,73 @@ normals_scale = 0.1
 shears_scale = 0.1
 moments_scale = 0.1
 
-# Diagrama estructural
-def draw_schematic(joints, members):
-    """ Dibuja la estructura """
-
-    title("Esquema estructural")
+def create_figure(title_figure):
+    fig = figure(1)
+    fig.clear()
+    
+    title(title_figure)
     xlabel("X")
     ylabel("Y")
     axis('equal')
-    # Dibuja los nudos
+
+def draw_schematic(joints, members):
+    """ Dibuja el esquema estructural """
+
+    create_figure("Esquema estructural")
     for n in range(len(joints)):
         joints[n].draw_joint()
         txt = "\n %d" %n
         text(joints[n].X, joints[n].Y, txt, va='top', ha='left', fontsize=10, color='red')
-    # Dibuja las barras
-    for n in range(len(members)):
-        members[n].draw_member()
+    for member in members:
+        member.draw_member()
 
-# Diagrama de cargas
 def draw_loads(joints, members):
-    """ Dibuja la estructura cargada"""
+    """ Dibuja la estructura con sus estados de cargada """
 
-    title("Hipotesis de carga")
-    xlabel("X")
-    ylabel("Y")
-    axis('equal')
-    # Dibuja los nudos
-    for n in range(len(joints)):
-        joints[n].draw_joint()
-        joints[n].draw_loads()
-    # Dibuja las barras
-    for n in range(len(members)):
-        members[n].draw_member()
-        members[n].draw_loads(loads_scale)
+    create_figure("Hipotesis de carga")
+    for joint in joints:
+        joint.draw_joint()
+        joint.draw_loads()
+    for member in members:
+        member.draw_member()
+        member.draw_loads(loads_scale)
 
-# Diagrama de reacciones
 def draw_reactions(joints, members):
-    """ Dibuja las reacciones """
+    """ Dibuja la estructura y sus reacciones """
 
-    title("Reacciones")
-    xlabel("X")
-    ylabel("Y")
-    axis('equal')
-    for n in range(len(joints)):
-        joints[n].draw_loads()
-        joints[n].draw_reactions()
-    for n in range(len(members)):
-        members[n].draw_member()
-        members[n].draw_loads(loads_scale)
+    create_figure("Reacciones")
+    for joint in joints:
+        joint.draw_loads()
+        joint.draw_reactions()
+    for member in members:
+        member.draw_member()
+        member.draw_loads(loads_scale)
 
-# Diagrama de normales
 def draw_normals(members):
     """ Dibuja el diagrama de esfuerzos normales """
 
-    title("Diagrama de esfuerzos normales (N)   $\leftarrow \lfloor\\rceil \\rightarrow$")
-    xlabel("X")
-    ylabel("Y")
-    axis('equal')
-    for n in range(len(members)):
-        members[n].draw_normal(normals_scale)
+    create_figure("Diagrama de esfuerzos normales (N)   $\leftarrow \lfloor\\rceil \\rightarrow$")
+    for member in members:
+        member.draw_normal(normals_scale)
 
-# Diagrama de cortantes
 def draw_shears(members):
     """ Dibuja el diagrama de esfuerzos cortantes """
 
-    title("Diagrama de esfuerzos cortantes (V)   $\downarrow \lfloor\\rceil \uparrow$")
-    xlabel("X")
-    ylabel("Y")
-    axis('equal')
-    for n in range(len(members)):
-        members[n].draw_shear(shears_scale)
+    create_figure("Diagrama de esfuerzos cortantes (V)   $\downarrow \lfloor\\rceil \uparrow$")
+    for member in members:
+        member.draw_shear(shears_scale)
 
-# Diagrama de momentos
 def draw_moments(members):
-    """ Dibuja el diagrama de momentos """
+    """ Dibuja el diagrama de momentos flectores """
    
-    title("Diagrama de momentos flectores (M)   $\curvearrowright \lfloor\\rceil \curvearrowleft$")
-    xlabel("X")
-    ylabel("Y")
-    axis('equal')
-    for n in range(len(members)):
-        members[n].draw_moment(moments_scale)
+    create_figure("Diagrama de momentos flectores (M)   $\curvearrowright \lfloor\\rceil \curvearrowleft$")
+    for member in members:
+        member.draw_moment(moments_scale)
 
-# Diagrama de desplazamientos
 def draw_displacements(joints, members, scale = 0.1):
-    """ Dibuja los desplazamientos """
-    title("Diagrama de desplazamientos (f)")
-    xlabel("X")
-    ylabel("Y")
-    axis('equal')
+    """ Dibuja el diagrama de desplazamientos o estructura deformada """
+
+    create_figure("Diagrama de desplazamientos (f)")
     grid(True)
     X = []
     Y = []
@@ -160,6 +138,31 @@ def get_draw_scales(members):
         sM = 0.1*lmin/Mmax
         
     return [sq, sN, sV, sM]
+
+def draw(joints, members):
+    """ Dibuja y guarda todos los diagramas estructurales """
+    
+    # Schematic
+    draw_schematic(joints, members)
+    savefig('output/schematic.png')
+    # Loads
+    draw_loads(joints, members)
+    savefig('output/loads.png')
+    # Reactions
+    draw_reactions(joints, members)
+    savefig('output/reactions.png')
+    # Normals
+    draw_normals(members)
+    savefig('output/normals.png')
+    # Shears
+    draw_shears(members)
+    savefig('output/shears.png')
+    # Moments
+    draw_moments(members)
+    savefig('output/moments.png')
+    # Displacements
+    draw_displacements(joints, members)
+    savefig('output/displacements.png')
 
 # Tipos de coacciones
 JointType = {'fs':"empotramiento", 'hs':"apoyo articulado", 'rs':"rodillo",
@@ -282,32 +285,4 @@ def report(joints, members, filename="output/report.html"):
     moments_scale = sM
     
     # Se dibujan y guardan todos los diagramas
-    fig = figure(1)
-    # Schematic
-    fig.clear()
-    draw_schematic(joints, members)
-    savefig('output/schematic.png')
-    # Loads
-    fig.clear()
-    draw_loads(joints, members)
-    savefig('output/loads.png')
-    # Reactions
-    fig.clear()
-    draw_reactions(joints, members)
-    savefig('output/reactions.png')
-    # Normals
-    fig.clear()
-    draw_normals(members)
-    savefig('output/normals.png')
-    # Shears
-    fig.clear()
-    draw_shears(members)
-    savefig('output/shears.png')
-    # Moments
-    fig.clear()
-    draw_moments(members)
-    savefig('output/moments.png')
-    # Displacements
-    fig.clear()
-    draw_displacements(joints, members)
-    savefig('output/displacements.png')
+    draw(joints, members)

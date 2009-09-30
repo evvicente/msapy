@@ -21,7 +21,6 @@ class Gui():
         self.window = window
         self.joints = []
         self.members = []
-        
         self.filename = "input.csv"
 
         # Menu
@@ -36,7 +35,7 @@ class Gui():
         img = tk.PhotoImage(file='icons/save.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.save_file)
         button.image = img
-        button.pack(side='left')
+        button.pack(side='left', padx=5)
         # Help
         img = tk.PhotoImage(file='icons/help.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open(os.path.join('help', 'index.html')))
@@ -44,7 +43,7 @@ class Gui():
         button.pack(side='right')
         # Template
         img = tk.PhotoImage(file='icons/excel.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', relief=tk.GROOVE, command=lambda:os.system('input.xls'))
+        button = tk.Button(frame, image=img, text="        ", compound='center', relief=tk.GROOVE, command=lambda:os.system('input.xls'))
         button.image = img
         button.pack(side='right', padx=10)
 
@@ -61,14 +60,14 @@ class Gui():
         # Tools
         frame = tk.Frame(window)
         frame.pack(fill=tk.X, pady=5)
-        # Refresh
+        # Draw
         img = tk.PhotoImage(file='icons/refresh.gif')
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.draw_schematic)
         button.image = img
         button.pack(side='left', padx=5)
         # Solver
         img = tk.PhotoImage(file='icons/solve.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
+        button = tk.Button(frame, image=img, text="          ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
         button.image = img
         button.pack(side='left')
         # Exit
@@ -76,20 +75,9 @@ class Gui():
         button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
         button.image = img
         button.pack(side='right', padx=5)
-        # Graphics
-        buttonDisplacements = tk.Button(frame, text=" D ", bg='gray', command=self.draw_displacements, relief=tk.GROOVE)
-        buttonDisplacements.pack(side='right')
-        buttonMoments = tk.Button(frame, text=" M ", bg='gray', command=self.draw_moments, relief=tk.GROOVE)
-        buttonMoments.pack(side='right')
-        buttonShears = tk.Button(frame, text=" V ", bg='gray', command=self.draw_shears, relief=tk.GROOVE)
-        buttonShears.pack(side='right')
-        buttonNormals = tk.Button(frame, text=" N ", bg='gray', command=self.draw_normals, relief=tk.GROOVE)
-        buttonNormals.pack(side='right')
-        buttonReactions = tk.Button(frame, text=" R ", bg='gray', command=self.draw_reactions, relief=tk.GROOVE)
-        buttonReactions.pack(side='right')
         # Status bar
         self.statusbar = tk.Label(frame, text=" MSA - Copyright 2009 Jorge Rodríguez Araújo ", bd=1, anchor=tk.W)
-        self.statusbar.pack(side=tk.BOTTOM, fill=tk.X, expand='yes')
+        self.statusbar.pack(side=tk.BOTTOM, fill=tk.X, padx=10, expand='yes')
 
         # Open default file
         self.open_file(name = self.filename)
@@ -135,36 +123,6 @@ class Gui():
         
         self.statusbar['text'] = ""
 
-    def draw_reactions(self):
-        fig = figure(1)
-        fig.clear()
-        draw2d.draw_reactions(self.joints, self.members)
-        fig.show()
-
-    def draw_normals(self):
-        fig = figure(1)
-        fig.clear()
-        draw2d.draw_normals(self.members)
-        fig.show()
-
-    def draw_shears(self):
-        fig = figure(1)
-        fig.clear()
-        draw2d.draw_shears(self.members)
-        fig.show()
-
-    def draw_moments(self):
-        fig = figure(1)
-        fig.clear()
-        draw2d.draw_moments(self.members)
-        fig.show()
-
-    def draw_displacements(self):
-        fig = figure(1)
-        fig.clear()
-        draw2d.draw_displacements(self.joints, self.members)
-        fig.show()
-
     def solve_msa(self):
         t0 = time.clock()
         self.statusbar['text'] = " Guardando los datos de definición de la estructura... "
@@ -173,16 +131,17 @@ class Gui():
         (self.joints, self.members) = msa2d.load(self.filename)
         self.statusbar['text'] = " Resolviendo la estructura por el método de la rigidez... "
         msa2d.msa(self.joints, self.members)
+        t1 = time.clock()
         self.statusbar['text'] = " Guardando los resultados... "
         draw2d.report(self.joints, self.members)
-        t = time.clock() - t0
-        self.statusbar['text'] = " La estructura se ha resuelto en %.2f segundos " %t
+        t2 = time.clock()
+        self.statusbar['text'] = " La estructura se ha resuelto en %.2f segundos: %.2f calculo y %.2f dibujo " %(t2-t0, t1-t0, t2-t1)
         webbrowser.open(os.path.join('output', 'report.html'))
 
 def run():
     window = tk.Tk()
     window.title("MSA")
-    window.geometry("+%d+%d" %(0, 0))
+    window.geometry("+%d+%d" %(5, 5))
     #window.iconbitmap(os.path.join('icons', 'msa.ico'))
     Gui(window)
     window.mainloop()

@@ -29,8 +29,8 @@ def load(filename):
             E = float(values[3])
             Iz = float(values[4])
             Wz = float(values[5])
-
-            properties.append(Properties(name, A, E, Iz, Wz))
+            fyd = float(values[6])
+            properties.append(Properties(name, A, E, Iz, Wz, fyd))
 
         elif re.search('^N\d+', values[0]):
             # Definicion de los nudos de la estructura
@@ -40,7 +40,6 @@ def load(filename):
             FX = float(values[4])
             FY = float(values[5])
             MZ = float(values[6])
-
             joints.append(Joint(X, Y, FX, FY, MZ, type))
 
         elif re.search('^B\d+', values[0]):
@@ -57,17 +56,12 @@ def load(filename):
             type = values[4]
             for prop in properties:
                 if prop.name==type:
-                    members[-1].set_properties(prop.A, prop.E, prop.Iz, prop.Wz)
+                    members[-1].set_properties(prop.A, prop.E, prop.Iz, prop.Wz, prop.fyd)
 
     return joints, members
 
 def get_stiffness_matrix(E, A, I, L):
     """ Calcula la matriz de rigidez local de una barra (k) """
-
-    E = float(E)
-    A = float(A)
-    I = float(I)
-    L = float(L)
 
     k = matrix(zeros((6,6)))
     k[0,0] = k[3,3] = (E*A/L)
@@ -98,11 +92,10 @@ def get_rotation_matrix(X1, Y1, X2, Y2):
     return r
 
 def add_stiffness_matrix(S, K, i, j):
-    """ Añade la matriz de rigidez global de una barra (K) a la matriz de
-    rigidez de la estructura (S) """
+    """ Añade la matriz de rigidez global de una barra (K)  a la matriz de
+    rigidez de la estructura (S), siendo (i) y (j) los nudos inicial y final
+    de la barra, respectivamente """
 
-    # i = Nudo inicial de la barra
-    # j = Nudo final de la barra
     i *= 3
     j *= 3
     S[i:i+3,i:i+3] += K[0:3,0:3]
@@ -128,12 +121,10 @@ def get_structure_stiffness_matrix(joints, members):
         print "Calculo de la matriz de rigidez local (k) de la barra %d/%d" %(member.i, member.j)
         member.k = get_stiffness_matrix(member.E, member.A, member.Iz, member.L)
         print member.k
-        
         print
         print "Calculo de la matriz de rotacion (r) de la barra %d/%d" %(member.i, member.j)
         member.r = get_rotation_matrix(member.X1, member.Y1, member.X2, member.Y2)
         print member.r
-        
         print
         print "Calculo de la matriz de rigidez global (K) de la barra %d/%d" %(member.i, member.j)
         K = member.r.T * member.k * member.r

@@ -1,7 +1,7 @@
 "Ejemplo de cálculo (Debes guardar el archivo como "".csv"")";
 
-Propiedades;Tipo;A[mm2];E[N/mm2];Iz[cm4];Wz[cm3];;
-P0;IPE 160;2010;210000;869;109;;
+Propiedades;Tipo;A[mm2];E[N/mm2];Iz[cm4];Wz[cm3];fyd[N/mm2];
+P0;IPE 160;2010;210000;869;109;240;
 
 Nudos;X[m];Y[m];Tipo;FX[N];FY[N];MZ[Nm];
 N0;0;0;hs;0;0;0;

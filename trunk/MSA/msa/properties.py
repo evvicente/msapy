@@ -3,7 +3,7 @@
 import csv
 
 class Properties():
-    def __init__(self, name, A, E, Iz, Wz):
+    def __init__(self, name, A, E, Iz, Wz, fyd):
         """ Define un conjunto de propiedades para un determinado material """
 
         # Designacion del perfil
@@ -14,12 +14,9 @@ class Properties():
         self.Iz = Iz # Momento de inercia de la seccion [cm4]
         self.Wz = Wz # Modulo resistente [cm3]
 
-        # Modulo de elasticidad [N/mm2]
-        self.E = E
-
-    def set_loads(self, FX, FY, MZ):
-        """ Establece las cargas en el nudo según los ejes globales """
-        (self.FX, self.FY, self.MZ) = (FX, FY, MZ)
+        # Propiedades del material
+        self.E = E # Modulo de elasticidad [N/mm2]
+        self.fyd = fyd # Resistencia ultima [N/mm2]
 
 def load_properties(filename='properties.csv'):
     """ Carga la lista de propiedades de los materiales estructurales """
