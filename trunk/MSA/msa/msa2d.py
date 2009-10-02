@@ -57,6 +57,10 @@ def load(filename):
             for prop in properties:
                 if prop.name==type:
                     members[-1].set_properties(prop.A, prop.E, prop.Iz, prop.Wz, prop.fyd)
+            # Para resolver estructuras reticulas establecemos Iz=0
+            for member in members:
+                if (joints[member.i].type == 'hj') or (joints[member.j].type == 'hj'):
+                    member.Iz = 0
 
     return joints, members
 
@@ -269,8 +273,8 @@ def msa(joints, members):
         MZ += R[k+2] + P[k+2]
     print "FX =", round(FX, 7)
     print "FY =", round(FY, 7)
-    print "¡No implementado! MZ =", round(MZ, 7)
-
+    print "(no implementado) MZ =", round(MZ, 7)
+    
     print
     print "Comprobacion del equilibrio local de cada barra"
     for n in range(len(members)):
@@ -288,7 +292,7 @@ def msa(joints, members):
         print "Fx = ", round(Fx, 7)
         print "Fy = ", round(Fy, 7)
         print "Mz = ", round(Mz, 7)
-
+    
     # Asignacion de resultados
     
     # Asignacion de desplazamientos y reacciones a los nudos correspondientes
@@ -301,3 +305,21 @@ def msa(joints, members):
     for n in range(len(members)):
         members[n].set_efforts(f[0,n], f[1,n], f[2,n], f[3,n], f[4,n], f[5,n])
 
+    print
+    print "Comprobacion resistente de las barras (implementacion parcial)"
+    for member in members:
+        print "Barra %d/%d" %(member.i, member.j)
+        fy1 = abs(member.N1 / member.A + member.M1 / member.Wz)
+        fy2 = abs(member.N2 / member.A + member.M2 / member.Wz)
+        fy3 = abs(member.N1 / member.A + member.M(member.L / 2) / member.Wz)
+        print "Esfuerzo normal en la seccion central de la barra:", round(fy3, 2)
+        if fy1 > fy2:
+            fy = fy1
+        else:
+            fy = fy2
+        p = fy / member.fyd * 100
+        if p > 100:
+            print "Se ha sobrepasado la resistencia del perfil: %.2f%%" % round(p, 2)
+        else:
+            print "Porcentaje de aprovechamiento del perfil: %.2f%% [ OK ]" % round(p, 2)
+            

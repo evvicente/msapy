@@ -102,7 +102,7 @@ class Member():
     # Momentos
     def M(self, x):
         """ Calcula el momento en un punto """
-        M = self.M1 - self.v1 * x - self.qy * x * x / 2
+        M = - self.M1 + self.V1 * x + self.qy * x * x / 2
         return M
     
     # Deformada
