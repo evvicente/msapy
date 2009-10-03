@@ -25,13 +25,13 @@ Aunque esta aplicación aún se encuentra en fases tempranas de desarrollo, se pue
 
 === Definición de la estructura ===
 
-Para definir la estructura se puede utilizar la plantilla "template.xls" desde EXCEL o CALC con tal de guardar los datos en un archivo "*.csv", valores separados por punto y coma.
+Para definir la estructura se puede utilizar la plantilla "template.xls" desde EXCEL o CALC con tal de guardar los datos en un archivo ".csv", valores separados por punto y coma.
 
 [http://lh5.ggpht.com/_OQVfrwwtV00/SsdnXdeYElI/AAAAAAAAAMs/PyjKRM2_P8o/gui.png]
 
 Para definir el tipo de nudo o apoyo se utiliza sus siglas en inglés, siendo:
- - Tipo de nudo: nudo rígido (rj) o articulado (hj)
- - Tipo de apoyo: empotramiento (fs), articulado (hs) o rodillo (rs)
+ * Tipo de nudo: nudo rígido (rj) o articulado (hj)
+ * Tipo de apoyo: empotramiento (fs), articulado (hs) o rodillo (rs)
 
 === Resultados ===
 
