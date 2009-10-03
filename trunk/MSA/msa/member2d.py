@@ -108,7 +108,7 @@ class Member():
     # Deformada
     def y(self, x, gz1, dy1):
         """ Calcula la flecha en un punto """
-        y = (-1 / (self.E * self.Iz)) * (self.M1 * x**2 / 2 - self.V1 * x**3 / 6 - self.qy * x**4 / 24) + gz1 * x + dy1
+        y = (-1. / (self.E * self.Iz)) * (self.M1 * x**2 / 2 - self.V1 * x**3 / 6 - self.qy * x**4 / 24) + gz1 * x + dy1
         return y
 
     def draw_member(self):
@@ -137,104 +137,80 @@ class Member():
             txt = "%d" %self.qy
             text((self.X1 + self.X2 + XL1 + XL2)/4, (self.Y1 + self.Y2 + YL1 + YL2)/4, txt, va='center', ha='center', color='red')
 
-    def draw_normal(self, scale):
-        """ Dibuja el diagrama de esfuerzos normales """
-        N = 0
-        if self.qx == 0:
-            x = arange(0, 1.1, 0.5)
-            x = x * self.L
-            N = - self.N1
-        else:
-            x = arange(0, 1.1, 0.5)
-            x = x * self.L
-            N = - self.N1 - self.qx * x
+    def draw_diagram(self, x, E, scale, color):
+        """ Dibuja el diagrama de esfuerzos (E) """
 
+        # Dibuja el diagrama
         X = x * self.cos + self.X1
         Y = x * self.sin + self.Y1
-        X = X - (scale * self.sin * N)
-        Y = Y + (scale * self.cos * N)
+        X = X - (scale * self.sin * E)
+        Y = Y + (scale * self.cos * E)
         X = [self.X1] + list(X) + [self.X2]
         Y = [self.Y1] + list(Y) + [self.Y2]
-        fill(X, Y, facecolor='red')
-        # Escribe los valores de los esfuerzos normales
-        txt = "\n\n  %.1f\n" %abs(round(self.N1, 1))
-        if self.N1 > 0:
-            text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
-        else:
+        fill(X, Y, facecolor=color)
+
+        # Escribe los valores
+        E1 = abs(round(E[0], 1))
+        txt = "\n %.1f \n" %E1
+        if E1 > 0:
             text(X[1], Y[1], txt, va='bottom', ha='left', fontsize=9, color='black')
-        txt = "\n\n%.1f  \n" %abs(round(self.N2, 1))
-        if self.N2 > 0:
+        elif E1 < 0:
+            text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
+        E2 = abs(round(E[-1], 1))
+        txt = "\n %.1f \n" %E2
+        if E2 > 0:
             text(X[-2], Y[-2], txt, va='bottom', ha='right', fontsize=9, color='black')
-        else:
+        elif E2 < 0:
             text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
+
+    def draw_normal(self, scale):
+        """ Dibuja el diagrama de esfuerzos normales """
+
+        # Calculo de normales (N)
+        x = arange(0, 1.1, 0.5)
+        x = x * self.L
+        N = - self.N1 - self.qx * x
+
+        self.draw_diagram(x, N, scale, 'red')
 
     def draw_shear(self, scale):
         """ Dibuja el diagrama de esfuerzos cortantes """
 
-        # Dibuja el diagrama
-        V = 0
-        if self.qy == 0:
-            x = arange(0, 1.1, 0.5)
-            x = x * self.L
-            V = - self.V1
-        else:
-            x = arange(0, 1.1, 0.5)
-            x = x * self.L
-            V = - self.V1 - self.qy * x
+        # Calculo de cortantes (V)
+        x = arange(0, 1.1, 0.5)
+        x = x * self.L
+        V = - self.V1 - self.qy * x
 
-        X = x * self.cos + self.X1
-        Y = x * self.sin + self.Y1
-        X = X - (scale * self.sin * V)
-        Y = Y + (scale * self.cos * V)
-        X = [self.X1] + list(X) + [self.X2]
-        Y = [self.Y1] + list(Y) + [self.Y2]
-        fill(X, Y, facecolor='green')
-        # Escribe los valores de los esfuerzos cortantes
-        txt = "\n\n  %.1f\n" %abs(round(self.V1, 1))
-        if self.V1 > 0:
-            text(X[1], Y[1], txt, verticalalignment='top', horizontalalignment='left', fontsize=9, color='black')
-        else:
-            text(X[1], Y[1], txt, verticalalignment='bottom', horizontalalignment='left', fontsize=9, color='black')
-        txt = "\n\n%.1f  \n" %abs(round(self.V2, 1))
-        if self.V2 > 0:
-            text(X[-2], Y[-2], txt, verticalalignment='bottom', horizontalalignment='right', fontsize=9, color='black')
-        else:
-            text(X[-2], Y[-2], txt, verticalalignment='top', horizontalalignment='right', fontsize=9, color='black')
+        self.draw_diagram(x, V, scale, 'green')
 
     def draw_moment(self, scale):
         """ Dibuja el diagrama de momentos flectores """
 
-        # Dibuja el diagrama
-        M = 0
-        if self.qy == 0:
-            x = arange(0, 1.1, 0.5)
-            x = x * self.L
-            M = - self.M1 + (self.V1 * x)
-        else:
-            x = arange(0, 1.1, 0.1)
-            x = x * self.L
-            M = - self.M1 + (self.V1 * x) + (self.qy * x * x/2)
+        # Calculo de momentos (M)
+        x = arange(0, 1.1, 0.1)
+        x = x * self.L
+        M = - self.M1 + (self.V1 * x) + (self.qy * x * x/2)
+
+        self.draw_diagram(x, -M, scale, 'blue')
+
+        if self.qy != 0:
             # Momento maximo (x = - V1/qy)
             xmax = - self.V1 / self.qy
             Mmax = - self.M1 - ((self.V1 * self.V1) / (2 * self.qy))
             txt = "\n x = %.3f\n Mmax = %.1f\n\n\n" %(xmax, Mmax)
             text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='center', horizontalalignment='center', fontsize=9, color='red')
+            
+    def draw_displacement(self, gz1, dy1, scale = 0.1):
+        """ Dibuja el diagrama de desplazamientos o estructura deformada """
+        
+        # Calculo de la deformada (y)
+        x = arange(0, 1.1, 0.1)
+        x = x * self.L
+        y = self.y(x, gz1, dy1)
 
+        # Dibuja el diagrama
         X = x * self.cos + self.X1
         Y = x * self.sin + self.Y1
-        X = X + (scale * self.sin * M)
-        Y = Y - (scale * self.cos * M)
-        X = [self.X1] + list(X) + [self.X2]
-        Y = [self.Y1] + list(Y) + [self.Y2]
-        fill(X, Y, facecolor='blue')
-        # Escribe los valores de los momentos en extremo de barra
-        txt = "\n\n  %.1f\n" %abs(round(self.M1, 1))
-        if self.M1 > 0:
-            text(X[1], Y[1], txt, va='bottom', ha='left', fontsize=9, color='black')
-        else:
-            text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
-        txt = "\n\n%.1f  \n" %abs(round(self.M2, 1))
-        if self.M2 > 0:
-            text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
-        elif self.M2 < 0:
-            text(X[-2], Y[-2], txt, va='bottom', ha='right', fontsize=9, color='black')
+        X = X - (scale * self.sin * y)
+        Y = Y + (scale * self.cos * y)
+        plot(X, Y, '--', color='green', lw=2)

@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup (name = "MSA",
-       version = "0.3.7",
+       version = "0.3.8",
        description = "Python implementation of direct Matrix Stiffness Analysis for static structural solve",
        author = "Jorge Rodriguez Araujo",
        author_email = "grrodri@gmail.com",
@@ -9,5 +9,4 @@ setup (name = "MSA",
        license = "GPL",
        scripts = ['MSA.py'],  
        packages = ['msa'],
-       #install_requires = ['numpy', 'matplotlib'],
      )

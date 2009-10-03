@@ -132,7 +132,8 @@
          id="g3729"
          transform="translate(602.20017,-403.32673)"
          inkscape:export-xdpi="90"
-         inkscape:export-ydpi="90">
+         inkscape:export-ydpi="90"
+         inkscape:export-filename="G:\MSA\msa.png">
         <path
            sodipodi:type="star"
            style="fill:#333333;fill-opacity:0.78431373;stroke:#212121;stroke-width:0.65132201;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;filter:url(#filter3725)"
@@ -297,7 +298,7 @@
              id="tspan3693"
              x="-308.14474"
              y="-12.444647"
-             style="font-weight:bold;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:Bitstream Vera Sans Bold">v 0.3.7</tspan></text>
+             style="font-weight:bold;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:Bitstream Vera Sans Bold">v 0.3.8</tspan></text>
         <text
            transform="scale(0.85417215,1.1707242)"
            id="text2839"
@@ -309,7 +310,7 @@
              y="-14.152991"
              x="-310.48621"
              id="tspan2841"
-             sodipodi:role="line">v 0.3.7</tspan></text>
+             sodipodi:role="line">v 0.3.8</tspan></text>
       </g>
     </g>
     <rect

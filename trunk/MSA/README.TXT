@@ -17,31 +17,35 @@ Dado que esta aplicación se encuentra desarrollada completamente en Python, pued
 Para ejecutar MSA en Windows, simplemente:
  * Instala los paquetes: [http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi Python], [http://downloads.sourceforge.net/sourceforge/numpy/numpy-1.3.0-win32-superpack-python2.5.exe Numpy] y [http://downloads.sourceforge.net/sourceforge/matplotlib/matplotlib-0.98.5.3.win32-py2.5.exe matplotlib]
  * Una vez instalados los paquetes anteriores, dado que aún no se dispone de instalador, descarga y descomprime la [http://code.google.com/p/msapy/downloads/list última versión] disponible de la aplicación.
- * Haz doble clic sobre el archivo "MSA.py" que se encunetra en el directorio principal.
+ * Haz doble clic sobre el archivo "MSA.py" que se encuentra en el directorio principal.
 
-== Estudio de una viga de dos vanos ==
+== Estudio de una viga continua ==
 
-Aunque esta aplicación aún se encuentra en fases tempranas de desarrollo, a continuación, se muestra un ejemplo en el que se estudia una viga simple de dos vanos.
-
-[http://lh5.ggpht.com/_OQVfrwwtV00/Sl-4mSvkeBI/AAAAAAAAALU/conExZ1ls-g/gui.png]
+Aunque esta aplicación aún se encuentra en fases tempranas de desarrollo, se pueden resolver estructuras reticuladas con cargas en los nudos y estructuras de nudos rigidos que además presenten cargas uniformemente distribuidas. A continuación se muestra un ejemplo en el que se estudia una viga continua de tres vanos.
 
 === Definición de la estructura ===
 
-Para definir la estructura se utiliza la plantilla "template.xls" desde EXCEL o CALC y se guardan los datos en el archivo "input.csv" como valores separados por punto y coma.
+Para definir la estructura se puede utilizar la plantilla "template.xls" desde EXCEL o CALC con tal de guardar los datos en un archivo "*.csv", valores separados por punto y coma.
 
-[http://lh6.ggpht.com/_OQVfrwwtV00/SlH49-N5U-I/AAAAAAAAAKo/aoBEHxIRF-s/beam.png]
+[http://lh5.ggpht.com/_OQVfrwwtV00/SsdnXdeYElI/AAAAAAAAAMs/PyjKRM2_P8o/gui.png]
 
-En la columna "Restraints" se especifica el tipo de nudo (nudo rígido (rj) o articulado (hj)) o el tipo de apoyo (empotramiento (fs), articulado (hs) o rodillo (rs)).
+Para definir el tipo de nudo o apoyo se utiliza sus siglas en inglés, siendo:
+ - Tipo de nudo: nudo rígido (rj) o articulado (hj)
+ - Tipo de apoyo: empotramiento (fs), articulado (hs) o rodillo (rs)
 
 === Resultados ===
 
-[http://lh4.ggpht.com/_OQVfrwwtV00/SlH497HvPMI/AAAAAAAAAKs/WgXoN1KS3v0/s640/beam-sch.png]
+[http://lh4.ggpht.com/_OQVfrwwtV00/SsdnXikKvLI/AAAAAAAAAMw/cEZn_PfdfT4/s640/schematic.png]
 
-[http://lh5.ggpht.com/_OQVfrwwtV00/SlH4-IerEnI/AAAAAAAAAKw/v3Fy_6mLRZs/s640/beam-N.png]
+[http://lh4.ggpht.com/_OQVfrwwtV00/SsdnX4xRj_I/AAAAAAAAAM0/ZwUJExCpHnQ/s640/loads.png]
 
-[http://lh6.ggpht.com/_OQVfrwwtV00/SlH4-BPIakI/AAAAAAAAAK0/-0OrmM0YGLw/s640/beam-V.png]
+[http://lh4.ggpht.com/_OQVfrwwtV00/SsdnX7XV_oI/AAAAAAAAAM4/n8BeFvWsCcg/s640/reactions.png]
 
-[http://lh3.ggpht.com/_OQVfrwwtV00/SlH4-VOwPpI/AAAAAAAAAK4/xW6kWIMQnJg/s640/beam-M.png]
+[http://lh3.ggpht.com/_OQVfrwwtV00/SsdogaGWDxI/AAAAAAAAAM8/39X1HViXv5g/s640/normals.png]
+
+[http://lh5.ggpht.com/_OQVfrwwtV00/SsdogsCza1I/AAAAAAAAANA/aZzsXAkZrzg/s640/shears.png]
+
+[http://lh6.ggpht.com/_OQVfrwwtV00/Ssdogvk0_BI/AAAAAAAAANE/z74hHh3RT4I/s640/moments.png]
 
 == Planifación y Versiones ==
 
@@ -62,6 +66,7 @@ En la columna "Restraints" se especifica el tipo de nudo (nudo rígido (rj) o art
  * v 0.3.5 (2009-07-16): Interfaz gráfica de usuario.
  * v 0.3.6 (2009-08-11): Corrección de errores.
  * v 0.3.7 (2009-09-17): Generación del informe de resultados.
+ * v 0.3.8 (2009-10-03): Corrección de errores.
 
 || Versión 0.4: Comprobación resistente ||
 || Versión 0.5: Refactorización ||

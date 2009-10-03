@@ -309,17 +309,22 @@ def msa(joints, members):
     print "Comprobacion resistente de las barras (implementacion parcial)"
     for member in members:
         print "Barra %d/%d" %(member.i, member.j)
-        fy1 = abs(member.N1 / member.A + member.M1 / member.Wz)
-        fy2 = abs(member.N2 / member.A + member.M2 / member.Wz)
-        fy3 = abs(member.N1 / member.A + member.M(member.L / 2) / member.Wz)
-        print "Esfuerzo normal en la seccion central de la barra:", round(fy3, 2)
-        if fy1 > fy2:
-            fy = fy1
-        else:
-            fy = fy2
-        p = fy / member.fyd * 100
+        x = arange(0, 1.1, 0.2)
+        x = x * member.L
+        fy = abs(member.N1 / member.A + member.M(x) / member.Wz)
+        print "Esfuerzos:", fy
+        p = fy.max() / member.fyd * 100
         if p > 100:
             print "Se ha sobrepasado la resistencia del perfil: %.2f%%" % round(p, 2)
         else:
             print "Porcentaje de aprovechamiento del perfil: %.2f%% [ OK ]" % round(p, 2)
+
+    print
+    print "Comprobacion a deformacion (implementacion parcial)"
+    for member in members:
+        print "Barra %d/%d" %(member.i, member.j)
+        print "Desplazamientos en X"
+        print joints[member.i].dX, "   ", joints[member.j].dX
+        print "Desplazamientos en Y"
+        print joints[member.i].dY, "   ", joints[member.j].dY
             

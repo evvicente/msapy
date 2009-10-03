@@ -10,6 +10,10 @@ loads_scale = 0.001
 normals_scale = 0.1
 shears_scale = 0.1
 moments_scale = 0.1
+displacements_scale = 0.1
+
+XYmax = 0
+XYmin = 0
 
 def create_figure(title_figure):
     fig = figure(1)
@@ -19,6 +23,7 @@ def create_figure(title_figure):
     xlabel("X")
     ylabel("Y")
     axis('equal')
+    #axis([XYmin, XYmax, XYmin, XYmax])
 
 def draw_schematic(joints, members):
     """ Dibuja el esquema estructural """
@@ -74,11 +79,12 @@ def draw_moments(members):
     for member in members:
         member.draw_moment(moments_scale)
 
-def draw_displacements(joints, members, scale = 0.1):
+def draw_displacements(joints, members):
     """ Dibuja el diagrama de desplazamientos o estructura deformada """
 
     create_figure("Diagrama de desplazamientos (f)")
     grid(True)
+    scale = displacements_scale
     X = []
     Y = []
     for n in range(len(joints)):
@@ -90,6 +96,7 @@ def draw_displacements(joints, members, scale = 0.1):
         t += "$v$ %f\n" %joints[n].dY
         t += "$\\theta$ %f\n" %joints[n].gZ
         text(X[-1], Y[-1], t, verticalalignment='top', horizontalalignment='center', fontsize=9, color='brown')
+        #annotate("nota", xy=(0, 1), xycoords='data', xytext=(-50, 30), textcoords='offset points', arrowprops=dict(arrowstyle="->"))
     plot(X, Y, '+') # Nudos desplazados
     for n in range(len(members)):
         i = members[n].i
@@ -104,40 +111,51 @@ def draw_displacements(joints, members, scale = 0.1):
         Y = Y0 + y * members[n].cos
         plot(X, Y, '--', color='green', lw=2)"""
 
-def get_draw_scales(members):
+def get_draw_scales(joints, members):
     """ Obtiene las escalas de dibujo de los diagramas """
     # Busca un factor de escala apropiado
-    qmax = 0
-    Nmax = 0
-    Vmax = 0
-    Mmax = 0
+    q = []
+    N = []
+    V = []
+    M = []
+    L = []
     lmin = 100
-    for n in range(len(members)):
-        if abs(members[n].qy) > qmax:
-            qmax = abs(members[n].qy)
-        if abs(members[n].N1) > Nmax:
-            Nmax = abs(members[n].N1)
-        if abs(members[n].V1) > Vmax:
-            Vmax = abs(members[n].V1)
-        if abs(members[n].M1) > Mmax:
-            Mmax = abs(members[n].M1)
-        if members[n].L < lmin:
-            lmin = members[n].L
+    for member in members:
+        q += [abs(member.qy)]
+        N += [abs(member.N1)]
+        V += [abs(member.V1)]
+        M += [abs(member.M1)]
+        L += [abs(member.L)]
+    
+    qmax = array(q).max()
+    Nmax = array(N).max()
+    Vmax = array(V).max()
+    Mmax = array(M).max()
+    lmin = array(L).min()
 
-    sq = 0.1
-    sN = 0.1
-    sV = 0.1
-    sM = 0.1
+    D = []
+    XY = []
+    for joint in joints:
+        D += [abs(joint.dX), abs(joint.dY)]
+        XY += [joint.X, joint.Y]
+    Dmax = array(D).max()
+    min = array(XY).min()
+    max = array(XY).max()
+    global XYmax, XYmin
+    XYmax = max + 0.2 * (max - min)
+    XYmin = min - 0.2 * (max - min)
+
+    global loads_scale, normals_scale, shears_scale, moments_scale, displacements_scale
     if qmax != 0:
-        sq = 0.1*lmin/qmax
+        loads_scale = 0.1 * lmin / qmax
     if Nmax != 0:
-        sN = 0.1*lmin/Nmax
+        normals_scale = 0.1 * lmin / Nmax
     if Vmax != 0:
-        sV = 0.1*lmin/Vmax
+        shears_scale = 0.1 * lmin / Vmax
     if Mmax != 0:
-        sM = 0.1*lmin/Mmax
-        
-    return [sq, sN, sV, sM]
+        moments_scale = 0.1 * lmin / Mmax
+    if Dmax !=0:
+        displacements_scale = 0.1 * lmin / Dmax
 
 def draw(joints, members):
     """ Dibuja y guarda todos los diagramas estructurales """
@@ -277,12 +295,7 @@ def report(joints, members, filename="output/report.html"):
     file.close()
 
     # Se calculan y asignan las escalas de dibujo
-    global loads_scale, normals_scale, shears_scale, moments_scale
-    [sq, sN, sV, sM] = get_draw_scales(members)
-    loads_scale = sq
-    normals_scale = sN
-    shears_scale = sV
-    moments_scale = sM
-    
+    get_draw_scales(joints, members)
+        
     # Se dibujan y guardan todos los diagramas
     draw(joints, members)
