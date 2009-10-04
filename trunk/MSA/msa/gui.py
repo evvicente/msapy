@@ -67,12 +67,12 @@ class Gui():
         button.pack(side='left', padx=5)
         # Solver
         img = tk.PhotoImage(file='icons/solve.gif')
-        button = tk.Button(frame, image=img, text="        ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
+        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
         button.image = img
         button.pack(side='left')
         # Exit
         img = tk.PhotoImage(file='icons/exit.gif')
-        button = tk.Button(frame, image=img, text="    ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
+        button = tk.Button(frame, image=img, text="          ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
         button.image = img
         button.pack(side='right', padx=5)
         # Status bar
@@ -128,9 +128,9 @@ class Gui():
         self.statusbar['text'] = " Guardando los datos de definición de la estructura... "
         self.save_file(self.filename)
         self.statusbar['text'] = " Leyendo los datos de definición de la estructura... "
-        (self.joints, self.members) = msa2d.load(self.filename)
+        (self.joints, self.members, properties) = msa2d.load(self.filename)
         self.statusbar['text'] = " Resolviendo la estructura por el método de la rigidez... "
-        msa2d.msa(self.joints, self.members)
+        msa2d.msa(self.joints, self.members, properties)
         t1 = time.clock()
         self.statusbar['text'] = " Guardando los resultados... "
         draw2d.report(self.joints, self.members)

@@ -15,23 +15,32 @@ def load(filename):
     rows = file.readlines()
     file.close()
 
+    # Propiedades del material
+    E = 0 # Modulo de elasticidad [N/mm2]
+    fyd = 0 # Resistencia ultima [N/mm2]
+    # Propiedades geometricas
     properties = []
+    # Nudos
     joints = []
+    # Barras
     members = []
+
     for row in rows:
         row = row.replace(',', '.')
         values = row.split(';')
 
-        if re.search('^P\d+', values[0]):
-            # Definicion de las propiedades de los materiales
+        if re.search('^M\d+', values[0]):
+            # Definicion de las propiedades del material
+            name = values[1]
+            E = float(values[2])
+            fyd = float(values[3])
+        elif re.search('^P\d+', values[0]):
+            # Definicion de las propiedades de la barra
             name = values[1]
             A = float(values[2])
-            E = float(values[3])
-            Iz = float(values[4])
-            Wz = float(values[5])
-            fyd = float(values[6])
-            properties.append(Properties(name, A, E, Iz, Wz, fyd))
-
+            Iz = float(values[3])
+            Wz = float(values[4])
+            properties.append(Properties(name, A, Iz, Wz))
         elif re.search('^N\d+', values[0]):
             # Definicion de los nudos de la estructura
             X = float(values[1])
@@ -41,7 +50,6 @@ def load(filename):
             FY = float(values[5])
             MZ = float(values[6])
             joints.append(Joint(X, Y, FX, FY, MZ, type))
-
         elif re.search('^B\d+', values[0]):
             # Definicion de las barras de la estructura
             i = int(values[1])
@@ -55,14 +63,20 @@ def load(filename):
             members.append(Member(i, j, X1, Y1, X2, Y2, qy))
             type = values[4]
             for prop in properties:
-                if prop.name==type:
-                    members[-1].set_properties(prop.A, prop.E, prop.Iz, prop.Wz, prop.fyd)
+                if prop.name == type:
+                    members[-1].set_material(E, fyd)
+                    members[-1].type = type
+                    members[-1].set_properties(prop.A, prop.Iz, prop.Wz)
+
             # Para resolver estructuras reticulas establecemos Iz=0
             for member in members:
                 if (joints[member.i].type == 'hj') or (joints[member.j].type == 'hj'):
                     member.Iz = 0
 
-    return joints, members
+    # Carga las propiedades definidas en properties.csv
+    properties += load_properties()
+
+    return joints, members, properties
 
 def get_stiffness_matrix(E, A, I, L):
     """ Calcula la matriz de rigidez local de una barra (k) """
@@ -225,7 +239,7 @@ def get_efforts(members, D):
 
     return f
 
-def msa(joints, members):
+def msa(joints, members, properties):
     """ Método matricial para la resolución de estructuras planas """
     
     S = get_structure_stiffness_matrix(joints, members)
@@ -305,10 +319,12 @@ def msa(joints, members):
     for n in range(len(members)):
         members[n].set_efforts(f[0,n], f[1,n], f[2,n], f[3,n], f[4,n], f[5,n])
 
+    new_analysis = False
+
     print
     print "Comprobacion resistente de las barras (implementacion parcial)"
     for member in members:
-        print "Barra %d/%d" %(member.i, member.j)
+        print "Barra %d/%d: %s" %(member.i, member.j, member.type)
         x = arange(0, 1.1, 0.2)
         x = x * member.L
         fy = abs(member.N1 / member.A + member.M(x) / member.Wz)
@@ -316,8 +332,22 @@ def msa(joints, members):
         p = fy.max() / member.fyd * 100
         if p > 100:
             print "Se ha sobrepasado la resistencia del perfil: %.2f%%" % round(p, 2)
+            # Cuando un perfil no cumple se prueba con otro mayor
+            t = member.type.split()
+            for prop in properties:
+                p = prop.name.split()
+                if p[0] == t[0]:
+                    if int(p[1]) > int(t[1]):
+                        member.type = prop.name
+                        member.set_properties(prop.A, prop.Iz, prop.Wz)
+                        new_analysis = True
+                if new_analysis:
+                    break
         else:
             print "Porcentaje de aprovechamiento del perfil: %.2f%% [ OK ]" % round(p, 2)
+            new_analysis = False
+        if new_analysis:
+            break
 
     print
     print "Comprobacion a deformacion (implementacion parcial)"
@@ -327,4 +357,7 @@ def msa(joints, members):
         print joints[member.i].dX, "   ", joints[member.j].dX
         print "Desplazamientos en Y"
         print joints[member.i].dY, "   ", joints[member.j].dY
+
+    if new_analysis:
+        msa(joints, members, properties) # Se lanza un nuevo analisis
             

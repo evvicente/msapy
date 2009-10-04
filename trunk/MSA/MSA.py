@@ -18,6 +18,6 @@ if __name__ == "__main__":
     else:
         filename = sys.argv[1]  
         print "Leyendo los datos de definicion de la estructura..."
-        (joints, members) = msa2d.load(filename)
+        (joints, members, properties) = msa2d.load(filename)
         print "Resolviendo la estructura por el metodo de la rigidez..."
-        msa2d.msa(joints, members)
+        msa2d.msa(joints, members, properties)

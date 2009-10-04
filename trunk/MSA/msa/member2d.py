@@ -21,11 +21,15 @@ class Member():
         self.cos = (self.X2 - self.X1) / self.L # Coseno
 
         # Propiedades de la barra
+        # Propiedades del material
         self.E = 0 # Modulo de elasticidad
+        self.fyd = 0 # Resistencia ultima del material
+        # Propiedades geométricas
+        self.type = '' # Designacion
         self.A = 0 # Area de la seccion
         self.Iz = 0 # Momento de inercia de la seccion
         self.Wz = 0 # Modulo resistente
-        self.fyd = 0 # Resistencia ultima del material
+        
 
         # Cargas uniformemente distribuidas
         self.qx = 0
@@ -61,13 +65,16 @@ class Member():
         self.k = 0 # Matriz de rigidez
         self.r = 0 # Matriz de rotacion
 
-    def set_properties(self, A, E, Iz, Wz, fyd):
+    def set_material(self, E, fyd):
+        """ Establece las propiedades del material de la barra """
+        self.E = E
+        self.fyd = fyd
+
+    def set_properties(self, A, Iz, Wz):
         """ Establece las propiedades de la barra """
         self.A = A
-        self.E = E
         self.Iz = Iz
         self.Wz = Wz
-        self.fyd = fyd
 
     def set_loads(self, Fx1, Fy1, Mz1, Fx2, Fy2, Mz2):
         """ Establece las cargas en los extremos inicial (1) y final (2) de la barra,

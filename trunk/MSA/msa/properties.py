@@ -3,22 +3,20 @@
 import csv
 
 class Properties():
-    def __init__(self, name, A, E, Iz, Wz, fyd):
+    def __init__(self, name, A, Iz, Wz):
         """ Define un conjunto de propiedades para un determinado material """
 
         # Designacion del perfil
         self.name = name 
+
+        #self.P # Peso [kg/m]
 
         # Propiedades geometricas
         self.A = A # Area de la seccion [mm2]
         self.Iz = Iz # Momento de inercia de la seccion [cm4]
         self.Wz = Wz # Modulo resistente [cm3]
 
-        # Propiedades del material
-        self.E = E # Modulo de elasticidad [N/mm2]
-        self.fyd = fyd # Resistencia ultima [N/mm2]
-
-def load_properties(filename='properties.csv'):
+def load_properties(filename='data/properties.csv'):
     """ Carga la lista de propiedades de los materiales estructurales """
 
     rows = csv.reader(open(filename), delimiter=';', quotechar='"')    
@@ -26,18 +24,18 @@ def load_properties(filename='properties.csv'):
     for row in rows:
         values = row
         if values[0]!="":
-            name = values[0] 
-            E = float(values[1]) 
+            type = values[0]
+            P = float(values[1])
             A = float(values[2]) 
             Iz = float(values[3]) 
             Wz = float(values[4]) 
-            properties.append(Properties(name, A, E, Iz, Wz))
+            properties.append(Properties(type, A, Iz, Wz))
     return properties
 
 if __name__ == "__main__":
     properties = load_properties()
     for prop in properties:
-        print prop.name, prop.A, prop.E, prop.Iz, prop.Wz 
+        print prop.name, prop.A, prop.Iz, prop.Wz 
 
 """
 # Prueba sqlite3
