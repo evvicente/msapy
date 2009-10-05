@@ -9,6 +9,7 @@ import tkFileDialog
 from joint2d import *
 from member2d import *
 
+import io
 import msa2d
 import draw2d
 
@@ -62,12 +63,12 @@ class Gui():
         frame.pack(fill=tk.X, pady=5)
         # Draw
         img = tk.PhotoImage(file='icons/refresh.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.draw_schematic)
+        button = tk.Button(frame, image=img, text="        ", compound='center', bg='gray', relief=tk.GROOVE, command=self.draw_schematic)
         button.image = img
         button.pack(side='left', padx=5)
         # Solver
         img = tk.PhotoImage(file='icons/solve.gif')
-        button = tk.Button(frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
+        button = tk.Button(frame, image=img, text="        ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
         button.image = img
         button.pack(side='left')
         # Exit
@@ -114,7 +115,7 @@ class Gui():
     def draw_schematic(self):
         self.save_file(name = self.filename)
         
-        (self.joints, self.members) = msa2d.load(self.filename)
+        (self.joints, self.members, properties) = io.load(self.filename)
         fig = figure(1)
         fig.clear()
         draw2d.draw_schematic(self.joints, self.members)
@@ -128,12 +129,12 @@ class Gui():
         self.statusbar['text'] = " Guardando los datos de definición de la estructura... "
         self.save_file(self.filename)
         self.statusbar['text'] = " Leyendo los datos de definición de la estructura... "
-        (self.joints, self.members, properties) = msa2d.load(self.filename)
+        (self.joints, self.members, properties) = io.load(self.filename)
         self.statusbar['text'] = " Resolviendo la estructura por el método de la rigidez... "
         msa2d.msa(self.joints, self.members, properties)
         t1 = time.clock()
         self.statusbar['text'] = " Guardando los resultados... "
-        draw2d.report(self.joints, self.members)
+        io.report(self.joints, self.members)
         t2 = time.clock()
         self.statusbar['text'] = " La estructura se ha resuelto en %.2f segundos: %.2f calculo y %.2f dibujo " %(t2-t0, t1-t0, t2-t1)
         webbrowser.open(os.path.join('output', 'report.html'))

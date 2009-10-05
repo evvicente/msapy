@@ -1,19 +1,19 @@
-Ejemplo de cálculo (Debes guardar el archivo como "*.csv")
-
-Material;Tipo;E[N/mm2];fyd[N/mm2];
-M0;Acero;210000;240;
-
-Propiedades;Tipo;A[mm2];Iz[cm4];Wz[cm3];
-P0;PE 160;2010;869;109;
-P1;PE 180;2070;879;179;
-
-Nudos;X[m];Y[m];Tipo;FX[N];FY[N];MZ[Nm];
-N0;0;0;hs;0;0;0;
-N1;5;0;rs;0;0;0;
-N2;10;0;rs;0;0;0;
-N3;15;0;rs;0;0;0;
-
-Barras;Ni;Nf;qy[N/m];Tipo;
-B0;0;1;-10000;IPE 80;
-B1;1;2;-15000;IPE 160;
-B2;2;3;-10000;IPE 80;
+"Ejemplo de cálculo (Debes guardar el archivo como ""*.csv"")";;;;;;
+;;;;;;
+Material;Tipo;E[N/mm2];fyd[N/mm2];;;
+M0;Acero;210000;240;;;
+;;;;;;
+Propiedades;Tipo;A[mm2];Iz[cm4];Wz[cm3];;
+P0;IPE 160;2010;869;109;;
+;;;;;;
+Nudos;X[m];Y[m];Tipo;FX[N];FY[N];MZ[Nm]
+N0;0;0;hs;0;0;0
+N1;1;0;rs;0;0;0
+N2;2;0;rs;0;0;0
+N3;3;0;rs;0;0;0
+;;;;;;
+Barras;Ni;Nf;qy[N/m];Tipo;;
+B0;0;1;-1000;IPE 80;;
+B1;1;2;-1000;IPE 80;;
+B2;2;3;-1000;IPE 80;;
+;;;;;;

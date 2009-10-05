@@ -47,12 +47,6 @@ class Member():
         self.Fy2 = 0
         self.Mz2 = 0
 
-        self.__load = [0, 0, 0, 0, 0, 0]
-
-        # Transformacion de las cargas uniformes
-        if qy != 0 or qY != 0:
-            self.set_uniforms_loads(qy, qY)
-
         # Esfuerzos resultantes en extremo de barra
         self.N1 = 0
         self.V1 = 0
@@ -79,32 +73,10 @@ class Member():
     def set_loads(self, Fx1, Fy1, Mz1, Fx2, Fy2, Mz2):
         """ Establece las cargas en los extremos inicial (1) y final (2) de la barra,
         siendo F las fuerzas y M los momentos """
-        self.__load = [Fx1, Fy1, Mz1, Fx2, Fy2, Mz2]
-
-    def get_loads(self):
-        return self.__load
+        load = [Fx1, Fy1, Mz1, Fx2, Fy2, Mz2]
 
     def set_efforts(self, N1, V1, M1, N2, V2, M2):
         (self.N1, self.V1, self.M1, self.N2, self.V2, self.M2) = (N1, V1, M1, N2, V2, M2)
-
-    # Carga uniforme
-    def set_uniforms_loads(self, qy, qY):
-        """ Calcula las reacciones de empotramiento perfecto para una carga
-        uniformente repartida en toda la barra. """
-
-        if qY!=0:
-            x = abs(self.X2 - self.X1)
-            qx = (qY * x / self.L) * self.sin
-            qy = qy + (qY * x / self.L) * self.cos        
-            self.qx = qx
-            self.qy = qy
-            N = - qx * self.L
-
-        N = 0
-        V = - qy * self.L / 2
-        M = qy * self.L**2 / 12
-
-        self.__load = [N, V, -M, N, V, M]
 
     # Momentos
     def M(self, x):

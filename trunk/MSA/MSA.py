@@ -7,9 +7,10 @@ __license__ = "GPL"
 __version__ = "0.3.7"
 __date__ = "29-sep-2009"
 
-import os, sys
+import os
+import sys
 
-from msa import gui, msa2d
+from msa import gui, io, msa2d
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
@@ -18,6 +19,6 @@ if __name__ == "__main__":
     else:
         filename = sys.argv[1]  
         print "Leyendo los datos de definicion de la estructura..."
-        (joints, members, properties) = msa2d.load(filename)
+        (joints, members, properties) = io.load(filename)
         print "Resolviendo la estructura por el metodo de la rigidez..."
         msa2d.msa(joints, members, properties)

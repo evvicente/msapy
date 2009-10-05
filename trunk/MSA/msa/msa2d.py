@@ -7,77 +7,6 @@ from joint2d import *
 from member2d import *
 from properties import *
 
-import re # Expresiones regulares
-def load(filename):
-    """ Carga los datos de la estructura a partir del archivo """
-
-    file = open(filename, "r")
-    rows = file.readlines()
-    file.close()
-
-    # Propiedades del material
-    E = 0 # Modulo de elasticidad [N/mm2]
-    fyd = 0 # Resistencia ultima [N/mm2]
-    # Propiedades geometricas
-    properties = []
-    # Nudos
-    joints = []
-    # Barras
-    members = []
-
-    for row in rows:
-        row = row.replace(',', '.')
-        values = row.split(';')
-
-        if re.search('^M\d+', values[0]):
-            # Definicion de las propiedades del material
-            name = values[1]
-            E = float(values[2])
-            fyd = float(values[3])
-        elif re.search('^P\d+', values[0]):
-            # Definicion de las propiedades de la barra
-            name = values[1]
-            A = float(values[2])
-            Iz = float(values[3])
-            Wz = float(values[4])
-            properties.append(Properties(name, A, Iz, Wz))
-        elif re.search('^N\d+', values[0]):
-            # Definicion de los nudos de la estructura
-            X = float(values[1])
-            Y = float(values[2])
-            type = values[3]
-            FX = float(values[4])
-            FY = float(values[5])
-            MZ = float(values[6])
-            joints.append(Joint(X, Y, FX, FY, MZ, type))
-        elif re.search('^B\d+', values[0]):
-            # Definicion de las barras de la estructura
-            i = int(values[1])
-            j = int(values[2])
-            X1 = joints[i].X
-            Y1 = joints[i].Y
-            X2 = joints[j].X
-            Y2 = joints[j].Y
-            qy = float(values[3])
-            #qY = float(values[4])
-            members.append(Member(i, j, X1, Y1, X2, Y2, qy))
-            type = values[4]
-            for prop in properties:
-                if prop.name == type:
-                    members[-1].set_material(E, fyd)
-                    members[-1].type = type
-                    members[-1].set_properties(prop.A, prop.Iz, prop.Wz)
-
-            # Para resolver estructuras reticulas establecemos Iz=0
-            for member in members:
-                if (joints[member.i].type == 'hj') or (joints[member.j].type == 'hj'):
-                    member.Iz = 0
-
-    # Carga las propiedades definidas en properties.csv
-    properties += load_properties()
-
-    return joints, members, properties
-
 def get_stiffness_matrix(E, A, I, L):
     """ Calcula la matriz de rigidez local de una barra (k) """
 
@@ -138,6 +67,22 @@ def get_structure_stiffness_matrix(joints, members):
         print
         print "Calculo de la matriz de rigidez local (k) de la barra %d/%d" %(member.i, member.j)
         member.k = get_stiffness_matrix(member.E, member.A, member.Iz, member.L)
+        #
+        if joints[member.i].type == 'hj':
+            member.k[0,1] = member.k[0,2] = 0
+            member.k[1,0] = member.k[1,1] = member.k[1,2] = 0
+            member.k[2,0] = member.k[2,1] = member.k[2,2] = 0
+            member.k[3,4] = member.k[3,5] = 0
+            member.k[4,3] = member.k[4,4] = member.k[4,5] = 0
+            member.k[5,3] = member.k[5,4] = member.k[5,5] = 0
+        if joints[member.j].type == 'hj':
+            member.k[0,4] = member.k[0,5] = 0
+            member.k[1,3] = member.k[1,4] = member.k[1,5] = 0
+            member.k[2,3] = member.k[2,4] = member.k[2,5] = 0
+            member.k[3,1] = member.k[3,2] = 0
+            member.k[4,0] = member.k[4,1] = member.k[4,2] = 0
+            member.k[5,0] = member.k[5,1] = member.k[5,2] = 0
+        #
         print member.k
         print
         print "Calculo de la matriz de rotacion (r) de la barra %d/%d" %(member.i, member.j)
@@ -152,6 +97,37 @@ def get_structure_stiffness_matrix(joints, members):
 
     return S
 
+def get_reactions_load(joints, member):
+        """ Calcula las reacciones segun las condiciones de apoyo
+        para una carga uniformente repartida en toda la barra """
+        
+        """if qY!=0:
+            x = abs(self.X2 - self.X1)
+            qx = (qY * x / self.L) * self.sin
+            qy = qy + (qY * x / self.L) * self.cos        
+            self.qx = qx
+            self.qy = qy
+            N = - qx * self.L"""
+        
+        if joints[member.i].type == 'hj' or joints[member.j].type == 'hj':
+            if joints[member.i].type == 'fs' or joints[member.j].type == 'fs':
+                Fx1 = Fx2 = 0
+                Fy1 = Fy2 = 0
+                Mz1 = Mz2 = 0
+            else:
+                # Reacciones con doble apoyo articulado
+                Fx1 = Fx2 = 0
+                Fy1 = Fy2 = - member.qy * member.L / 2
+                Mz1 = Mz2 = 0
+        else:
+            # Reacciones de empotramiento perfecto
+            Fx1 = Fx2 = 0
+            Fy1 = Fy2 = - member.qy * member.L / 2
+            Mz1 = - member.qy * member.L**2 / 12
+            Mz2 = - Mz1
+        
+        return [Fx1, Fy1, Mz1, Fx2, Fy2, Mz2]
+
 def get_structure_load_vector(joints, members):
     """ Calcula el vector de cargas de la estructura (L) """
 
@@ -159,7 +135,7 @@ def get_structure_load_vector(joints, members):
     L = matrix(zeros((n*3))).T
 
     for member in members:
-        p = matrix(member.get_loads()).T
+        p = matrix(get_reactions_load(joints, member)).T
 
         P = - member.r.T * p
 
@@ -185,7 +161,7 @@ def set_restraints(joints, S, L):
              'hs':[0, 0, 1], # Apoyo articulado
              'rs':[1, 0, 1], # Apoyo articulado movil
              'rj':[1, 1, 1], # Nudo rigido
-             'hj':[1, 1, 0]} # Nudo articulado
+             'hj':[1, 1, 1]} # Nudo articulado
 
     dN = []
     for n in range(len(joints)):
@@ -205,8 +181,8 @@ def set_restraints(joints, S, L):
         if dN[n][2]==0:
             S[k2,:] = S[:,k2] = L[k2,0] = 0
             S[k2,k2] = 1
-    # Artefacto parche
-    for k in range(len(S)):
+            
+    for k in range(len(joints) * 3):
         if S[k,k] == 0:
             S[k,k] = 1
 
@@ -220,7 +196,7 @@ def get_reactions(K, D, P):
 
     return K * D - P
 
-def get_efforts(members, D):
+def get_efforts(joints, members, D):
     """ Calcula los esfuerzos en los extremos de barra """
 
     d = matrix(zeros(6)).T
@@ -235,7 +211,7 @@ def get_efforts(members, D):
         d = members[n].r * d
 
         f[:,n] = members[n].k * d
-        f[:,n] += matrix(members[n].get_loads()).T
+        f[:,n] += matrix(get_reactions_load(joints, members[n])).T
 
     return f
 
@@ -272,7 +248,7 @@ def msa(joints, members, properties):
 
     print
     print "Calculo de los esfuerzos en los extremos de las barras (f)"
-    f = get_efforts(members, D)
+    f = get_efforts(joints, members, D)
     print f.T
 
     print

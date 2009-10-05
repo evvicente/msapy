@@ -12,9 +12,6 @@ shears_scale = 0.1
 moments_scale = 0.1
 displacements_scale = 0.1
 
-XYmax = 0
-XYmin = 0
-
 def create_figure(title_figure):
     fig = figure(1)
     fig.clear()
@@ -22,7 +19,6 @@ def create_figure(title_figure):
     title(title_figure)
     xlabel("X")
     ylabel("Y")
-    axis([XYmin, XYmax, XYmin, XYmax])
     axis('equal')
 
 def draw_schematic(joints, members):
@@ -134,177 +130,74 @@ def get_draw_scales(joints, members):
     lmin = array(L).min()
 
     D = []
-    XY = []
     for joint in joints:
         D += [abs(joint.dX), abs(joint.dY)]
-        XY += [joint.X, joint.Y]
     Dmax = array(D).max()
-    min = array(XY).min()
-    max = array(XY).max()
-    global XYmax, XYmin
-    XYmax = max + 0.2 * (max - min)
-    XYmin = min - 0.2 * (max - min)
 
     global loads_scale, normals_scale, shears_scale, moments_scale, displacements_scale
     if qmax != 0:
-        loads_scale = 0.1 * lmin / qmax
+        loads_scale = 0.2 * lmin / qmax
     if Nmax != 0:
         normals_scale = 0.1 * lmin / Nmax
     if Vmax != 0:
-        shears_scale = 0.1 * lmin / Vmax
+        shears_scale = 0.3 * lmin / Vmax
     if Mmax != 0:
-        moments_scale = 0.1 * lmin / Mmax
+        moments_scale = 0.3 * lmin / Mmax
     if Dmax !=0:
         displacements_scale = 0.1 * lmin / Dmax
 
+def get_draw_limits(joints):
+    """ Obtiene los límites de dibujo """
+
+    X = []
+    Y = []
+    for joint in joints:
+        X += [joint.X]
+        Y += [joint.Y]
+    xmin = array(X).min()
+    xmax = array(X).max()
+    ymin = array(Y).min()
+    ymax = array(Y).max()
+    Xmax = xmax + 0.2 * (xmax - xmin)
+    Xmin = xmin - 0.2 * (xmax - xmin)
+    Ymax = ymax + 0.2 * (ymax - ymin)
+    Ymin = ymin - 0.2 * (ymax - ymin)
+
+    return [Xmin, Xmax, Ymin, Ymax]
+
 def draw(joints, members):
     """ Dibuja y guarda todos los diagramas estructurales """
-    
-    # Schematic
-    draw_schematic(joints, members)
-    savefig('output/schematic.png')
-    # Loads
-    draw_loads(joints, members)
-    savefig('output/loads.png')
-    # Reactions
-    draw_reactions(joints, members)
-    savefig('output/reactions.png')
-    # Normals
-    draw_normals(members)
-    savefig('output/normals.png')
-    # Shears
-    draw_shears(members)
-    savefig('output/shears.png')
-    # Moments
-    draw_moments(members)
-    savefig('output/moments.png')
-    # Displacements
-    draw_displacements(joints, members)
-    savefig('output/displacements.png')
-
-# Tipos de coacciones
-JointType = {'fs':"empotramiento", 'hs':"apoyo articulado", 'rs':"rodillo",
-             'rj':"nudo rigido", 'hj':"nudo articulado"}
-
-# Genera el informe
-def report(joints, members, filename="output/report.html"):
-    """ Genera el informe resultado del analisis de la estructura """
-
-    # Se escribe el informe
-
-    file = open(filename, "w")
-
-    s = '<HTML>'
-    s += '    <HEAD>'
-    s += '        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">'
-    s += '        <TITLE>Informe</TITLE>'
-    s += '        <LINK rel="stylesheet" type="text/css" href="style.css">'
-    s += '    </HEAD>'
-    s += '    <BODY><CENTER>'
-    s += '        <H1>Informe de resultados</H1>'
-    s += '        <H2>Problema</H2>'
-    s += '        <IMG src="schematic.png" alt="Esquema estructural"/>'
-    s += '        <TABLE>'
-    s += '            <THEAD>'
-    s += '                <TR><TH rowspan=2>Nudos</TH><TH colspan=2>Coordenadas</TH><TH rowspan=2>Coacciones</TH></TR>'
-    s += '                <TR><TH>X [m]</TH><TH>Y [m]</TH></TR>'
-    s += '            </THEAD>'
-    s += '            <TBODY>'
-    for n in range(len(joints)):
-        s += '<TR><td>%d</td><td>%.1f</td><td>%.1f</td><td>%s</td></TR>' %(n, joints[n].X, joints[n].Y, JointType[joints[n].type])
-    s += '            </TBODY>'
-    s += '        </TABLE><BR>'
-    s += '        <TABLE>'
-    s += '            <THEAD>'
-    s += '                 <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=4>Propiedades</TH></TR>'
-    s += '                 <TR><TH>L [m]</TH><TH>Tipo</TH><TH>A [mm2]</TH><TH>Iz [cm4]</TH><TH>Wz [cm3]</TH></TR>'
-    s += '            </THEAD>'
-    s += '            <TBODY>'
-    for member in members:
-        s += '<tr><td>%d/%d</td><td>%.1f</td><td>%s</td><td>%d</td><td>%.1f</td><td>%.1f</td></tr>' %(member.i, member.j, member.L, member.type, member.A, member.Iz, member.Wz)
-    s += '            </TBODY>'
-    s += '        </TABLE><BR>'
-    s += '        <H2>Cargas</H2>'
-    s += '        <IMG src="loads.png" alt="Cargas"/>'
-    s += '        <TABLE>'
-    s += '            <THEAD>'
-    s += '                <TR><TH rowspan=2>Nudos</TH><TH colspan=3>Cargas</TH></TR>'
-    s += '                <TR><TH>FX [N]</TH><TH>FY [N]</TH><TH>MZ [Nm]</TH></TR>'
-    s += '            </THEAD>'
-    s += '            <TBODY>'
-    for n in range(len(joints)):
-        s += '<TR><td>%d</td><td>%d</td><td>%d</td><td>%d</td></TR>' %(n, joints[n].FX, joints[n].FY, joints[n].MZ)
-    s += '            </TBODY>'
-    s += '        </TABLE><BR>'
-    s += '        <TABLE>'
-    s += '            <THEAD>'
-    s += '                <TR><TH rowspan=2>Barras</TH><TH colspan=2>Cargas</TH></TR>'
-    s += '                <TR><TH>qx [N/m]</TH><TH>qy [N/m]</TH></TR>'
-    s += '            </THEAD>'
-    s += '            <TBODY>'
-    for member in members:
-        s += '<tr><td>%d/%d</td><td>%d</td><td>%d</td></tr>' %(member.i, member.j, member.qx, member.qy)
-    s += '            </TBODY>'
-    s += '        </TABLE><BR>'
-    s += '        <H2>Reacciones</H2>'
-    s += '        <IMG src="reactions.png" alt="Reacciones"/>'
-    s += '        <TABLE>'
-    s += '            <THEAD>'
-    s += '                <TR><TH rowspan=2>Nudos</TH><TH colspan=3>Reacciones</TH></TR>'
-    s += '                <TR><TH>RX [N]</TH><TH>RY [N]</TH><TH>MZ [Nm]</TH></TR>'
-    s += '            </THEAD>'
-    s += '            <TBODY>'
-    for n in range(len(joints)):
-        s += '<tr><td>%d</td><td>%.2f</td><td>%.2f</td><td>%.2f</td></tr>' %(n, joints[n].RX, joints[n].RY, joints[n].RMZ)
-    s += '            </TBODY>'
-    s += '        </TABLE><BR>'
-    s += '        <H2>Esfuerzos</H2>'
-    s += '        <IMG src="normals.png" alt="Normales"/>'
-    s += '        <IMG src="shears.png" alt="Cortantes"/>'
-    s += '        <IMG src="moments.png" alt="Momentos"/>'
-    s += '        <TABLE>'
-    s += '            <THEAD>'
-    s += '                <TR><TH>Barras</TH><TH>N1</TH><TH>V1</TH><TH>M1</TH><TH>N2</TH><TH>V2</TH><TH>M2</TH></TR>'
-    s += '            </THEAD>'
-    s += '            <TBODY>'
-    for member in members:
-        s += '<tr><td>%d/%d</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td></tr>' %(member.i, member.j, member.N1, member.V1, member.M1, member.N2, member.V2, member.M2)
-    s += '            </TBODY>'
-    s += '        </TABLE><BR>'
-    s += '        <H2>Comprobación resistente</H2>'
-    s += '        <TABLE>'
-    s += '            <THEAD>'
-    s += '                <TR><TH>Barras</TH><TH>Tipo</TH><TH>Porcentaje de aprovechamiento del perfil</TH></TR>'
-    s += '            </THEAD>'
-    s += '            <TBODY>'
-    for member in members:
-        s += '<TR><TD>%d/%d</TD><TD>%s</TD><TD>%.2f</TD></TR>' %(member.i, member.j, member.type, 0)
-    s += '            </TBODY>'
-    s += '        </TABLE><BR>'
-    s += '        <H2>Desplazamientos</H2>'
-    s += '        <IMG src="displacements.png" alt="Desplazamientos"/>'
-    s += '        <TABLE>'
-    s += '            <THEAD>'
-    s += '                <TR><TH rowspan=2>Nudos</TH><TH colspan=3>Desplazamientos</TH></TR>'
-    s += '                <TR><TH>dX [m]</TH><TH>dY [m]</TH><TH>gZ [rad]</TH></TR>'
-    s += '            </THEAD>'
-    s += '            <TBODY>'
-    for n in range(len(joints)):
-        s += '<tr><td>%d</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, joints[n].dX, joints[n].dY, joints[n].gZ)
-    s += '                </TBODY>'
-    s += '            </TABLE>'
-    s += '        <P><BR>______________________________<BR>'
-    s += '	Informe generado mediante <A href="http://code.google.com/p/msapy">MSA</A>, con la aplicación del método matricial de la rigidez.<BR>'
-    s += '        <A href="http://code.google.com/p/msapy">MSA</A> - Copyright 2009, Jorge Rodríguez Araújo (grrodri@gmail.com).</P>'
-    s += '        </CENTER>'
-    s += '    </BODY>'
-    s += '</HTML>'
-
-    file.write(s)
-    file.close()
 
     # Se calculan y asignan las escalas de dibujo
     get_draw_scales(joints, members)
-        
-    # Se dibujan y guardan todos los diagramas
-    draw(joints, members)
+    # Limites de dibujo
+    limits = get_draw_limits(joints)
+
+    # Schematic
+    draw_schematic(joints, members)
+    axis(limits)
+    savefig('output/schematic.png')
+    # Loads
+    draw_loads(joints, members)
+    axis(limits)
+    savefig('output/loads.png')
+    # Reactions
+    draw_reactions(joints, members)
+    axis(limits)
+    savefig('output/reactions.png')
+    # Normals
+    draw_normals(members)
+    axis(limits)
+    savefig('output/normals.png')
+    # Shears
+    draw_shears(members)
+    axis(limits)
+    savefig('output/shears.png')
+    # Moments
+    draw_moments(members)
+    axis(limits)
+    savefig('output/moments.png')
+    # Displacements
+    draw_displacements(joints, members)
+    axis(limits)
+    savefig('output/displacements.png')
