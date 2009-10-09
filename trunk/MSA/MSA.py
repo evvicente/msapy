@@ -4,7 +4,7 @@
 __author__ = "Jorge Rodríguez Araújo <grrodri@gmail.com>"
 __copyright__ = "Copyright (c) 2009 Jorge Rodríguez Araújo"
 __license__ = "GPL"
-__version__ = "0.3.7"
+__version__ = "0.3.8"
 __date__ = "29-sep-2009"
 
 import os
