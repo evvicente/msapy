@@ -17,7 +17,7 @@
    version="1.0"
    sodipodi:docname="msa.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="C:\Documents and Settings\Jorge\Escritorio\MSA.png"
+   inkscape:export-filename="G:\MSA\msa.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -86,7 +86,7 @@
      inkscape:cx="361.63034"
      inkscape:cy="505.46978"
      inkscape:document-units="px"
-     inkscape:current-layer="g3182"
+     inkscape:current-layer="g3729"
      showgrid="true"
      inkscape:object-nodes="false"
      inkscape:object-paths="false"
@@ -298,7 +298,7 @@
              id="tspan3693"
              x="-308.14474"
              y="-12.444647"
-             style="font-weight:bold;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:Bitstream Vera Sans Bold">v 0.3.8</tspan></text>
+             style="font-weight:bold;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:Bitstream Vera Sans Bold">v 0.4.0</tspan></text>
         <text
            transform="scale(0.85417215,1.1707242)"
            id="text2839"
@@ -310,7 +310,7 @@
              y="-14.152991"
              x="-310.48621"
              id="tspan2841"
-             sodipodi:role="line">v 0.3.8</tspan></text>
+             sodipodi:role="line">v 0.4.0</tspan></text>
       </g>
     </g>
     <rect

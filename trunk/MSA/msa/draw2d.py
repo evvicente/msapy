@@ -21,7 +21,7 @@ def create_figure(title_figure):
     ylabel("Y")
     axis('equal')
 
-def draw_schematic(joints, members):
+def show_schematic(joints, members):
     """ Dibuja el esquema estructural """
 
     create_figure("Esquema estructural")
@@ -94,18 +94,12 @@ def draw_displacements(joints, members):
         text(X[-1], Y[-1], t, verticalalignment='top', horizontalalignment='center', fontsize=9, color='brown')
         #annotate("nota", xy=(0, 1), xycoords='data', xytext=(-50, 30), textcoords='offset points', arrowprops=dict(arrowstyle="->"))
     plot(X, Y, '+') # Nudos desplazados
-    for n in range(len(members)):
+    """for n in range(len(members)):
         i = members[n].i
         j = members[n].j
-        plot([X[i], X[j]], [Y[i], Y[j]], '--', color='green', lw=2)
-        """x = arange(0, 1.1, 1)
-        X0 = x * (joints[j].X - joints[i].X) + joints[i].X + scale * joints[i].dX
-        Y0 = x * (joints[j].Y - joints[i].Y) + joints[i].Y + scale * joints[i].dY
-        x = x * members[n].L
-        y = scale * members[n].y(x, joints[i].gZ, joints[n].dX * members[n].sin + joints[n].dY * members[n].cos)
-        X = X0 - y * members[n].sin
-        Y = Y0 + y * members[n].cos
-        plot(X, Y, '--', color='green', lw=2)"""
+        plot([X[i], X[j]], [Y[i], Y[j]], '--', color='yellow', lw=2)"""
+    for member in members:
+        member.draw_displacement(displacements_scale)
 
 def get_draw_scales(joints, members):
     """ Obtiene las escalas de dibujo de los diagramas """
@@ -131,7 +125,7 @@ def get_draw_scales(joints, members):
 
     D = []
     for joint in joints:
-        D += [abs(joint.dX), abs(joint.dY)]
+        D += [abs(joint.dX), abs(joint.dY), abs(joint.gZ)]
     Dmax = array(D).max()
 
     global loads_scale, normals_scale, shears_scale, moments_scale, displacements_scale
@@ -158,10 +152,10 @@ def get_draw_limits(joints):
     xmax = array(X).max()
     ymin = array(Y).min()
     ymax = array(Y).max()
-    Xmax = xmax + 0.2 * (xmax - xmin)
-    Xmin = xmin - 0.2 * (xmax - xmin)
-    Ymax = ymax + 0.2 * (ymax - ymin)
-    Ymin = ymin - 0.2 * (ymax - ymin)
+    Xmax = xmax + 0.1 * (xmax - xmin)
+    Xmin = xmin - 0.1 * (xmax - xmin)
+    Ymax = ymax + 0.1 * (ymax - ymin)
+    Ymin = ymin - 0.1 * (ymax - ymin)
 
     return [Xmin, Xmax, Ymin, Ymax]
 
@@ -174,7 +168,7 @@ def draw(joints, members):
     limits = get_draw_limits(joints)
 
     # Schematic
-    draw_schematic(joints, members)
+    show_schematic(joints, members)
     axis(limits)
     savefig('output/schematic.png')
     # Loads

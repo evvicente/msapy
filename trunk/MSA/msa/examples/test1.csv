@@ -1,16 +1,16 @@
-Ejemplo de cálculo (Debes guardar el archivo como "*.csv")
+"Ejemplo de cálculo (Debes guardar el archivo como ""*.csv"")";;;;;;
 
-Material;Tipo;E[N/mm2];fyd[N/mm2];
-M0;Acero;210000000;2;
+Material;Tipo;E[N/mm2];d [kg/m3];fyd[N/mm2];;
+M0;Acero;210000000;7850;2;;
 
-Propiedades;Tipo;A[mm2];Iz[cm4];Wz[cm3];
-P0;P 1;1;0,00000001;0,1;
+Propiedades;Tipo;A[mm2];Iz[cm4];Wz[cm3];;
+P0;P 1;1;0,00000001;0,1;;
 
-Nudos;X[m];Y[m];Tipo;FX[N];FY[N];MZ[Nm];
-N0;0;0;rs;0;0;0;
-N1;5;2,5;hj;0;0;0;
-N2;10;2,5;fs;0;0;0;
+Nudos;X[m];Y[m];Tipo;FX[N];FY[N];MZ[Nm]
+N0;0;0;rs;0;0;0
+N1;5;2,5;hj;0;0;0
+N2;10;2,5;fs;0;0;0
 
-Barras;Ni;Nf;qy[N/m];Tipo;
-B0;0;1;0;P 1;
-B1;1;2;-20;P 1;
+Barras;Ni;Nf;qy[N/m];Tipo;;
+B0;0;1;0;P 1;;
+B1;1;2;-20;P 1;;

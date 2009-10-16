@@ -147,27 +147,12 @@ Function GetPython
 
     OK:
         nsisdl::download /TIMEOUT=30000 ${PYTHON_URL} "$TEMP\Python.msi"
-        Pop $0
-        ${If} $0 == "success"
-            MessageBox MB_OK "¡ La descarga a fallado !"
-            quit
-  	${EndIf}
         ExecWait "msiexec.exe /i $TEMP\Python.msi"
         Delete "$TEMP\Python.exe"
         nsisdl::download /TIMEOUT=30000 ${NUMPY_URL} "$TEMP\Numpy.exe"
-        Pop $0
-        ${If} $0 == "success"
-            MessageBox MB_OK "¡ La descarga a fallado !"
-            quit
-  	${EndIf}
         ExecWait "$TEMP\Numpy.exe"
         Delete "$TEMP\Numpy.exe"
         nsisdl::download /TIMEOUT=30000 ${MATPLOTLIB_URL} "$TEMP\matplotlib.exe"
-        Pop $0
-        ${If} $0 == "success"
-            MessageBox MB_OK "¡ La descarga a fallado !"
-            quit
-  	${EndIf}
         ExecWait "$TEMP\matplotlib.exe"
         Delete "$TEMP\matplotlib.exe"
     CANCEL:

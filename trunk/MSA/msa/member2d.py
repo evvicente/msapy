@@ -21,8 +21,10 @@ class Member():
         self.cos = (self.X2 - self.X1) / self.L # Coseno
 
         # Propiedades de la barra
+        self.P = 0 # Peso de la barra
         # Propiedades del material
         self.E = 0 # Modulo de elasticidad
+        self.d = 0 # Densidad del material
         self.fyd = 0 # Resistencia ultima del material
         # Propiedades geométricas
         self.type = '' # Designacion
@@ -30,22 +32,10 @@ class Member():
         self.Iz = 0 # Momento de inercia de la seccion
         self.Wz = 0 # Modulo resistente
         
-
         # Cargas uniformemente distribuidas
         self.qx = 0
         self.qy = qy
         self.qY = qY # Peso
-
-        # Cargas en extremo de barra: inicial (1) y final (2)
-        #   Fx = Carga en el extremo segun el eje x de la barra
-        #   Fy = Carga en el extremo segun el eje y de la barra
-        #   Mz = Momento en el extremo segun el eje z de la barra
-        self.Fx1 = 0
-        self.Fy1 = 0
-        self.Mz1 = 0     
-        self.Fx2 = 0
-        self.Fy2 = 0
-        self.Mz2 = 0
 
         # Esfuerzos resultantes en extremo de barra
         self.N1 = 0
@@ -55,28 +45,40 @@ class Member():
         self.V2 = 0
         self.M2 = 0
 
+        # Desplazamientos en extremo de barra
+        self.dx1 = 0
+        self.dy1 = 0
+        self.gz1 = 0
+        self.dx2 = 0
+        self.dy2 = 0
+        self.gz2 = 0
+
+        # Tensión máxima que debe soportar la barra
+        self.Tmax = 0
+        self.p = 0 # Porcentaje de aprovechamiento del perfil
+
         # Matrices de la barra
         self.k = 0 # Matriz de rigidez
         self.r = 0 # Matriz de rotacion
 
-    def set_material(self, E, fyd):
+    def set_material(self, E, d, fyd):
         """ Establece las propiedades del material de la barra """
         self.E = E
+        self.d = d
         self.fyd = fyd
 
     def set_properties(self, A, Iz, Wz):
         """ Establece las propiedades de la barra """
         self.A = A
+        self.P = self.L * (A / 1000000) * self.d
         self.Iz = Iz
         self.Wz = Wz
 
-    def set_loads(self, Fx1, Fy1, Mz1, Fx2, Fy2, Mz2):
-        """ Establece las cargas en los extremos inicial (1) y final (2) de la barra,
-        siendo F las fuerzas y M los momentos """
-        load = [Fx1, Fy1, Mz1, Fx2, Fy2, Mz2]
-
     def set_efforts(self, N1, V1, M1, N2, V2, M2):
         (self.N1, self.V1, self.M1, self.N2, self.V2, self.M2) = (N1, V1, M1, N2, V2, M2)
+
+    def set_displacements(self, dx1, dy1, gz1, dx2, dy2, gz2):
+        (self.dx1, self.dy1, self.gz1, self.dx2, self.dy2, self.gz2) = (dx1, dy1, gz1, dx2, dy2, gz2)
 
     # Momentos
     def M(self, x):
@@ -85,9 +87,9 @@ class Member():
         return M
     
     # Deformada
-    def y(self, x, gz1, dy1):
+    def y(self, x):
         """ Calcula la flecha en un punto """
-        y = (-1. / (self.E * self.Iz)) * (self.M1 * x**2 / 2 - self.V1 * x**3 / 6 - self.qy * x**4 / 24) + gz1 * x + dy1
+        y = (-1. / (self.E * self.Iz)) * (self.M1 * x**2 / 2 - self.V1 * x**3 / 6 - self.qy * x**4 / 24) + self.gz1 * x + self.dy1
         return y
 
     def draw_member(self):
@@ -179,13 +181,13 @@ class Member():
             txt = "\n x = %.3f\n Mmax = %.1f\n\n\n" %(xmax, Mmax)
             text((self.X1 + self.X2)/2, (self.Y1 + self.Y2)/2, txt, verticalalignment='center', horizontalalignment='center', fontsize=9, color='red')
             
-    def draw_displacement(self, gz1, dy1, scale = 0.1):
+    def draw_displacement(self, scale = 100):
         """ Dibuja el diagrama de desplazamientos o estructura deformada """
         
         # Calculo de la deformada (y)
         x = arange(0, 1.1, 0.1)
         x = x * self.L
-        y = self.y(x, gz1, dy1)
+        y = self.y(x)
 
         # Dibuja el diagrama
         X = x * self.cos + self.X1

@@ -31,7 +31,8 @@ def load(filename):
             # Definicion de las propiedades del material
             name = values[1]
             E = float(values[2])
-            fyd = float(values[3])
+            d = float(values[3])
+            fyd = float(values[4])
         elif re.search('^P\d+', values[0]):
             # Definicion de las propiedades de la barra
             name = values[1]
@@ -62,7 +63,7 @@ def load(filename):
             type = values[4]
             for prop in properties:
                 if prop.name == type:
-                    members[-1].set_material(E, fyd)
+                    members[-1].set_material(E, d, fyd)
                     members[-1].type = type
                     members[-1].set_properties(prop.A, prop.Iz, prop.Wz)
 
@@ -102,12 +103,12 @@ def report(joints, members, filename="output/report.html"):
     s += '        </TABLE><BR>'
     s += '        <TABLE>'
     s += '            <THEAD>'
-    s += '                 <TR><TH rowspan=2>Barras</TH><TH></TH><TH colspan=4>Propiedades</TH></TR>'
-    s += '                 <TR><TH>L [m]</TH><TH>Tipo</TH><TH>A [mm2]</TH><TH>Iz [cm4]</TH><TH>Wz [cm3]</TH></TR>'
+    s += '                 <TR><TH rowspan=2>Barras</TH><TH rowspan=2>Tipo</TH><TH colspan=2></TH><TH colspan=4>Propiedades</TH></TR>'
+    s += '                 <TR><TH>Longitud [m]</TH><TH>Peso [kg]</TH><TH>A [mm2]</TH><TH>Iz [cm4]</TH><TH>Wz [cm3]</TH></TR>'
     s += '            </THEAD>'
     s += '            <TBODY>'
     for member in members:
-        s += '<tr><td>%d/%d</td><td>%.1f</td><td>%s</td><td>%d</td><td>%.1f</td><td>%.1f</td></tr>' %(member.i, member.j, member.L, member.type, member.A, member.Iz, member.Wz)
+        s += '<tr><td>%d/%d</td><td>%s</td><td>%.1f</td><td>%.1f</td><td>%d</td><td>%.1f</td><td>%.1f</td></tr>' %(member.i, member.j, member.type, member.L, member.P, member.A, member.Iz, member.Wz)
     s += '            </TBODY>'
     s += '        </TABLE><BR>'
     s += '        <H2>Cargas</H2>'
@@ -160,11 +161,11 @@ def report(joints, members, filename="output/report.html"):
     s += '        <H2>Comprobación resistente</H2>'
     s += '        <TABLE>'
     s += '            <THEAD>'
-    s += '                <TR><TH>Barras</TH><TH>Tipo</TH><TH>[%]</TH></TR>'
+    s += '                <TR><TH>Barras</TH><TH>Tipo</TH><TH>Tensión [N/mm2]</TH><TH>Aprovechamiento [%]</TH><TH>Posición [m]</TH></TR>'
     s += '            </THEAD>'
     s += '            <TBODY>'
     for member in members:
-        s += '<TR><TD>%d/%d</TD><TD>%s</TD><TD>%.2f</TD></TR>' %(member.i, member.j, member.type, 0)
+        s += '<TR><TD>%d/%d</TD><TD>%s</TD><TD>%.1f</TD><TD>%.2f</TD><TD>%s</TD></TR>' %(member.i, member.j, member.type, member.Tmax, member.p, '-')
     s += '            </TBODY>'
     s += '        </TABLE><BR>'
     s += '        <H2>Desplazamientos</H2>'
