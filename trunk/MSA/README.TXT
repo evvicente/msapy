@@ -37,17 +37,17 @@ NOTA: Aún no se pueden resolver estructuras mixtas, con nudos articulados y rigi
 
 === Resultados ===
 
-[http://lh4.ggpht.com/_OQVfrwwtV00/SsdnXikKvLI/AAAAAAAAAMw/cEZn_PfdfT4/s640/schematic.png]
+[http://lh4.ggpht.com/_OQVfrwwtV00/St3PZ-LLJwI/AAAAAAAAAOA/mDaRykUFLrY/s720/schematic.png]
 
-[http://lh4.ggpht.com/_OQVfrwwtV00/SsdnX4xRj_I/AAAAAAAAAM0/ZwUJExCpHnQ/s640/loads.png]
+[http://lh4.ggpht.com/_OQVfrwwtV00/St3PaGAyGUI/AAAAAAAAAOE/PDXWtIx9-_s/s720/loads.png]
 
-[http://lh4.ggpht.com/_OQVfrwwtV00/SsdnX7XV_oI/AAAAAAAAAM4/n8BeFvWsCcg/s640/reactions.png]
+[http://lh5.ggpht.com/_OQVfrwwtV00/St3PaiT5LLI/AAAAAAAAAOI/zhrvduxUNnQ/s720/reactions.png]
 
-[http://lh3.ggpht.com/_OQVfrwwtV00/SsdogaGWDxI/AAAAAAAAAM8/39X1HViXv5g/s640/normals.png]
+[http://lh6.ggpht.com/_OQVfrwwtV00/St3Paz2lpcI/AAAAAAAAAOM/7FbXyqY6Bwo/s720/normals.png]
 
-[http://lh5.ggpht.com/_OQVfrwwtV00/SsdogsCza1I/AAAAAAAAANA/aZzsXAkZrzg/s640/shears.png]
+[http://lh5.ggpht.com/_OQVfrwwtV00/St3Pa_NwTHI/AAAAAAAAAOQ/LSPyRnLTAwE/s720/shears.png]
 
-[http://lh6.ggpht.com/_OQVfrwwtV00/Ssdogvk0_BI/AAAAAAAAANE/z74hHh3RT4I/s640/moments.png]
+[http://lh4.ggpht.com/_OQVfrwwtV00/St3PiKI6n_I/AAAAAAAAAOU/Aoq_xYluG90/s720/moments.png]
 
 == Planifación y Versiones ==
 
