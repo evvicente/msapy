@@ -1,7 +1,7 @@
 "Ejemplo de cálculo (Debes guardar el archivo como ""*.csv"")";;;;;;
 
 Material;Tipo;E[N/mm2];d[kg/m3];fyd[N/mm2];;
-M0;Acero;2E+11;7850;200;;
+M0;Acero;2E+11;7850;20000;;
 
 Propiedades;Tipo;A[mm2];Iz[cm4];Wz[cm3];;
 P0;P 1;0,001;0,1;0,01;;

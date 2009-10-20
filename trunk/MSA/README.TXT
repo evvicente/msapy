@@ -33,6 +33,8 @@ Para definir el tipo de nudo o apoyo se utiliza sus siglas en inglés, siendo:
  * Tipo de nudo: nudo rígido (rj) o articulado (hj)
  * Tipo de apoyo: empotramiento (fs), articulado (hs) o rodillo (rs)
 
+NOTA: Aún no se pueden resolver estructuras mixtas, con nudos articulados y rigidos.
+
 === Resultados ===
 
 [http://lh4.ggpht.com/_OQVfrwwtV00/SsdnXikKvLI/AAAAAAAAAMw/cEZn_PfdfT4/s640/schematic.png]
@@ -67,6 +69,7 @@ Para definir el tipo de nudo o apoyo se utiliza sus siglas en inglés, siendo:
  * v 0.3.6 (2009-08-11): Corrección de errores.
  * v 0.3.7 (2009-09-17): Generación del informe de resultados.
  * v 0.3.8 (2009-10-03): Corrección de errores.
+ * v 0.3.9 (2009-10-20): Comprobación del equilibrio estructural.
 
 || Versión 0.4: Comprobación resistente ||
 || Versión 0.5: Refactorización ||

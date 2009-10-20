@@ -94,12 +94,12 @@ def draw_displacements(joints, members):
         text(X[-1], Y[-1], t, verticalalignment='top', horizontalalignment='center', fontsize=9, color='brown')
         #annotate("nota", xy=(0, 1), xycoords='data', xytext=(-50, 30), textcoords='offset points', arrowprops=dict(arrowstyle="->"))
     plot(X, Y, '+') # Nudos desplazados
-    """for n in range(len(members)):
+    for n in range(len(members)):
         i = members[n].i
         j = members[n].j
-        plot([X[i], X[j]], [Y[i], Y[j]], '--', color='yellow', lw=2)"""
-    for member in members:
-        member.draw_displacement(displacements_scale)
+        plot([X[i], X[j]], [Y[i], Y[j]], '--', color='green', lw=2)
+    #for member in members:
+    #    member.draw_displacement(displacements_scale)
 
 def get_draw_scales(joints, members):
     """ Obtiene las escalas de dibujo de los diagramas """

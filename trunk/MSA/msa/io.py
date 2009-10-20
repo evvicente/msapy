@@ -161,7 +161,8 @@ def report(joints, members, filename="output/report.html"):
     s += '        <H2>Comprobación resistente</H2>'
     s += '        <TABLE>'
     s += '            <THEAD>'
-    s += '                <TR><TH>Barras</TH><TH>Tipo</TH><TH>Tensión [N/mm2]</TH><TH>Aprovechamiento [%]</TH><TH>Posición [m]</TH></TR>'
+    s += '                <TR><TH rowspan=2>Barras</TH><TH rowspan=2>Tipo</TH><TH colspan=3>Tensiones máximas</TH></TR>'
+    s += '                <TR><TH>Tensión [N/mm2]</TH><TH>Aprovechamiento [%]</TH><TH>Posición [m]</TH></TR>'
     s += '            </THEAD>'
     s += '            <TBODY>'
     for member in members:
@@ -178,6 +179,17 @@ def report(joints, members, filename="output/report.html"):
     s += '            <TBODY>'
     for n in range(len(joints)):
         s += '<tr><td>%d</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, joints[n].dX, joints[n].dY, joints[n].gZ)
+    s += '                </TBODY>'
+    s += '            </TABLE><BR>'
+    s += '        <H2>Comprobación a deformación</H2>'
+    s += '        <TABLE>'
+    s += '            <THEAD>'
+    s += '                <TR><TH rowspan=2>Barras</TH><TH colspan=2>Flecha máxima absoluta</TH><TH colspan=2>Flecha máxima relativa</TH></TR>'
+    s += '                <TR><TH>Pos [m]</TH><TH>Flecha [m]</TH><TH>Pos [m]</TH><TH>Flecha</TH></TR>'
+    s += '            </THEAD>'
+    s += '            <TBODY>'
+    for member in members:
+        s += '<TR><TD>%d/%d</TD><TD>%s</TD><TD>%s</TD><TD>%s</TD><TD>%s</TD></TR>' %(member.i, member.j, '-', '-', '-', '-')
     s += '                </TBODY>'
     s += '            </TABLE>'
     s += '        <P><BR>______________________________<BR>'
