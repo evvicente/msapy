@@ -70,30 +70,27 @@ class Gui():
         
         # Tools
         tools_frame = tk.Frame(window)
-        tools_frame.grid(row=2, column=0, sticky=tk.W+tk.E+tk.N+tk.S, padx=3, pady=4)
+        tools_frame.grid(row=2, column=0, sticky=tk.W, padx=3, pady=4)
         # Show editor
         img = tk.PhotoImage(file='icons/editor.gif')
-        button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.show_editor)
-        button.image = img
-        button.pack(side='left')
+        self.button_editor = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.show_editor)
+        self.button_editor.image = img
+        self.button_editor.grid(row=0, column=0)
         # Show schematic
         img = tk.PhotoImage(file='icons/schematic.gif')
-        button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.show_schematic)
-        button.image = img
-        button.pack(side='left', padx=5)
+        self.button_schematic = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.show_schematic)
+        self.button_schematic.image = img
+        self.button_schematic.grid(row=0, column=0)
         # Solver
         img = tk.PhotoImage(file='icons/solve.gif')
-        button = tk.Button(tools_frame, image=img, text="      ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
+        button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
         button.image = img
-        button.pack(side='left', padx=5)
+        button.grid(row=0, column=1, padx=5, ipadx=2)
         # Exit
         img = tk.PhotoImage(file='icons/exit.gif')
-        button = tk.Button(tools_frame, image=img, text="     ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
+        button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
         button.image = img
-        button.pack(side='right')
-        # Status bar
-        self.statusbar = tk.Label(tools_frame, text=" MSA - Copyright 2009 Jorge Rodríguez Araújo ", bd=1, anchor=tk.W)
-        self.statusbar.pack(side=tk.BOTTOM, fill=tk.X, padx=10, expand='yes')
+        #button.grid(row=0, column=2, padx=100, ipadx=10)
 
         # Open default file
         self.open_file(name = self.filename)
@@ -103,16 +100,16 @@ class Gui():
         if name == "":
             file = tkFileDialog.askopenfile(mode='r')
         else:
-            file = open(name, "r")
-        try:
-            contents = file.read()
-            self.text.delete(tk.CURRENT, tk.END)
-            self.text.insert(tk.CURRENT, contents)
-            self.filename = file.name
-            self.window.title("MSA - " + self.filename)
-            self.statusbar['text'] = " El archivo se ha cargado con éxito "
-        except:
-            self.statusbar['text'] = " No se ha podido abrir el archivo "
+            try:
+                file = open(name, "r")
+                contents = file.read()
+                self.text.delete(tk.CURRENT, tk.END)
+                self.text.insert(tk.CURRENT, contents)
+                self.filename = file.name
+                self.window.title("MSA - " + self.filename)
+                print ">> El archivo se ha cargado con exito "
+            except:
+                print ">> No se ha podido abrir el archivo "
     
     def save_file(self, name=""):
         """ Guarda un archivo """
@@ -130,12 +127,16 @@ class Gui():
     def show_editor(self):
         """ Muestra el editor de texto """
         self.plot_frame.lower()
+        self.button_editor.lower()
         self.text_frame.lift()
+        self.button_schematic.lift()
 
     def show_schematic(self):
         """ Guarda los datos y muestra el esquema estructural """
         self.text_frame.lower()
+        self.button_schematic.lower()
         self.plot_frame.lift()
+        self.button_editor.lift()
         
         self.save_file(name = self.filename)
         
@@ -145,28 +146,27 @@ class Gui():
         draw2d.show_schematic(self.joints, self.members)
         draw2d.draw_loads(self.joints, self.members)
         self.canvas.show()
-        
-        self.statusbar['text'] = ""
 
     def solve_msa(self):
         t0 = time.clock()
-        self.statusbar['text'] = " Guardando los datos de definición de la estructura... "
+        print ">> Guardando los datos de definicion de la estructura... "
         self.save_file(self.filename)
-        self.statusbar['text'] = " Leyendo los datos de definición de la estructura... "
+        print ">> Leyendo los datos de definicion de la estructura... "
         (self.joints, self.members, properties) = io.load(self.filename)
-        self.statusbar['text'] = " Resolviendo la estructura por el método de la rigidez... "
+        print ">> Resolviendo la estructura por el metodo de la rigidez... "
         msa2d.msa(self.joints, self.members, properties)
+        print
         t1 = time.clock()
-        self.statusbar['text'] = " Guardando los resultados... "
+        print ">> Guardando los resultados... "
         io.report(self.joints, self.members)
         t2 = time.clock()
-        self.statusbar['text'] = " La estructura se ha resuelto en %.2f segundos: %.2f calculo y %.2f dibujo " %(t2-t0, t1-t0, t2-t1)
+        print ">> La estructura se ha resuelto en %.2f segundos: %.2f calculo y %.2f dibujo " %(t2-t0, t1-t0, t2-t1)
         webbrowser.open(os.path.join('output', 'report.html'))
 
 def run():
     window = tk.Tk()
     window.title("MSA")
-    window.geometry("+%d+%d" %(5, 5))
+    window.geometry("+%d+%d" %(15, 15))
     #window.iconbitmap(os.path.join('icons', 'msa.ico'))
     Gui(window)
     window.mainloop()
