@@ -39,11 +39,20 @@ H1  {
 
 H2	{
 	text-align:center;
-	color: #2244DD;
+	color: #2244AA;
 	font-size: 14pt;
 	font-weight: bold;
-	background: #EEEEEE;
+	background: #EFEFEF;
         width:750px;
+	}
+
+H3	{
+	text-align:center;
+	color: #2244DD;
+	font-size: 12pt;
+	font-weight: bold;
+	background: #E4E4E4;
+        width:700px;
 	}
 
 a:link,a:visited,a:active {

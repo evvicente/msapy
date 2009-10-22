@@ -158,7 +158,7 @@ def report(joints, members, filename="output/report.html"):
         s += '<tr><td>%d/%d</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td><td>%.2f</td></tr>' %(member.i, member.j, member.N1, member.V1, member.M1, member.N2, member.V2, member.M2)
     s += '            </TBODY>'
     s += '        </TABLE><BR>'
-    s += '        <H2>Comprobación resistente</H2>'
+    s += '        <H3>Comprobación resistente</H3>'
     s += '        <TABLE>'
     s += '            <THEAD>'
     s += '                <TR><TH rowspan=2>Barras</TH><TH rowspan=2>Tipo</TH><TH colspan=3>Tensiones máximas</TH></TR>'
@@ -181,7 +181,7 @@ def report(joints, members, filename="output/report.html"):
         s += '<tr><td>%d</td><td>%f</td><td>%f</td><td>%f</td></tr>' %(n, joints[n].dX, joints[n].dY, joints[n].gZ)
     s += '                </TBODY>'
     s += '            </TABLE><BR>'
-    s += '        <H2>Comprobación a deformación</H2>'
+    s += '        <H3>Comprobación a deformación</H3>'
     s += '        <TABLE>'
     s += '            <THEAD>'
     s += '                <TR><TH rowspan=2>Barras</TH><TH colspan=2>Flecha máxima absoluta</TH><TH colspan=2>Flecha máxima relativa</TH></TR>'
