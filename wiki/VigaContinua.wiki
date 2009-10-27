@@ -7,7 +7,7 @@ Una viga continua es aquella que presenta tres o más vanos.
 
 === Definición de la estructura ===
 
-Para definir la estructura se utiliza un archivo en formato ".csv" (valores separados por comas), que puede ser creado con la plantilla "template.xls" desde EXCEL (Office) o CALC ([http://www.OpenOffice.org OpenOffice]) sin más que seleccionar dicho formato a la hora de guardar el archivo.
+Para definir la estructura se utiliza un archivo en formato ".csv" (valores separados por comas), que puede ser creado con la plantilla "template.xls" desde EXCEL (Office) o CALC ([http://www.openoffice.org OpenOffice]) sin más que seleccionar dicho formato a la hora de guardar el archivo.
 
 [http://lh5.ggpht.com/_OQVfrwwtV00/SsdnXdeYElI/AAAAAAAAAMs/PyjKRM2_P8o/gui.png]
 
