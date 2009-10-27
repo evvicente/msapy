@@ -87,9 +87,9 @@ class Gui():
         button.image = img
         button.grid(row=0, column=1, padx=5, ipadx=2)
         # Exit
-        img = tk.PhotoImage(file='icons/exit.gif')
-        button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
-        button.image = img
+        #img = tk.PhotoImage(file='icons/exit.gif')
+        #button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
+        #button.image = img
         #button.grid(row=0, column=2, padx=100, ipadx=10)
 
         # Open default file
@@ -97,32 +97,29 @@ class Gui():
     
     def open_file(self, name=""):
         """ Abre un archivo """
-        if name == "":
-            file = tkFileDialog.askopenfile(mode='r')
-        else:
-            try:
-                file = open(name, "r")
-                contents = file.read()
-                self.text.delete(tk.CURRENT, tk.END)
-                self.text.insert(tk.CURRENT, contents)
-                self.filename = file.name
-                self.window.title("MSA - " + self.filename)
-                print ">> El archivo se ha cargado con exito "
-            except:
-                print ">> No se ha podido abrir el archivo "
+        try:
+            if name == "" : file = tkFileDialog.askopenfile(mode='r')
+            else : file = open(name, "r")
+            contents = file.read()
+            self.text.delete(tk.CURRENT, tk.END)
+            self.text.insert(tk.CURRENT, contents)
+            self.filename = file.name
+            self.window.title("MSA - " + self.filename)
+            print ">> El archivo se ha cargado con exito "
+        except:
+            print ">> No se ha podido abrir el archivo "
     
     def save_file(self, name=""):
         """ Guarda un archivo """
-        if name == "":
-            file = tkFileDialog.asksaveasfile(mode='w', defaultextension=".csv")
-        else:
-            file = open(name, "w")
         try:
+            if name == "" : file = tkFileDialog.asksaveasfile(mode='w', defaultextension=".csv")
+            else : file = open(name, "w")
             contents = str(self.text.get(0.0, tk.END)).strip('\n')
             file.write(contents)
             file.close()
+            print ">> El archivo se ha guardado con exito"
         except:
-            pass
+            print ">> No se ha podido guardar el archivo"
 
     def show_editor(self):
         """ Muestra el editor de texto """

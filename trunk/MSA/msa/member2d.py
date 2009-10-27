@@ -85,10 +85,10 @@ class Member():
         """ Calcula el momento en un punto """
         M = - self.M1 + self.V1 * x + self.qy * x * x / 2
         return M
-    
+
     # Deformada
     def y(self, x):
-        """ Calcula la flecha en un punto """
+        """ Calcula la deformada en un punto """
         y = (-1. / (self.E * self.Iz)) * (self.M1 * x**2 / 2 - self.V1 * x**3 / 6 - self.qy * x**4 / 24) + self.gz1 * x + self.dy1
         return y
 
@@ -102,10 +102,8 @@ class Member():
             YL1 = self.Y1 + scale * abs(self.qy)
             YL2 = self.Y2 + scale * abs(self.qy)
             fill([self.X1, self.X1, self.X2, self.X2], [self.Y1, YL1, YL2, self.Y2], hatch='|', facecolor='black')
-
             txt = "%d" %self.qY
             text((self.X1 + self.X2)/2, (self.Y1 + self.Y2 + YL1 + YL2)/4, txt, va='center', ha='center', color='red')
-
         elif self.qy != 0:
             s = self.sin
             c = self.cos
@@ -114,7 +112,6 @@ class Member():
             YL1 = self.Y1 + scale * abs(self.qy) * c
             YL2 = self.Y2 + scale * abs(self.qy) * c
             fill([self.X1, XL1, XL2, self.X2], [self.Y1, YL1, YL2, self.Y2], hatch='|', facecolor='black')
-
             txt = "%d" %self.qy
             text((self.X1 + self.X2 + XL1 + XL2)/4, (self.Y1 + self.Y2 + YL1 + YL2)/4, txt, va='center', ha='center', color='red')
 

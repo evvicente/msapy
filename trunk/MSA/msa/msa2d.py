@@ -225,10 +225,47 @@ def check_equilibrium(members, f):
         Mz = M1 + M2 + members[n].qy * members[n].L**2 / 2 + V2 * members[n].L
 
         print
-        print "Barra", n
+        print "Barra %d/%d" %(members[n].i, members[n].j)
         print "Fx =", round(Fx, 7)
         print "Fy =", round(Fy, 7)
         print "Mz =", round(Mz, 7)
+
+def check_efforts(members):
+    """ Comprueba el grado en que las barras cumplen el criterrio resistente """
+
+    for member in members:
+        print
+        print "Barra %d/%d: %s" %(member.i, member.j, member.type)
+        x = arange(0, 1.1, 0.2)
+        x = x * member.L
+        fy = member.N1 / member.A + member.M(x) / member.Wz
+        print "Esfuerzos:", fy
+        member.Tmax = abs(fy).max()
+        print "Esfuerzo maximo:", member.Tmax
+        member.p = member.Tmax / member.fyd * 100
+
+def check_deformed(members):
+    """ Comprueba el grado en que las barras cumplen el criterio de deformacion """
+
+    """# Calculo de la flecha
+    for member in members:
+        print "Barra %d/%d: %s" %(member.i, member.j, member.type)
+        x = arange(0, 1.1, 0.2)
+        x = x * member.L
+        # Desplazamientos de barra en extremo en ejes locales
+        d = matrix(zeros(6)).T
+        d[0,0] = joints[member.i].dX
+        d[1,0] = joints[member.i].dY
+        d[2,0] = joints[member.i].gZ
+        d[3,0] = joints[member.j].dX
+        d[4,0] = joints[member.j].dY
+        d[5,0] = joints[member.j].gZ
+        d = member.r * d
+        member.set_displacements(d[0,0], d[1,0], d[2,0], d[3,0], d[4,0], d[5,0])
+        y = member.y(x)
+        print "Deformada de la barra (y):", y
+        print "Flecha maxima:", abs(y).max()"""
+    pass
 
 def msa(joints, members, properties):
     """ Método matricial para la resolución de estructuras planas """
@@ -287,20 +324,21 @@ def msa(joints, members, properties):
     for n in range(len(members)):
         members[n].set_efforts(f[0,n], f[1,n], f[2,n], f[3,n], f[4,n], f[5,n])
 
-    # Comprobacion resistente
-    new_analysis = False
     print
-    print "Comprobacion resistente de las barras (implementacion parcial)"
+    print "Comprobacion resistente de las barras"
+    check_efforts(members)
+
+    #print
+    #print "Comprobacion a deformacion de las barras"
+    #check_deformed(members)
+
+def search(joints, members, properties):
+    """ Busca entre los perfiles disponibles el primero que cumpla con la
+    condicion de resistencia """
+
+    msa(joints, members, properties)
+
     for member in members:
-        print
-        print "Barra %d/%d: %s" %(member.i, member.j, member.type)
-        x = arange(0, 1.1, 0.2)
-        x = x * member.L
-        fy = member.N1 / member.A + member.M(x) / member.Wz
-        print "Esfuerzos:", fy
-        member.Tmax = abs(fy).max()
-        print "Esfuerzo maximo:", member.Tmax
-        member.p = member.Tmax / member.fyd * 100
         if member.p > 100:
             print "Se ha sobrepasado la resistencia del perfil: %.2f%%" % round(member.p, 2)
             # Cuando un perfil no cumple se prueba con otro mayor
@@ -311,35 +349,6 @@ def msa(joints, members, properties):
                     if int(p[1]) > int(t[1]):
                         member.type = prop.name
                         member.set_properties(prop.A, prop.Iz, prop.Wz)
-                        new_analysis = True
-                if new_analysis:
-                    break
+                        msa(joints, members, properties)
         else:
             print "Porcentaje de aprovechamiento del perfil: %.2f%% [ OK ]" % round(member.p, 2)
-            new_analysis = False
-        if new_analysis:
-            break
-
-    """print
-    print "Comprobacion a deformacion (implementacion parcial)"
-    for member in members:
-        print "Barra %d/%d: %s" %(member.i, member.j, member.type)
-        x = arange(0, 1.1, 0.2)
-        x = x * member.L
-        # Desplazamientos de barra en extremo en ejes locales
-        d = matrix(zeros(6)).T
-        d[0,0] = joints[member.i].dX
-        d[1,0] = joints[member.i].dY
-        d[2,0] = joints[member.i].gZ
-        d[3,0] = joints[member.j].dX
-        d[4,0] = joints[member.j].dY
-        d[5,0] = joints[member.j].gZ
-        d = member.r * d
-        member.set_displacements(d[0,0], d[1,0], d[2,0], d[3,0], d[4,0], d[5,0])
-        y = member.y(x)
-        print "Deformada de la barra (y):", y
-        print "Flecha maxima:", abs(y).max()"""
-
-    if new_analysis:
-        msa(joints, members, properties) # Se lanza un nuevo analisis
-            

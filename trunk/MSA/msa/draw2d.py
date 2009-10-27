@@ -88,9 +88,9 @@ def draw_displacements(joints, members):
         Y = Y + [joints[n].Y + scale * joints[n].dY]
         # Escribe los valores de los desplazamientos
         t = ":\n N%d:\n" %n
-        t += "$u$ %f\n" %joints[n].dX
-        t += "$v$ %f\n" %joints[n].dY
-        t += "$\\theta$ %f\n" %joints[n].gZ
+        if joints[n].dX != 0 : t += "$dX$ = %f\n" %joints[n].dX
+        if joints[n].dY != 0 : t += "$dY$ = %f\n" %joints[n].dY
+        if joints[n].gZ != 0 : t += "$gZ$ = %f\n" %joints[n].gZ
         text(X[-1], Y[-1], t, verticalalignment='top', horizontalalignment='center', fontsize=9, color='brown')
         #annotate("nota", xy=(0, 1), xycoords='data', xytext=(-50, 30), textcoords='offset points', arrowprops=dict(arrowstyle="->"))
     plot(X, Y, '+') # Nudos desplazados
