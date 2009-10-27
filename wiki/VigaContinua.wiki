@@ -1,9 +1,7 @@
 #labels Featured
-== Introduction ==
+=== Introduction ===
 
 Una viga continua es aquella que presenta tres o más vanos.
-
-== Estudio ==
 
 === Definición de la estructura ===
 
