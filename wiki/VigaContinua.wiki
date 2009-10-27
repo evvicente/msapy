@@ -1,14 +1,37 @@
-#summary One-sentence summary of this page.
 #labels Featured
+# Estudio de una viga continua
 
-= Introduction =
+== Introduction ==
 
-Add your content here.
+Una viga continua es aquella que presenta tres o más vanos.
 
+== Estudio de una viga continua ==
 
-= Details =
+A continuación se muestra un ejemplo en el que se estudia una viga continua.
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+=== Definición de la estructura ===
+
+Para definir la estructura se utiliza un archivo en formato ".csv" (valores separados por comas), que puede ser creado con la plantilla "template.xls" desde EXCEL (Office) o CALC (OpenOffice) sin más que seleccionar dicho formato a la hora de guardar el archivo.
+ por punto y coma.
+
+[http://lh5.ggpht.com/_OQVfrwwtV00/SsdnXdeYElI/AAAAAAAAAMs/PyjKRM2_P8o/gui.png]
+
+Para definir el tipo de apoyo se utilizan sus siglas en inglés, siendo:
+ * Empotramiento (fs), fixed support
+ * Apoyo articulado (hs), hinge support
+ * Apoyo de rodillo (rs), roler support
+
+=== Resultados ===
+
+[http://lh4.ggpht.com/_OQVfrwwtV00/St3PZ-LLJwI/AAAAAAAAAOA/mDaRykUFLrY/s720/schematic.png]
+
+[http://lh4.ggpht.com/_OQVfrwwtV00/St3PaGAyGUI/AAAAAAAAAOE/PDXWtIx9-_s/s720/loads.png]
+
+[http://lh5.ggpht.com/_OQVfrwwtV00/St3PaiT5LLI/AAAAAAAAAOI/zhrvduxUNnQ/s720/reactions.png]
+
+[http://lh6.ggpht.com/_OQVfrwwtV00/St3Paz2lpcI/AAAAAAAAAOM/7FbXyqY6Bwo/s720/normals.png]
+
+[http://lh5.ggpht.com/_OQVfrwwtV00/St3Pa_NwTHI/AAAAAAAAAOQ/LSPyRnLTAwE/s720/shears.png]
+
+[http://lh4.ggpht.com/_OQVfrwwtV00/St3PiKI6n_I/AAAAAAAAAOU/Aoq_xYluG90/s720/moments.png]
+
