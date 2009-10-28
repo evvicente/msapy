@@ -8,7 +8,7 @@ SetCompressor lzma
 !define mui_abortwarning
 
 # Versión
-!define VERSION "0.3.8"
+!define VERSION "0.4.0"
 
 # Direcciones
 !define PYTHON_URL "http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi"

@@ -129,17 +129,21 @@ class Member():
 
         # Escribe los valores
         E1 = abs(round(E[0], 1))
-        txt = "\n %.1f \n" %E1
-        if E1 > 0:
-            text(X[1], Y[1], txt, va='bottom', ha='left', fontsize=9, color='black')
-        elif E1 < 0:
-            text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
         E2 = abs(round(E[-1], 1))
-        txt = "\n %.1f \n" %E2
-        if E2 > 0:
-            text(X[-2], Y[-2], txt, va='bottom', ha='right', fontsize=9, color='black')
-        elif E2 < 0:
-            text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
+        if E1 == E2:
+            txt = "\n %.1f \n" %E1
+            text((X[0] + X[1] + X[-1] + X[-2])/4, (Y[0] + Y[1] + Y[-1] + Y[-2])/4, txt, va='center', ha='center', fontsize=9, color='black')
+        else:
+            txt = "\n %.1f \n" %E1
+            if E1 > 0:
+                text(X[1], Y[1], txt, va='bottom', ha='left', fontsize=9, color='black')
+            elif E1 < 0:
+                text(X[1], Y[1], txt, va='top', ha='left', fontsize=9, color='black')
+            txt = "\n %.1f \n" %E2
+            if E2 > 0:
+                text(X[-2], Y[-2], txt, va='bottom', ha='right', fontsize=9, color='black')
+            elif E2 < 0:
+                text(X[-2], Y[-2], txt, va='top', ha='right', fontsize=9, color='black')
 
     def draw_normal(self, scale):
         """ Dibuja el diagrama de esfuerzos normales """

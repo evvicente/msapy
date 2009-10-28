@@ -1,33 +1,31 @@
-= MSA =
+== Presentación ==
 
-Copyright (C) 2009 Jorge Rodríguez Araújo <grrodri@gmail.com>
+¡Bienvenido/a a la página principal de MSA!
 
-MSA es una implementación libre (GPL) del método de la rigidez para la resolución de estructuras planas.
-
-== Descripción ==
-
-Con este desarrollo se pretende lograr una aplicación funcional que permita la resolución de todo tipo de estructuras planas.
+MSA es una implementación libre (GPL) del método matricial de la rigidez, con la que se pretende lograr una aplicación funcional que permita la resolución de todo tipo de estructuras planas.
 
 Para facilitar y agilizar el desarrollo se ha optado por la implementación en Python, dado que se trata de un lenguaje sencillo, que dispone de potentes herramientas de cálculo matricial, es multiplataforma y además es libre.
 
-== Instalación ==
+== Modo de uso ==
 
-Dado que esta aplicación se encuentra desarrollada completamente en Python, puede ser ejecutada en cualquier plataforma para la que se encuentren disponibles los paquetes Numpy y matplotlib.
+Esta aplicación se encuentra completamente desarrollada en Python, y se apoya en las librerías Numpy y matplotlib, que le dan soporte para cálculo matricial y representación gráfica, respectivamente. Debido a esto, puede ser ejecutada en cualquier plataforma para la que se encuentren disponibles los anteriores paquetes.
 
 Para ejecutar MSA en Windows, simplemente:
  * Instala los paquetes: [http://www.python.org/ftp/python/2.5.4/python-2.5.4.msi Python], [http://downloads.sourceforge.net/sourceforge/numpy/numpy-1.3.0-win32-superpack-python2.5.exe Numpy] y [http://downloads.sourceforge.net/sourceforge/matplotlib/matplotlib-0.98.5.3.win32-py2.5.exe matplotlib]
  * Una vez instalados los paquetes anteriores, dado que aún no se dispone de instalador, descarga y descomprime la [http://code.google.com/p/msapy/downloads/list última versión] disponible de la aplicación.
  * Haz doble clic sobre el archivo "MSA.py" que se encuentra en el directorio principal.
 
-== Estudio de una viga continua ==
+Una vez ejecutada la aplicación, te encontrarás con una interfaz minimalista tal que:
 
-Aunque esta aplicación aún se encuentra en fases tempranas de desarrollo, se pueden resolver estructuras reticuladas con cargas en los nudos y estructuras de nudos rigidos que además presenten cargas uniformemente distribuidas. A continuación se muestra un ejemplo en el que se estudia una viga continua de tres vanos.
+[http://lh5.ggpht.com/_OQVfrwwtV00/Suhf68GBLaI/AAAAAAAAAO8/obnp9L4XCdg/text_gui.png]
+
+Esta ventana pretende ofrecer la mayor simplicidad, de modo que se utiliza una ventana de texto para definir el problema y unos pocos botones para ejecutar las diferentes acciones.
+
+[http://lh3.ggpht.com/_OQVfrwwtV00/Suhf6yhPuPI/AAAAAAAAAPA/mWO06JX3ngk/schematic_gui.png]
 
 === Definición de la estructura ===
 
-Para definir la estructura se puede utilizar la plantilla "template.xls" desde EXCEL o CALC con tal de guardar los datos en un archivo ".csv", valores separados por punto y coma.
-
-[http://lh5.ggpht.com/_OQVfrwwtV00/SsdnXdeYElI/AAAAAAAAAMs/PyjKRM2_P8o/gui.png]
+Para definir la estructura también se puede utilizar la plantilla "template.xls" desde EXCEL (Office) o CALC ([http://www.openoffice.org OpenOffice]), dado que el archivo de definición de la estructura es de tipo ".csv" (valores separados por comas), con lo que sólo tendrás que seleccionar dicho formato a la hora de guardar el archivo.
 
 Para definir el tipo de nudo o apoyo se utiliza sus siglas en inglés, siendo:
  * Tipo de nudo: nudo rígido (rj) o articulado (hj)
@@ -35,19 +33,12 @@ Para definir el tipo de nudo o apoyo se utiliza sus siglas en inglés, siendo:
 
 NOTA: Aún no se pueden resolver estructuras mixtas, con nudos articulados y rigidos.
 
-=== Resultados ===
+== Casos de uso ==
 
-[http://lh4.ggpht.com/_OQVfrwwtV00/St3PZ-LLJwI/AAAAAAAAAOA/mDaRykUFLrY/s720/schematic.png]
+Aunque esta aplicación aún se encuentra en fases tempranas de desarrollo, se pueden resolver estructuras reticuladas con cargas en los nudos y estructuras de nudos rigidos que además presenten cargas uniformemente distribuidas.
 
-[http://lh4.ggpht.com/_OQVfrwwtV00/St3PaGAyGUI/AAAAAAAAAOE/PDXWtIx9-_s/s720/loads.png]
-
-[http://lh5.ggpht.com/_OQVfrwwtV00/St3PaiT5LLI/AAAAAAAAAOI/zhrvduxUNnQ/s720/reactions.png]
-
-[http://lh6.ggpht.com/_OQVfrwwtV00/St3Paz2lpcI/AAAAAAAAAOM/7FbXyqY6Bwo/s720/normals.png]
-
-[http://lh5.ggpht.com/_OQVfrwwtV00/St3Pa_NwTHI/AAAAAAAAAOQ/LSPyRnLTAwE/s720/shears.png]
-
-[http://lh4.ggpht.com/_OQVfrwwtV00/St3PiKI6n_I/AAAAAAAAAOU/Aoq_xYluG90/s720/moments.png]
+ * [http://code.google.com/p/msapy/wiki/VigaContinua Viga continua]
+ * [http://docs.google.com/Doc?docid=0AZW-DvKrumg8ZGc3ZnE2c2dfNDhkN3dwZjNmaw&hl=es Estructura de nudos articulados]
 
 == Planifación y Versiones ==
 
@@ -71,7 +62,13 @@ NOTA: Aún no se pueden resolver estructuras mixtas, con nudos articulados y rigi
  * v 0.3.8 (2009-10-03): Corrección de errores.
  * v 0.3.9 (2009-10-20): Comprobación del equilibrio estructural.
 
-|| Versión 0.4: Comprobación resistente ||
+|| ~~ Versión 0.4: Comprobación resistente ||
+
+ * v 0.4.0 (2009-10-28): Comprobación resistente.
+
 || Versión 0.5: Refactorización ||
 || Versión 0.6: Generación de hipótesis de carga ||
 || Versión 0.7: Comprobación a pandeo ||
+
+----
+Copyright (C) 2009 Jorge Rodríguez Araújo <grrodri@gmail.com>
