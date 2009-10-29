@@ -1,4 +1,3 @@
-#labels Featured
 _Una viga continua es aquella que presenta tres o más vanos._
 
 ==== Definición de la estructura ====
