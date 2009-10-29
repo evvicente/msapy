@@ -1,10 +1,10 @@
-#Casos prácticos.
+_ Recopilación de casos prácticos _
 
-= Introducción =
+== Introducción ==
 
 Aquí se irán definiendo diferentes casos prácticos que permitan evaluar y definir las funcionalidades requeridas a la aplicación.
 
-= Casos prácticos =
+== Casos prácticos ==
 
   * Viga continua
   * Estructura articulada de tres barras
