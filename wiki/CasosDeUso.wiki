@@ -10,3 +10,10 @@ Aquí se irán definiendo diferentes casos prácticos que permitan evaluar y def
   * Viga continua
   * Estructura articulada de tres barras
   * Pórtico rígido a dos aguas
+
+== Casos de uso ==
+
+Aunque esta aplicación aún se encuentra en fases tempranas de desarrollo, se pueden resolver estructuras reticuladas con cargas en los nudos y estructuras de nudos rigidos que además presenten cargas uniformemente distribuidas.
+
+ * [http://code.google.com/p/msapy/wiki/VigaContinua Viga continua]
+ * [http://docs.google.com/Doc?docid=0AZW-DvKrumg8ZGc3ZnE2c2dfNDhkN3dwZjNmaw&hl=es Estructura de nudos articulados]
