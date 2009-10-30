@@ -46,14 +46,14 @@ class Joint():
         
     def draw_joint(self):
         """ Representa el nudo o apoyo """        
-        if self.type == "hj": # hinge joint
-            text(self.X, self.Y, "o", va='center', ha='center', fontsize=10, color='black')
-        elif self.type == "fs": # fixed support
+        if self.type == "fs" : # fixed support
             text(self.X, self.Y, "$\\bot$\n", va='top', ha='center', fontsize=20, color='black')
-        elif self.type == "hs": # hinge support
-            text(self.X, self.Y, "$\\bigtriangleup$\n", va='top', ha='center', fontsize=20, color='black')
-        elif self.type == "rs": # roller support
-            text(self.X, self.Y, "$\\triangleq$\n", va='top', ha='center', fontsize=20, color='black')
+        else :
+            text(self.X, self.Y, "o", va='center', ha='center', fontsize=10, color='black') # hinge joint
+            if self.type == "hs" : # hinge support
+                text(self.X, self.Y, "$\\bigtriangleup$\n", va='top', ha='center', fontsize=20, color='black')
+            elif self.type == "rs" : # roller support
+                text(self.X, self.Y, "$\\triangleq$\n", va='top', ha='center', fontsize=20, color='black')
 
     def draw_loads(self):
         """ Dibuja las cargas sobre el nudo """

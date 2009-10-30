@@ -90,12 +90,12 @@ class Gui():
         img = tk.PhotoImage(file='icons/solve.gif')
         button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
         button.image = img
-        button.grid(row=0, column=2, padx=5, ipadx=2)
+        button.grid(row=0, column=2, padx=5, ipadx=2, ipady=2)
         # Exit
-        #img = tk.PhotoImage(file='icons/exit.gif')
-        #button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
-        #button.image = img
-        #button.grid(row=0, column=2, padx=100, ipadx=10)
+        img = tk.PhotoImage(file='icons/exit.gif')
+        button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
+        button.image = img
+        button.grid(row=0, column=3, padx=260, ipadx=4, ipady=2)
 
         # Open default file
         self.open_file(name = self.filename)

@@ -42,7 +42,7 @@ H2	{
 	color: #2244AA;
 	font-size: 14pt;
 	font-weight: bold;
-	background: #EFEFEF;
+	background: #FAFAFA;
         width:750px;
 	}
 
@@ -54,6 +54,11 @@ H3	{
 	background: #E4E4E4;
         width:700px;
 	}
+
+HR      {
+        width: 600px;
+        align: center;
+        }
 
 a:link,a:visited,a:active {
 	text-decoration: none;	
