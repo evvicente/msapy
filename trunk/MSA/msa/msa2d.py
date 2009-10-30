@@ -340,6 +340,7 @@ def search(joints, members, properties):
 
     for member in members:
         if member.p > 100:
+            print
             print "Se ha sobrepasado la resistencia del perfil: %.2f%%" % round(member.p, 2)
             # Cuando un perfil no cumple se prueba con otro mayor
             t = member.type.split()
@@ -351,4 +352,5 @@ def search(joints, members, properties):
                         member.set_properties(prop.A, prop.Iz, prop.Wz)
                         msa(joints, members, properties)
         else:
+            print
             print "Porcentaje de aprovechamiento del perfil: %.2f%% [ OK ]" % round(member.p, 2)

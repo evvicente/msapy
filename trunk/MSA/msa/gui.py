@@ -81,11 +81,16 @@ class Gui():
         self.button_schematic = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.show_schematic)
         self.button_schematic.image = img
         self.button_schematic.grid(row=0, column=0)
+        # Search
+        img = tk.PhotoImage(file='icons/search.gif')
+        button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.search_msa)
+        button.image = img
+        button.grid(row=0, column=1, padx=5)
         # Solver
         img = tk.PhotoImage(file='icons/solve.gif')
         button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.solve_msa)
         button.image = img
-        button.grid(row=0, column=1, padx=5, ipadx=2)
+        button.grid(row=0, column=2, padx=5, ipadx=2)
         # Exit
         #img = tk.PhotoImage(file='icons/exit.gif')
         #button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
@@ -144,7 +149,21 @@ class Gui():
         draw2d.draw_loads(self.joints, self.members)
         self.canvas.show()
 
+    def search_msa(self):
+        """ Busca entre los perfiles disponibles el primero que
+        cumpla el criterio de rigidez """
+        print
+        print ">> Guardando los datos de definicion de la estructura... "
+        self.save_file(self.filename)
+        print ">> Leyendo los datos de definicion de la estructura... "
+        (self.joints, self.members, properties) = io.load(self.filename)
+        print ">> Dimensionando los perfiles de la estructura... "
+        msa2d.search(self.joints, self.members, properties)
+        print
+
     def solve_msa(self):
+        """ Resuelve la estructura por el metodo de la rigidez """
+        print
         t0 = time.clock()
         print ">> Guardando los datos de definicion de la estructura... "
         self.save_file(self.filename)
@@ -159,6 +178,7 @@ class Gui():
         t2 = time.clock()
         print ">> La estructura se ha resuelto en %.2f segundos: %.2f calculo y %.2f dibujo " %(t2-t0, t1-t0, t2-t1)
         webbrowser.open(os.path.join('output', 'report.html'))
+        print
 
 def run():
     window = tk.Tk()
