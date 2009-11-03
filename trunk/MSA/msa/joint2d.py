@@ -49,7 +49,8 @@ class Joint():
         if self.type == "fs" : # fixed support
             text(self.X, self.Y, "$\\bot$\n", va='top', ha='center', fontsize=20, color='black')
         else :
-            text(self.X, self.Y, "o", va='center', ha='center', fontsize=10, color='black') # hinge joint
+            if self.type == "hj" :
+                text(self.X, self.Y, "o", va='center', ha='center', fontsize=10, color='black') # hinge joint
             if self.type == "hs" : # hinge support
                 text(self.X, self.Y, "$\\bigtriangleup$\n", va='top', ha='center', fontsize=20, color='black')
             elif self.type == "rs" : # roller support

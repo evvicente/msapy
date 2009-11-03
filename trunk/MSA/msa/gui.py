@@ -19,6 +19,8 @@ import os
 import time
 import webbrowser
 
+import re # Expresiones regulares
+
 class Gui():
     def __init__(self, window):
         self.window = window
@@ -82,8 +84,8 @@ class Gui():
         self.button_schematic.image = img
         self.button_schematic.grid(row=0, column=0)
         # Search
-        img = tk.PhotoImage(file='icons/search.gif')
-        button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.search_msa)
+        img = tk.PhotoImage(file='icons/exec.gif')
+        button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=self.exec_msa)
         button.image = img
         button.grid(row=0, column=1, padx=5)
         # Solver
@@ -95,7 +97,7 @@ class Gui():
         img = tk.PhotoImage(file='icons/exit.gif')
         button = tk.Button(tools_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:self.window.quit())
         button.image = img
-        button.grid(row=0, column=3, padx=260, ipadx=4, ipady=2)
+        button.grid(row=0, column=3, padx=20, ipadx=4, ipady=2)
 
         # Open default file
         self.open_file(name = self.filename)
@@ -105,9 +107,9 @@ class Gui():
         try:
             if name == "" : file = tkFileDialog.askopenfile(mode='r')
             else : file = open(name, "r")
-            contents = file.read()
+            content = file.read()
             self.text.delete(tk.CURRENT, tk.END)
-            self.text.insert(tk.CURRENT, contents)
+            self.text.insert(tk.CURRENT, content)
             self.filename = file.name
             self.window.title("MSA - " + self.filename)
             print ">> El archivo se ha cargado con exito "
@@ -149,7 +151,7 @@ class Gui():
         draw2d.draw_loads(self.joints, self.members)
         self.canvas.show()
 
-    def search_msa(self):
+    def exec_msa(self):
         """ Busca entre los perfiles disponibles el primero que
         cumpla el criterio de rigidez """
         print
@@ -160,6 +162,24 @@ class Gui():
         print ">> Dimensionando los perfiles de la estructura... "
         msa2d.search(self.joints, self.members, properties)
         print
+        #---
+        file = open(self.filename, "r")
+        rows = file.readlines()
+        file.close()
+        #---
+        content = ""
+        n = 0
+        for row in rows:
+            row = row.replace(',', '.')
+            values = row.split(';')
+            if re.search('^B\d+', values[0]):
+                type = values[4]
+                type = self.members[n].type
+                n = n + 1
+            content += ";".join(values)
+        #---
+        #self.text.delete('1.0', tk.END)
+        #self.text.insert('1.0', content)
 
     def solve_msa(self):
         """ Resuelve la estructura por el metodo de la rigidez """

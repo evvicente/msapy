@@ -123,16 +123,16 @@ def report(joints, members, filename="output/report.html"):
         s += '<TR><td>%d</td><td>%d</td><td>%d</td><td>%d</td></TR>' %(n, joints[n].FX, joints[n].FY, joints[n].MZ)
     s += '            </TBODY>'
     s += '        </TABLE><BR>'
-    s += '        <TABLE>'
-    s += '            <THEAD>'
-    s += '                <TR><TH rowspan=2>Barras</TH><TH colspan=2 BGCOLOR="#fce5cd">Cargas</TH></TR>'
-    s += '                <TR><TH>qx [N/m]</TH><TH>qy [N/m]</TH></TR>'
-    s += '            </THEAD>'
-    s += '            <TBODY>'
+    s += '        <TABLE>\n'
+    s += '            <THEAD>\n'
+    s += '                <TR><TH rowspan=2>Barras</TH><TH colspan=2 BGCOLOR="#fce5cd">Cargas</TH></TR>\n'
+    s += '                <TR><TH>qx [N/m]</TH><TH>qy [N/m]</TH></TR>\n'
+    s += '            </THEAD>\n'
+    s += '            <TBODY>\n'
     for member in members:
-        s += '<tr><td>%d/%d</td><td>%d</td><td>%d</td></tr>' %(member.i, member.j, member.qx, member.qy)
-    s += '            </TBODY>'
-    s += '        </TABLE><BR>'
+        s += '<TR><TD>%d/%d</TD><TD>%d</TD><TD>%d</TD></TR>\n' %(member.i, member.j, member.qx, member.qy)
+    s += '            </TBODY>\n'
+    s += '        </TABLE><BR>\n'
     s += '        <H2><FONT COLOR="#134f5c">Reacciones</FONT></H2>\n'
     s += '        <IMG src="reactions.png" alt="Reacciones"/>\n'
     s += '        <TABLE>\n'
