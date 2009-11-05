@@ -3,13 +3,13 @@ _ Recopilación de casos prácticos _
 
 === Introducción ===
 
-Aquí se irán definiendo diferentes casos prácticos que permitan evaluar y definir las funcionalidades requeridas a la aplicación.
+Aquí se irán definiendo diferentes casos prácticos que permitan evaluar y definir las funcionalidades de la aplicación.
 
-Aunque esta aplicación aún se encuentra en fases tempranas de desarrollo, se pueden resolver estructuras reticuladas con cargas en los nudos y estructuras de nudos rigidos que además presenten cargas uniformemente distribuidas.
+Aunque esta aplicación aún se encuentra en fases tempranas de desarrollo, se pueden resolver estructuras de nudos articulados con cargas en los nudos y estructuras de nudos rígidos que además de cargas en los nudos presenten cargas uniformemente distribuidas en las barras.
 
 === Casos prácticos ===
 
  * [http://code.google.com/p/msapy/wiki/VigaContinua Viga continua]
- * [http://docs.google.com/Doc?docid=0AZW-DvKrumg8ZGc3ZnE2c2dfNDhkN3dwZjNmaw&hl=es Estructura de nudos articulados]
- * Estructura articulada de tres barras
+ * Estructura de nudos articulados
+ * Soporte de tres barras
  * Pórtico rígido a dos aguas
