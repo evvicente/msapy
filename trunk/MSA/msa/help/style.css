@@ -1,7 +1,7 @@
 body  {	
 	font-size: 10pt;	
-	color: #999999;
-	background: #151515;	
+	color: #151515;
+	background: #F9F9F9;	
 	font-family: arial, helvetica, sans-serif;
 }
 
@@ -18,12 +18,12 @@ small, div.small {
 }
 
 h1  {
-	color: white;
+	color: #000000;
 	font-size: 18pt;	
 	font-weight: bold;	
 	margin-top: 1em;	
 	margin-bottom: .3em;
-	background: #333333;
+	background: #F3F3F3;
 	padding: .05em;	
 }
 
