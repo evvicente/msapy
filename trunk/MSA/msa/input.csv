@@ -1,0 +1,18 @@
+Ejemplo de cálculo de viga continua;;;;;;
+;;;;;;
+Material;Tipo;E[N/mm2];d[kg/m3];fyd[N/mm2];;
+M0;Acero;210000;7850;240;;
+;;;;;;
+Propiedades;Tipo;A[mm2];Iz[cm4];Wz[cm3];;
+P0;IPE 160;2010;869;109;;
+;;;;;;
+Nudos;X[m];Y[m];Tipo;FX[N];FY[N];MZ[Nm]
+N0;0;0;hs;0;0;0
+N1;1;0;rs;0;0;0
+N2;2;0;rs;0;0;0
+N3;3;0;rs;0;0;0
+;;;;;;
+Barras;Ni;Nf;qy[N/m];Tipo;;
+B0;0;1;-1000;IPE 80;;
+B1;1;2;-1000;IPE 80;;
+B2;2;3;-1000;IPE 80;;
