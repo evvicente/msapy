@@ -353,4 +353,4 @@ def search(joints, members, properties):
                         msa(joints, members, properties)
         else:
             print
-            print "Porcentaje de aprovechamiento del perfil: %.2f%% [ OK ]" % round(member.p, 2)
+            print "Barra %d/%d - Porcentaje de aprovechamiento del perfil: %.2f%% [ OK ]" %(member.i, member.j, round(member.p, 2))
