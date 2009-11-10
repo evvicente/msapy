@@ -117,12 +117,6 @@ Section "Programa"
     ;ExecShell "" "$INSTDIR\MSA.py"
 SectionEnd
 
-Section "Ayuda"
-	SetOutPath $INSTDIR\msa\help
-	File  msa\help\index.html
-	File  msa\help\style.css
-SectionEnd
-
 Section "Ejemplos"
 	SetOutPath $INSTDIR\msa\examples
 	File  msa\examples\*.csv
