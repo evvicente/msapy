@@ -1,9 +1,14 @@
-#Ayuda de MSA
+== MSA about ==
 
-= Introducción =
+MSA is a Python implementation of direct Matrix Stiffness Method for static structural analysis.
 
+== Acerca de MSA ==
 
-
+MSA es un implementación en Python del método de la rigidez para la resolución de estructuras planas.
 
 = Detalles =
 
+
+
+----
+Copyright 2009, Jorge Rodríguez Araújo (grrodri@gmail.com)
