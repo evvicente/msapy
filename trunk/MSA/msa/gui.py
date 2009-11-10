@@ -43,7 +43,7 @@ class Gui():
         button.pack(side='left', padx=5)
         # Help
         img = tk.PhotoImage(file='icons/help.gif')
-        button = tk.Button(menu_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open(os.path.join('help', 'index.html')))
+        button = tk.Button(menu_frame, image=img, text=" ", compound='center', bg='gray', relief=tk.GROOVE, command=lambda:webbrowser.open("http://code.google.com/p/msapy/wiki/Ayuda"))
         button.image = img
         button.pack(side='right')
         # Template
