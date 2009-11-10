@@ -1,8 +1,10 @@
-== Introducción ==
+_ Ayuda de MSA _
+
+=== Introducción ===
 
 MSA es un implementación en Python del método de la rigidez para la resolución de estructuras planas.
 
-== Detalles ==
+=== Detalles ===
 
 
 
