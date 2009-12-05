@@ -1,70 +1,68 @@
-BODY  {	
+BODY    {	
 	font-size: 8pt;	
 	color: #151515;
 	background: #FFFFFF;	
 	font-family: arial, helvetica, sans-serif;
 	}
-
-TABLE {
-	border-width:thin;
+TABLE   {
+	border-width: 2px;
 	border-style:solid;
-	border-color:gray;
+	border-color: #6E6E6E;
         width: 560px;
 	}
-THEAD {
+THEAD   {
 	text-align:center;
 	font-size: 10pt;
-	background-color:#DDDDDD;
+        background-color: #EFEFEF;
 	}
-
-TD {
+TH      {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #6E6E6E;
 	text-align:center;
 	font-size: 10pt;
 	}
-
-IMG {
+TD      {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #6E6E6E;
+	text-align:center;
+	font-size: 10pt;
+	}
+IMG     {
 	border: 0;
 	width:765px;
 	height:450px;
 	}
-
-H1  {
+H1      {
 	text-align:center;
-	color: #DD4422;
+	color: #FFFFFF;
 	font-size: 18pt;	
 	font-weight: bold;	
-	background: #F4F4F4;
+	background: #6E6E6E;
         width:800px;
 	}
-
 H2	{
 	text-align:center;
-	color: #2244AA;
+	color: #4E4E4E;
 	font-size: 14pt;
 	font-weight: bold;
-	background: #FAFAFA;
+	background: #F9F9F9;
         width:750px;
 	}
-
 H3	{
 	text-align:center;
-	color: #2244DD;
+	color: #0080FF;
 	font-size: 12pt;
 	font-weight: bold;
-	background: #E4E4E4;
+	background: #EFEFEF;
         width:700px;
 	}
-
-HR      {
-        width: 600px;
-        align: center;
-        }
-
-a:link,a:visited,a:active {
+A       {
 	text-decoration: none;	
-	color: #3366FF; 
+	color: #0080FF; 
 }
-
-a:hover  {
+A:hover {
 	text-decoration: underline;
+        color: #8000FF;
 }
