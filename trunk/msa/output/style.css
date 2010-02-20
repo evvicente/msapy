@@ -1,0 +1,68 @@
+BODY    {	
+	font-size: 8pt;	
+	color: #151515;
+	background: #FFFFFF;	
+	font-family: arial, helvetica, sans-serif;
+	}
+TABLE   {
+	border-width: 2px;
+	border-style:solid;
+	border-color: #6E6E6E;
+        width: 560px;
+	}
+THEAD   {
+	text-align:center;
+	font-size: 10pt;
+        background-color: #EFEFEF;
+	}
+TH      {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #6E6E6E;
+	text-align:center;
+	font-size: 10pt;
+	}
+TD      {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #6E6E6E;
+	text-align:center;
+	font-size: 10pt;
+	}
+IMG     {
+	border: 0;
+	width:765px;
+	height:450px;
+	}
+H1      {
+	text-align:center;
+	color: #FFFFFF;
+	font-size: 18pt;	
+	font-weight: bold;	
+	background: #6E6E6E;
+        width:800px;
+	}
+H2	{
+	text-align:center;
+	color: #4E4E4E;
+	font-size: 14pt;
+	font-weight: bold;
+	background: #F9F9F9;
+        width:750px;
+	}
+H3	{
+	text-align:center;
+	color: #0080FF;
+	font-size: 12pt;
+	font-weight: bold;
+	background: #EFEFEF;
+        width:700px;
+	}
+A       {
+	text-decoration: none;	
+	color: #0080FF; 
+}
+A:hover {
+	text-decoration: underline;
+        color: #8000FF;
+}
