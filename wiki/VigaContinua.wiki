@@ -1,8 +1,8 @@
 _Una viga continua es aquella que presenta tres o más vanos._
 
-==== Definición de la estructura ====
+==== Definici�n de la estructura ====
 
-La definición de la estructura se divide en tres bloques:
+La definici�n de la estructura se divide en tres bloques:
  * Propiedades: Se especifican las propiedades de los materiales utilizados.
  * Nudos: Se definen las posiciones de los diferentes nudos que conforman la estructura, así como su tipo y las cargas que sobre el se aplican.
  * Barras: Se definen las barras según su nudo inicial y final, la carda uniformemente distribuida si existiese y el material empleado.
