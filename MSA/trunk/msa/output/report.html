@@ -1,0 +1,84 @@
+<HTML>    <HEAD>        <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">        <TITLE>Informe</TITLE>        <LINK rel="stylesheet" type="text/css" href="style.css">    </HEAD>    <BODY><CENTER>        <H1>Informe de resultados</H1>        <H2>Problema</H2>        <IMG src="schematic.png" alt="Esquema estructural"/>        <TABLE>            <THEAD>                <TR><TH rowspan=2>Nudos</TH><TH colspan=2>Coordenadas</TH><TH rowspan=2>Coacciones</TH></TR>                <TR><TH>X [m]</TH><TH>Y [m]</TH></TR>            </THEAD>            <TBODY><TR><td>0</td><td>0.0</td><td>0.0</td><td>apoyo articulado</td></TR><TR><td>1</td><td>1.0</td><td>0.0</td><td>rodillo</td></TR><TR><td>2</td><td>2.0</td><td>0.0</td><td>rodillo</td></TR><TR><td>3</td><td>3.0</td><td>0.0</td><td>rodillo</td></TR>            </TBODY>        </TABLE><BR>        <TABLE>            <THEAD>                 <TR><TH rowspan=2>Barras</TH><TH rowspan=2>Tipo</TH><TH colspan=2></TH><TH colspan=4>Propiedades</TH></TR>                 <TR><TH>Longitud [m]</TH><TH>Peso [kg]</TH><TH>A [mm2]</TH><TH>Iz [cm4]</TH><TH>Wz [cm3]</TH></TR>            </THEAD>            <TBODY><tr><td>0/1</td><td>IPE 80</td><td>1.0</td><td>6.0</td><td>764</td><td>80.1</td><td>20.0</td></tr><tr><td>1/2</td><td>IPE 80</td><td>1.0</td><td>6.0</td><td>764</td><td>80.1</td><td>20.0</td></tr><tr><td>2/3</td><td>IPE 80</td><td>1.0</td><td>6.0</td><td>764</td><td>80.1</td><td>20.0</td></tr>            </TBODY>        </TABLE><BR>        <H2><FONT COLOR="#b45f06">Cargas</FONT></H2>        <IMG src="loads.png" alt="Cargas"/>        <TABLE>            <THEAD>                <TR><TH rowspan=2>Nudos</TH><TH colspan=3 BGCOLOR="#fce5cd">Cargas</TH></TR>                <TR><TH>FX [N]</TH><TH>FY [N]</TH><TH>MZ [Nm]</TH></TR>            </THEAD>            <TBODY><TR><td>0</td><td>0</td><td>0</td><td>0</td></TR><TR><td>1</td><td>0</td><td>0</td><td>0</td></TR><TR><td>2</td><td>0</td><td>0</td><td>0</td></TR><TR><td>3</td><td>0</td><td>0</td><td>0</td></TR>            </TBODY>        </TABLE><BR>        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Barras</TH><TH colspan=2 BGCOLOR="#fce5cd">Cargas</TH></TR>
+                <TR><TH>qx [N/m]</TH><TH>qy [N/m]</TH></TR>
+            </THEAD>
+            <TBODY>
+<TR><TD>0/1</TD><TD>0</TD><TD>-100000</TD></TR>
+<TR><TD>1/2</TD><TD>0</TD><TD>-100000</TD></TR>
+<TR><TD>2/3</TD><TD>0</TD><TD>-100000</TD></TR>
+            </TBODY>
+        </TABLE><BR>
+        <H2><FONT COLOR="#134f5c">Reacciones</FONT></H2>
+        <IMG src="reactions.png" alt="Reacciones"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=3 BGCOLOR="#d0e0e3">Reacciones</TH></TR>
+                <TR><TH><FONT COLOR="red">RX [N]</FONT></TH><TH><FONT COLOR="green">RY [N]</FONT></TH><TH><FONT COLOR="blue">MZ [Nm]</FONT></TH></TR>
+            </THEAD>
+            <TBODY>
+<TR><TD>0</TD><TD>0.00</TD><TD>40000.00</TD><TD>-0.00</TD></TR>
+<TR><TD>1</TD><TD>0.00</TD><TD>110000.00</TD><TD>0.00</TD></TR>
+<TR><TD>2</TD><TD>0.00</TD><TD>110000.00</TD><TD>-0.00</TD></TR>
+<TR><TD>3</TD><TD>0.00</TD><TD>40000.00</TD><TD>-0.00</TD></TR>
+            </TBODY>
+        </TABLE><BR>
+        <H2><FONT COLOR="#741b47">Esfuerzos</FONT></H2>
+        <IMG src="normals.png" alt="Normales"/>
+        <IMG src="shears.png" alt="Cortantes"/>
+        <IMG src="moments.png" alt="Momentos"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Barras</TH><TH colspan=6 BGCOLOR="#ead1dc">Esfuerzos</TH></TR>
+                <TR><TH><FONT COLOR="red">N1</FONT></TH><TH><FONT COLOR="green">V1</FONT></TH><TH><FONT COLOR="blue">M1</FONT></TH><TH><FONT COLOR="red">N2</FONT></TH><TH><FONT COLOR="green">V2</FONT></TH><TH><FONT COLOR="blue">M2</FONT></TH></TR>
+            </THEAD>
+            <TBODY>
+<tr><td>0/1</td><td>0.00</td><td>40000.00</td><td>-0.00</td><td>0.00</td><td>60000.00</td><td>-10000.00</td></tr>
+<tr><td>1/2</td><td>0.00</td><td>50000.00</td><td>10000.00</td><td>0.00</td><td>50000.00</td><td>-10000.00</td></tr>
+<tr><td>2/3</td><td>0.00</td><td>60000.00</td><td>10000.00</td><td>0.00</td><td>40000.00</td><td>-0.00</td></tr>
+            </TBODY>
+        </TABLE><BR>
+        <H3><FONT COLOR="#a64d79">Comprobación resistente</FONT></H3>
+        <TABLE>
+            <THEAD>
+                <TR BGCOLOR="#ead1dc"><TH rowspan=2>Barras</TH><TH rowspan=2>Tipo</TH><TH colspan=3>Tensiones máximas</TH></TR>
+                <TR><TH>Tensión [N/mm2]</TH><TH>Aprovechamiento [%]</TH><TH>Posición [m]</TH></TR>
+            </THEAD>
+            <TBODY>
+<TR><TD>0/1</TD><TD BGCOLOR="#e06666">IPE 80</TD><TD>500.0</TD><TD>208.33</TD><TD>-</TD></TR>
+<TR><TD>1/2</TD><TD BGCOLOR="#e06666">IPE 80</TD><TD>500.0</TD><TD>208.33</TD><TD>-</TD></TR>
+<TR><TD>2/3</TD><TD BGCOLOR="#e06666">IPE 80</TD><TD>500.0</TD><TD>208.33</TD><TD>-</TD></TR>
+            </TBODY>
+        </TABLE><BR>
+        <H2><FONT COLOR="#351c75">Desplazamientos</FONT></H2>
+        <IMG src="displacements.png" alt="Desplazamientos"/>
+        <TABLE>
+            <THEAD>
+                <TR><TH rowspan=2>Nudos</TH><TH colspan=3 BGCOLOR="#d9d2e9">Desplazamientos</TH></TR>
+                <TR><TH><FONT COLOR="red">dX [m]</FONT></TH><TH><FONT COLOR="green">dY [m]</FONT></TH><TH><FONT COLOR="blue">gZ [rad]</FONT></TH></TR>
+            </THEAD>
+            <TBODY>
+<TR><TD>0</TD><TD>0.000000</TD><TD>0.000000</TD><TD>-0.000149</TD></TR>
+<TR><TD>1</TD><TD>0.000000</TD><TD>0.000000</TD><TD>0.000050</TD></TR>
+<TR><TD>2</TD><TD>0.000000</TD><TD>0.000000</TD><TD>-0.000050</TD></TR>
+<TR><TD>3</TD><TD>0.000000</TD><TD>0.000000</TD><TD>0.000149</TD></TR>
+                </TBODY>
+            </TABLE><BR>
+        <H3><FONT COLOR="#674ea7">Comprobación a deformación</FONT></H3>
+        <TABLE>
+            <THEAD>
+                <TR BGCOLOR="#d9d2e9"><TH rowspan=2>Barras</TH><TH colspan=2>Flecha máxima absoluta</TH><TH colspan=2>Flecha máxima relativa</TH></TR>
+                <TR><TH>Pos [m]</TH><TH>Flecha [m]</TH><TH>Pos [m]</TH><TH>Flecha</TH></TR>
+            </THEAD>
+            <TBODY>
+<TR><TD>0/1</TD><TD>-</TD><TD>-</TD><TD>-</TD><TD>-</TD></TR>
+<TR><TD>1/2</TD><TD>-</TD><TD>-</TD><TD>-</TD><TD>-</TD></TR>
+<TR><TD>2/3</TD><TD>-</TD><TD>-</TD><TD>-</TD><TD>-</TD></TR>
+                </TBODY>
+            </TABLE>
+        <P><HR>
+	Informe generado mediante <A href="http://code.google.com/p/msapy">MSA</A>, con la aplicación del método matricial de la rigidez.<BR>
+        <A HREF="http://code.google.com/p/msapy">MSA</A> - Copyright 2009, Jorge Rodríguez Araújo (grrodri@gmail.com).</P>
+        </CENTER>
+    </BODY>
+</HTML>
