@@ -1,29 +1,28 @@
 #labels Featured
+
+[./imgs/msa.png]
+
 = MSA =                                    
 
-MSA, Matrix Stiffness Analysis, es una implementaciÃ³n del mï¿½todo matricial de la rigidez para la resoluciï¿½n de estructuras planas, GPL y realizada en Python.
+MSA ("Matrix Stiffness Analysis") es una implementación del método matricial de la rigidez para la resolución de estructuras planas, GPL y realizada en Python.
 
-== Introducciï¿½n ==
-Una vez lanzada la aplicaciï¿½n, se abre la ventana principal, con una interfaz minimalista, tal que:
-
+== Introducción ==
+Una vez lanzada la aplicación, se abre la ventana principal, con una interfaz minimalista, tal que:
 
 Esta ventana pretende ofrecer la mayor simplicidad, estando formada por una caja de texto en la que se define el problema y una serie de botones que permiten ejecutar las diferentes acciones.
 
-== Definiciï¿½n de la estructura ==
+== Definición de la estructura ==
 
-Para definir la estructura tambiï¿½n se puede utilizar la plantilla "template.xls" desde EXCEL (Office) o CALC (OpenOffice), dado que el archivo de definiciï¿½n de la estructura es de tipo ".csv" (valores separados por comas), con lo que sï¿½lo tendrï¿½s que seleccionar dicho formato a la hora de guardar el archivo.
+Para definir la estructura también se puede utilizar la plantilla "template.xls" desde EXCEL (Office) o CALC (OpenOffice), dado que el archivo de definición de la estructura es de tipo ".csv" (valores separados por comas), con lo que sólo tendrás que seleccionar dicho formato a la hora de guardar el archivo.
 
+Para definir el tipo de nudo o apoyo se utiliza sus siglas en inglés, siendo:
 
-Para definir el tipo de nudo o apoyo se utiliza sus siglas en inglï¿½s, siendo:
-
-    * Tipo de nudo: nudo rï¿½gido (rj) o articulado (hj)
+    * Tipo de nudo: nudo rígido (rj) o articulado (hj)
     * Tipo de apoyo: empotramiento (fs), articulado (hs) o rodillo (rs) 
 
+NOTA: Aún no se pueden resolver estructuras mixtas, con nudos articulados y rígidos.
 
-NOTA: Aï¿½n no se pueden resolver estructuras mixtas, con nudos articulados y rigidos.
-Sugerencias y comentarios
-...
+== Sugerencias y comentarios ==
 
 _____
-
-ï¿½ Copyright 2009, 2010 Jorge Rodrï¿½guez Araï¿½jo (grrodri@gmail.com)
+© Copyright 2009, 2010 Jorge Rodríguez Araújo (grrodri@gmail.com)
