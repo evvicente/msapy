@@ -1,6 +1,6 @@
 #labels Featured
 
-[./imgs/msa.png]
+[http://code.google.com/p/msapy/source/browse/wiki/imgs/msa.png]
 
 = MSA =                                    
 
