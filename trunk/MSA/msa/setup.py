@@ -1,4 +1,4 @@
-__author__="Jorge RodrÃ­guez AraÃºjo"
+__author__="Jorge Rodríguez Araújo"
 __date__ ="$11-oct-2009 23:51:41$"
 
 from setuptools import setup,find_packages
