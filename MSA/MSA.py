@@ -9,13 +9,17 @@ __date__ = "28-oct-2009"
 
 import os
 import sys
+import platform
 
 from msa import gui, io, msa2d
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         os.chdir(os.path.join(os.getcwd(), 'msa')) # Cambia el directorio de trabajo
-        gui.run()
+        if platform.system() == "Windows":
+            gui.run()
+        if platform.system() == "Linux":
+            gui.run()
     else:
         filename = sys.argv[1]  
         print "Leyendo los datos de definicion de la estructura..."
