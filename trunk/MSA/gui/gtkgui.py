@@ -1,36 +1,181 @@
 #!/usr/bin/env python
 
+"""
+class NotebookExample:
+
+    def __init__(self):
+        window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        window.connect("delete_event", self.delete)
+        window.set_border_width(10)
+
+        table = gtk.Table(3,6,gtk.FALSE)
+        window.add(table)
+
+        # Create a new notebook, place the position of the tabs
+        notebook = gtk.Notebook()
+        notebook.set_tab_pos(gtk.POS_TOP)
+        table.attach(notebook, 0,6,0,1)
+        notebook.show()
+        self.show_tabs = gtk.TRUE
+        self.show_border = gtk.TRUE
+
+        # Let's append a bunch of pages to the notebook
+        for i in range(5):
+            bufferf = "Append Frame %d" % (i+1)
+            bufferl = "Page %d" % (i+1)
+
+            frame = gtk.Frame(bufferf)
+            frame.set_border_width(10)
+            frame.set_size_request(100, 75)
+            frame.show()
+
+            label = gtk.Label(bufferf)
+            frame.add(label)
+            label.show()
+
+            label = gtk.Label(bufferl)
+            notebook.append_page(frame, label)
+      
+        # Now let's add a page to a specific spot
+        checkbutton = gtk.CheckButton("Check me please!")
+        checkbutton.set_size_request(100, 75)
+        checkbutton.show ()
+
+        label = gtk.Label("Add page")
+        notebook.insert_page(checkbutton, label, 2)
+
+        # Now finally let's prepend pages to the notebook
+        for i in range(5):
+            bufferf = "Prepend Frame %d" % (i+1)
+            bufferl = "PPage %d" % (i+1)
+
+            frame = gtk.Frame(bufferf)
+            frame.set_border_width(10)
+            frame.set_size_request(100, 75)
+            frame.show()
+
+            label = gtk.Label(bufferf)
+            frame.add(label)
+            label.show()
+
+            label = gtk.Label(bufferl)
+            notebook.prepend_page(frame, label)
+    
+        # Set what page to start at (page 4)
+        notebook.set_current_page(3)
+
+        # Create a bunch of buttons
+        button = gtk.Button("close")
+        button.connect("clicked", self.delete)
+        table.attach(button, 0,1,1,2)
+        button.show()
+
+        button = gtk.Button("prev page")
+        button.connect("clicked", lambda w: notebook.prev_page())
+        table.attach(button, 2,3,1,2)
+        button.show()
+
+        button = gtk.Button("tab position")
+        button.connect("clicked", self.rotate_book, notebook)
+        table.attach(button, 3,4,1,2)
+        button.show()
+
+        button = gtk.Button("tabs/border on/off")
+        button.connect("clicked", self.tabsborder_book, notebook)
+        table.attach(button, 4,5,1,2)
+        button.show()
+
+        button = gtk.Button("remove page")
+        button.connect("clicked", self.remove_book, notebook)
+        table.attach(button, 5,6,1,2)
+        button.show()
+
+        table.show()
+        window.show()
+"""
+
 import gtk
+
+from pylab import *
+from matplotlib.figure import Figure
+
+# uncomment to select /GTK/GTKAgg/GTKCairo
+#from matplotlib.backends.backend_gtk import FigureCanvasGTK as FigureCanvas
+from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
+#from matplotlib.backends.backend_gtkcairo import FigureCanvasGTKCairo as FigureCanvas
+
+# or NavigationToolbar for classic
+#from matplotlib.backends.backend_gtk import NavigationToolbar2GTK as NavigationToolbar
+from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
+
 import sys
 
-class PyApp(gtk.Window):
+class PyApp():
     def __init__(self):
-        super(PyApp, self).__init__()
+        
+        # Create toplevel window
+        window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        window.set_title("MSA")
+        window.connect("destroy", gtk.main_quit)
+        window.set_default_size(750,450)
+        window.set_size_request(450, 400)
+        window.set_border_width(2)
+        window.set_position(gtk.WIN_POS_CENTER)
 
-        self.connect("destroy", gtk.main_quit)
-        self.set_title("MSA")
-        self.set_default_size(750,450)
-        self.set_size_request(250, 200)
-        self.set_position(gtk.WIN_POS_CENTER)
+        # Create vbox widget for toplevel window
+        vbox = gtk.VBox() #vbox = gtk.VBox(False, 2)               
+        window.add(vbox)
 
+        # Create toolbar
         toolbar = gtk.Toolbar()
         toolbar.set_style(gtk.TOOLBAR_ICONS)
-
+        vbox.pack_start(toolbar, False, False, 0)
+        
+        # Create toolbuttons for toolbar
         newtb = gtk.ToolButton(gtk.STOCK_NEW)
+        newtb.connect("clicked", self.new_file)
         opentb = gtk.ToolButton(gtk.STOCK_OPEN)
+        opentb.connect("clicked", self.open_file)
         savetb = gtk.ToolButton(gtk.STOCK_SAVE)
-        sep = gtk.SeparatorToolItem()
-        quittb = gtk.ToolButton(gtk.STOCK_QUIT)
-
+        savetb.connect("clicked", self.save_file)
+        runtb = gtk.ToolButton(gtk.STOCK_EXECUTE)
+        helptb = gtk.ToolButton(gtk.STOCK_HELP)
+        
         toolbar.insert(newtb, 0)
         toolbar.insert(opentb, 1)
         toolbar.insert(savetb, 2)
-        toolbar.insert(sep, 3)
-        toolbar.insert(quittb, 4)
-
+        toolbar.insert(gtk.SeparatorToolItem(), 3)
+        toolbar.insert(runtb, 4)
+        toolbar.insert(gtk.SeparatorToolItem(), 5)
+        toolbar.insert(helptb, 6)
+        
+        # Create notebook and place the position of the tabs
+        notebook = gtk.Notebook()
+        notebook.set_tab_pos(gtk.POS_RIGHT)
+        vbox.pack_start(notebook)
+        
+        # Create toolbar
+        toolbar = gtk.Toolbar()
+        vbox.pack_start(toolbar, False, False)
+        
+        # Create previous tool button
+        tbutton = gtk.ToolButton(gtk.STOCK_GO_BACK)
+        tbutton.connect("clicked", lambda n:notebook.prev_page())
+        toolbar.insert(tbutton, 0)
+        # Create next tool button
+        tbutton = gtk.ToolButton(gtk.STOCK_GO_FORWARD)
+        tbutton.connect("clicked", lambda n:notebook.next_page())
+        toolbar.insert(tbutton, 1)
+        # Create separator
+        toolbar.insert(gtk.SeparatorToolItem(), 2)
+        # Create exit tool button
+        tbutton = gtk.ToolButton(gtk.STOCK_QUIT)
+        tbutton.connect("clicked", gtk.main_quit)
+        toolbar.insert(tbutton, 3)
+        
+        # Create textbox and append as new notebook page
         self.filename = ""
         self.textbox = gtk.TextView()
-        
         self.textbox.set_wrap_mode(gtk.WRAP_WORD)
         self.textbox.set_editable(True)
         self.textbox.set_cursor_visible(True)        
@@ -42,22 +187,47 @@ class PyApp(gtk.Window):
         scrolledwindow = gtk.ScrolledWindow()
         scrolledwindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scrolledwindow.add(self.textbox)
-
-        self.statusbar = gtk.Statusbar()
+        #vbox.pack_start(scrolledwindow, True, True, 0)
+        notebook.append_page(scrolledwindow, gtk.Label("editor"))
         
-        newtb.connect("clicked", self.new_file)
-        opentb.connect("clicked", self.open_file)
-        savetb.connect("clicked", self.save_file)
-        quittb.connect("clicked", gtk.main_quit)
-
-        vbox = gtk.VBox(False, 2)
-        vbox.pack_start(toolbar, False, False, 0)
-        vbox.pack_start(scrolledwindow, True, True, 0)
-        vbox.pack_start(self.statusbar, False, False, 0)
-
-        self.add(vbox)
-
-        self.show_all()
+        """
+        # Create a scrolled text area that displays a "message"
+        view = gtk.TextView()
+        buffer = view.get_buffer()
+        scrolled_window = gtk.ScrolledWindow()
+        scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        scrolled_window.add(view)
+        self.insert_text(buffer)
+        scrolled_window.show_all()
+        return scrolled_window
+        """
+        
+        # Create matplotlib FigureCanvasGTK widget to gtk notebook page
+        vbox = gtk.VBox()
+        notebook.append_page(vbox, gtk.Label("Plot"))
+        
+        fig = Figure(figsize=(5,4), dpi=100)
+        ax = fig.add_subplot(111)
+        t = arange(0.0,3.0,0.01)
+        s = sin(2*pi*t)
+        ax.plot(t,s, label="seno")
+        legend()
+        ax.grid(True)
+        canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+        #vbox.pack_start(canvas, True, True, 0)
+        vbox.pack_start(canvas)
+        toolbar = NavigationToolbar(canvas, window)
+        vbox.pack_start(toolbar, False, False)
+        
+        # Create and append notebook page
+        frame = gtk.Frame()
+        frame.set_border_width(10)
+        frame.set_size_request(100, 75)
+        
+        notebook.append_page(frame, gtk.Label("log"))
+        
+        # Show all
+        window.show_all()
 
     def new_file(self, user_param):
         self.set_title("Untitled - MSA")
@@ -79,7 +249,7 @@ class PyApp(gtk.Window):
             self.filename = chooser.get_filename()
             textbuffer = self.textbox.get_buffer()
             index = self.filename.replace("\\","/").rfind("/") + 1
-            self.set_title(self.filename[index:] + " - MSA")
+            #self.set_title(self.filename[index:] + " - MSA")
             file = open(self.filename, "r")
             text = file.read()
             textbuffer.set_text(text)
