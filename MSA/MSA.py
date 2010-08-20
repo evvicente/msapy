@@ -11,6 +11,13 @@ import os
 import sys
 import platform
 
+# Si se encuentran instaladas la librerias gtk lanza el gtkgui
+try:
+    import gtk
+    gtkgui = True
+except ImportError:
+    gtkgui = False
+
 from msa import gui, io, msa2d
 
 if __name__ == "__main__":
